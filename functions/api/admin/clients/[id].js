@@ -1,7 +1,8 @@
 import { json, requireAdmin } from '../../_utils.js';
 
-export async function onRequestGet({ params, ...context }) {
+export async function onRequestGet(context) {
   try {
+    const { params } = context;
     const { error } = await requireAdmin(context);
     if (error) return error;
 
@@ -16,14 +17,16 @@ export async function onRequestGet({ params, ...context }) {
     if (!row) return json({ error: 'Client not found' }, 404);
     return json({ client: row });
   } catch (err) {
-    return json({ error: 'GET: ' + (err && err.message || String(err)) }, 500);
+    return json({ error: 'GET: ' + (err && err.message ? err.message : String(err)) }, 500);
   }
 }
 
-export async function onRequestPatch({ params, request, ...context }) {
+export async function onRequestPatch(context) {
   let sql = null;
   let bind = null;
   try {
+    const { params, request } = context;
+
     const { error } = await requireAdmin(context);
     if (error) return error;
 
@@ -83,8 +86,9 @@ export async function onRequestPatch({ params, request, ...context }) {
   }
 }
 
-export async function onRequestDelete({ params, ...context }) {
+export async function onRequestDelete(context) {
   try {
+    const { params } = context;
     const { error } = await requireAdmin(context);
     if (error) return error;
 
@@ -96,6 +100,6 @@ export async function onRequestDelete({ params, ...context }) {
 
     return json({ ok: true });
   } catch (err) {
-    return json({ error: 'DELETE: ' + (err && err.message || String(err)) }, 500);
+    return json({ error: 'DELETE: ' + (err && err.message ? err.message : String(err)) }, 500);
   }
 }
