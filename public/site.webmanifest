@@ -1,0 +1,13 @@
+{
+  "name": "PA Housing Fund",
+  "short_name": "PA Housing",
+  "icons": [
+    { "src": "/assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/apple-touch-icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/apple-touch-icon.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0a2540",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}
