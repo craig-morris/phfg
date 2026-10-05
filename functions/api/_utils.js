@@ -54,20 +54,32 @@ export async function requireAdmin(context) {
   return { user };
 }
 
+/* ------------------------------------------------------------------
+   safeUser — THE FIX. Every column the client dashboard reads
+   must be explicitly mapped here, otherwise it never leaves the API.
+   ------------------------------------------------------------------ */
 export function safeUser(u) {
   return {
-    id: u.id,
-    email: u.email,
-    fullName: u.full_name,
-    phone: u.phone,
-    address: u.address,
-    role: u.role,
-    awardedAmount: u.awarded_amount,
-    fundsLocked: !!u.funds_locked,
-    lockReason: u.lock_reason || '',
-    siteNotes: u.site_notes || '',
-    verified: !!u.verified,
-    createdAt: u.created_at
+    id:               u.id,
+    email:            u.email,
+    fullName:         u.full_name || '',
+    phone:            u.phone || '',
+    address:          u.address || '',
+    role:             u.role,
+    verified:         !!u.verified,
+    createdAt:        u.created_at,
+
+    // Award data — used by the "Your Award" panel and the progress bar
+    awardedAmount:    Number(u.awarded_amount || 0),
+    allocatedWinnings:Number(u.allocated_winnings || 0),
+    reportDetails:    u.report_details || '',
+
+    // Fund lock
+    fundsLocked:      !!u.funds_locked,
+    lockReason:       u.lock_reason || '',
+
+    // Per-client red note
+    siteNotes:        u.site_notes || ''
   };
 }
 
