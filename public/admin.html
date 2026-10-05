@@ -262,222 +262,290 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="/assets/app.js"></script>
 <script>
-$(async () => {
-  // ---- Gate: must be admin ----
-(async () => {
-  // ---- Gate ----
-  const me = await api('/api/auth/me');
-  console.log('[admin gate]', me.status, me.data);
+/* ============================================================
+   PA Housing Fund — Admin
+   Single, self-contained script. No dependency on app.js.
+   Every failure is printed to a visible banner at the top.
+   ============================================================ */
 
-  if (!me.ok) {
-    document.body.innerHTML =
-      '<div style="padding:60px;font-family:sans-serif;text-align:center;">' +
-      '<h2>Not signed in</h2><p>Redirecting to sign-in…</p></div>';
-    setTimeout(() => location.href = '/', 800);
+/* ---------------- visible error banner ---------------- */
+function adminFatal(msg) {
+  let el = document.getElementById('adminFatalBanner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'adminFatalBanner';
+    el.style.cssText =
+      'background:#b60606;color:#fff;padding:12px 18px;font-family:monospace;' +
+      'font-size:13px;white-space:pre-wrap;position:relative;z-index:9999;';
+    document.body.insertBefore(el, document.body.firstChild);
+  }
+  el.textContent = msg;
+}
+
+/* ---------------- helpers (inlined) ---------------- */
+async function api(path, opts = {}) {
+  const res = await fetch(path, {
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    ...opts
+  });
+  let data = null;
+  try { data = await res.json(); } catch (_) {}
+  return { ok: res.ok, status: res.status, data };
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function money(n) {
+  return '$' + Number(n || 0).toLocaleString('en-US', {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  });
+}
+
+/* ---------------- data loaders ---------------- */
+async function loadClients() {
+  const r = await api('/api/admin/clients');
+  console.log('[loadClients]', r.status, r.data);
+
+  if (!r.ok || !r.data || !r.data.clients) {
+    $('#clientsErr').text('Failed to load clients — status ' + r.status +
+      (r.data && r.data.error ? ' — ' + r.data.error : '')).removeClass('hidden');
+    $('#clientsTbody').html('');
     return;
   }
-  if (!me.data.user || me.data.user.role !== 'admin') {
-    document.body.innerHTML =
-      '<div style="padding:60px;font-family:sans-serif;text-align:center;">' +
-      '<h2>Access denied</h2>' +
-      '<p>You are signed in as <b>' + escapeHtml(me.data.user?.email || '?') +
-      '</b>, which is not an administrator.</p>' +
-      '<p><a href="/" onclick="document.cookie=\'session=;path=/;max-age=0\'">Sign out</a></p>' +
-      '</div>';
+  $('#clientsErr').addClass('hidden');
+
+  const rows = r.data.clients;
+  if (!rows.length) {
+    $('#clientsTbody').html(
+      '<tr><td colspan="9" class="text-center text-muted" style="padding:24px;">' +
+      'No client accounts yet. Click <b>+ New Client Account</b> to add one.' +
+      '</td></tr>'
+    );
     return;
   }
 
-  // ---- Everything below this line only runs for admins ----
-  const form = document.getElementById('newClientForm');
-  if (form) {
-    form.setAttribute('onsubmit', 'return false'); // belt-and-braces against native submit
+  $('#clientsTbody').html(rows.map(c => `
+    <tr>
+      <td>${c.id}</td>
+      <td>${escapeHtml(c.full_name || '')}</td>
+      <td>${escapeHtml(c.email || '')}</td>
+      <td>${escapeHtml(c.phone || '')}</td>
+      <td>${money(c.awarded_amount)}</td>
+      <td>${money(c.allocated_winnings)}</td>
+      <td>${c.funds_locked
+            ? '<span class="label label-danger">Locked</span>'
+            : '<span class="label label-success">Unlocked</span>'}</td>
+      <td>${escapeHtml((c.site_notes || '').slice(0, 40))}${(c.site_notes || '').length > 40 ? '…' : ''}</td>
+      <td>
+        <button class="btn btn-xs btn-pahf-navy edit-client" data-id="${c.id}">Edit</button>
+        <button class="btn btn-xs btn-danger del-client" data-id="${c.id}">Delete</button>
+      </td>
+    </tr>
+  `).join(''));
+}
+
+async function loadWithdrawals() {
+  const r = await api('/api/admin/withdrawals');
+  console.log('[loadWithdrawals]', r.status, r.data);
+  if (!r.ok || !r.data) return;
+  const rows = r.data.withdrawals || [];
+  $('#withdrawalsTbody').html(rows.map(w => `
+    <tr>
+      <td>${w.id}</td>
+      <td>${escapeHtml(w.user_name || w.user_email || '')}</td>
+      <td>${money(w.amount)}</td>
+      <td>${escapeHtml(w.bank_name || '')}<br/><small>••••${String(w.account_number || '').slice(-4)}</small></td>
+      <td><span class="label label-info">${escapeHtml(w.status)}</span></td>
+      <td>${w.progress}%</td>
+      <td>${escapeHtml(w.note || '')}</td>
+      <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}"
+            data-status="${escapeHtml(w.status)}" data-progress="${w.progress}"
+            data-note="${escapeHtml(w.note || '')}">Edit</button></td>
+    </tr>
+  `).join(''));
+}
+
+async function loadNote() {
+  const r = await api('/api/notes');
+  if (r.ok && r.data && r.data.note) {
+    $('#noteBody').val(r.data.note.body || '');
+    $('#noteVisible').prop('checked', !!r.data.note.visible);
   }
+}
 
-  // ... your existing loadClients / loadWithdrawals / loadNote / handlers ...
-})();
+/* ---------------- init ---------------- */
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    console.log('=== admin init ===');
 
-  // ---- Load clients ----
-  async function loadClients() {
-    const r = await api('/api/admin/clients');
-    const rows = (r.data && r.data.clients) || [];
-    $('#clientsTbody').html(rows.map(c => `
-      <tr>
-        <td>${c.id}</td>
-        <td>${escapeHtml(c.full_name || '')}</td>
-        <td>${escapeHtml(c.email)}</td>
-        <td>${escapeHtml(c.phone || '')}</td>
-        <td>${money(c.awarded_amount)}</td>
-        <td>${money(c.allocated_winnings || 0)}</td>
-        <td>${c.funds_locked
-              ? '<span class="label label-danger">Locked</span>'
-              : '<span class="label label-success">Unlocked</span>'}</td>
-        <td>${escapeHtml((c.site_notes || '').slice(0, 40))}${(c.site_notes || '').length > 40 ? '…' : ''}</td>
-        <td>
-          <button class="btn btn-xs btn-pahf-navy edit-client" data-id="${c.id}">Edit</button>
-          <button class="btn btn-xs btn-danger del-client" data-id="${c.id}">Delete</button>
-        </td>
-      </tr>
-    `).join(''));
-  }
+    // 1. Auth gate
+    const me = await api('/api/auth/me');
+    console.log('[gate]', me.status, me.data);
 
-  // ---- Load withdrawals ----
-  async function loadWithdrawals() {
-    const r = await api('/api/admin/withdrawals');
-    const rows = (r.data && r.data.withdrawals) || [];
-    $('#withdrawalsTbody').html(rows.map(w => `
-      <tr>
-        <td>${w.id}</td>
-        <td>${escapeHtml(w.user_name || w.user_email)}</td>
-        <td>${money(w.amount)}</td>
-        <td>${escapeHtml(w.bank_name || '')}<br/><small>••••${String(w.account_number).slice(-4)}</small></td>
-        <td><span class="label label-info">${escapeHtml(w.status)}</span></td>
-        <td>${w.progress}%</td>
-        <td>${escapeHtml(w.note || '')}</td>
-        <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}"
-              data-status="${escapeHtml(w.status)}" data-progress="${w.progress}"
-              data-note="${escapeHtml(w.note || '')}">Edit</button></td>
-      </tr>
-    `).join(''));
-  }
-
-  async function loadNote() {
-    const r = await api('/api/notes');
-    if (r.ok && r.data.note) {
-      $('#noteBody').val(r.data.note.body || '');
-      $('#noteVisible').prop('checked', !!r.data.note.visible);
+    if (!me.ok || !me.data || !me.data.user) {
+      adminFatal('Not signed in. Redirecting…');
+      setTimeout(() => location.href = '/', 800);
+      return;
     }
+    if (me.data.user.role !== 'admin') {
+      adminFatal(
+        'Access denied. You are signed in as ' + me.data.user.email +
+        ' (role=' + me.data.user.role + '). ' +
+        'Clear cookies and log in as the admin account.'
+      );
+      return;
+    }
+
+    console.log('[gate] admin confirmed:', me.data.user.email);
+
+    // 2. Attach handlers (only after admin confirmed)
+    attachHandlers();
+
+    // 3. Load initial data
+    await loadClients();
+    await loadWithdrawals();
+    await loadNote();
+
+    console.log('=== admin init complete ===');
+  } catch (err) {
+    console.error('INIT ERROR:', err);
+    adminFatal('Init error: ' + ((err && err.message) || err));
   }
+});
+
+/* ---------------- event handlers ---------------- */
+function attachHandlers() {
 
   // ---- Create client ----
-  $('#newClientForm').on('submit', async (e) => {
+  $('#newClientForm').on('submit', async function (e) {
     e.preventDefault();
     const err = $('#newClientErr'); err.addClass('hidden');
-    const fd = new FormData(e.target);
+    const fd = new FormData(this);
     const body = Object.fromEntries(fd.entries());
-    body.fundsLocked = fd.get('fundsLocked') ? true : false;
-    body.awardedAmount = parseFloat(body.awardedAmount) || 0;
+    body.fundsLocked       = fd.get('fundsLocked') ? true : false;
+    body.awardedAmount     = parseFloat(body.awardedAmount) || 0;
     body.allocatedWinnings = parseFloat(body.allocatedWinnings) || 0;
 
     const r = await api('/api/admin/clients', { method: 'POST', body: JSON.stringify(body) });
+    console.log('[create client]', r.status, r.data);
     if (!r.ok) {
-      err.textContent = (r.data && r.data.error) || 'Error';
-      err.removeClass('hidden');
+      err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
       return;
     }
     $('#newClientModal').modal('hide');
-    e.target.reset();
+    this.reset();
     loadClients();
   });
 
-  // ---- Edit client (populate) ----
-  $(document).on('click', '.edit-client', async (e) => {
-    const id = $(e.currentTarget).data('id');
+  // ---- Populate edit client ----
+  $(document).on('click', '.edit-client', async function () {
+    const id = $(this).data('id');
     const r = await api('/api/admin/clients/' + id);
-    if (!r.ok) return;
+    if (!r.ok || !r.data || !r.data.client) return;
     const c = r.data.client;
     const f = $('#editClientForm')[0];
-    f.id.value = c.id;
-    f.full_name.value = c.full_name || '';
-    f.email.value = c.email || '';
-    f.phone.value = c.phone || '';
-    f.address.value = c.address || '';
-    f.awarded_amount.value = c.awarded_amount || 0;
-    f.allocated_winnings.value = c.allocated_winnings || 0;
-    f.report_details.value = c.report_details || '';
-    f.site_notes.value = c.site_notes || '';
-    f.funds_locked.checked = !!c.funds_locked;
-    f.lock_reason.value = c.lock_reason || '';
-    f.verified.checked = !!c.verified;
+    f.id.value                = c.id;
+    f.full_name.value         = c.full_name || '';
+    f.email.value             = c.email || '';
+    f.phone.value             = c.phone || '';
+    f.address.value           = c.address || '';
+    f.awarded_amount.value    = c.awarded_amount || 0;
+    f.allocated_winnings.value= c.allocated_winnings || 0;
+    f.report_details.value    = c.report_details || '';
+    f.site_notes.value        = c.site_notes || '';
+    f.funds_locked.checked    = !!c.funds_locked;
+    f.lock_reason.value       = c.lock_reason || '';
+    f.verified.checked        = !!c.verified;
     $('#editClientModal').modal('show');
   });
 
-  // ---- Save edits ----
-  $('#editClientForm').on('submit', async (e) => {
+  // ---- Save edit ----
+  $('#editClientForm').on('submit', async function (e) {
     e.preventDefault();
     const err = $('#editClientErr'); err.addClass('hidden');
-    const f = e.target;
+    const f = this;
     const id = f.id.value;
     const body = {
-      full_name: f.full_name.value,
-      email: f.email.value,
-      phone: f.phone.value,
-      address: f.address.value,
-      awarded_amount: parseFloat(f.awarded_amount.value) || 0,
+      full_name:          f.full_name.value,
+      email:              f.email.value,
+      phone:              f.phone.value,
+      address:            f.address.value,
+      awarded_amount:     parseFloat(f.awarded_amount.value) || 0,
       allocated_winnings: parseFloat(f.allocated_winnings.value) || 0,
-      report_details: f.report_details.value,
-      site_notes: f.site_notes.value,
-      funds_locked: f.funds_locked.checked,
-      lock_reason: f.lock_reason.value,
-      verified: f.verified.checked
+      report_details:     f.report_details.value,
+      site_notes:         f.site_notes.value,
+      funds_locked:       f.funds_locked.checked,
+      lock_reason:        f.lock_reason.value,
+      verified:           f.verified.checked
     };
     const r = await api('/api/admin/clients/' + id, { method: 'PATCH', body: JSON.stringify(body) });
+    console.log('[save client]', r.status, r.data);
     if (!r.ok) {
-      err.textContent = (r.data && r.data.error) || 'Error';
-      err.removeClass('hidden');
+      err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
       return;
     }
     $('#editClientModal').modal('hide');
     loadClients();
   });
 
-  // ---- Delete client ----
-  $(document).on('click', '.del-client', async (e) => {
+  // ---- Delete ----
+  $(document).on('click', '.del-client', async function () {
     if (!confirm('Delete this client and all their withdrawal records?')) return;
-    const id = $(e.currentTarget).data('id');
+    const id = $(this).data('id');
     await api('/api/admin/clients/' + id, { method: 'DELETE' });
     loadClients();
   });
 
   // ---- Edit withdrawal ----
-  $(document).on('click', '.edit-wd', (e) => {
-    const b = e.currentTarget;
+  $(document).on('click', '.edit-wd', function () {
     const f = $('#editWithdrawForm')[0];
-    f.id.value = b.dataset.id;
-    f.status.value = b.dataset.status;
-    f.progress.value = b.dataset.progress;
-    f.note.value = b.dataset.note;
+    f.id.value       = this.dataset.id;
+    f.status.value   = this.dataset.status;
+    f.progress.value = this.dataset.progress;
+    f.note.value     = this.dataset.note;
     $('#editWithdrawModal').modal('show');
   });
 
-  $('#editWithdrawForm').on('submit', async (e) => {
+  $('#editWithdrawForm').on('submit', async function (e) {
     e.preventDefault();
-    const f = e.target;
-    const id = f.id.value;
+    const f = this;
     const body = {
-      status: f.status.value,
+      status:   f.status.value,
       progress: parseInt(f.progress.value, 10) || 0,
-      note: f.note.value
+      note:     f.note.value
     };
-    await api('/api/admin/withdrawals/' + id, { method: 'PATCH', body: JSON.stringify(body) });
+    await api('/api/admin/withdrawals/' + f.id.value, {
+      method: 'PATCH', body: JSON.stringify(body)
+    });
     $('#editWithdrawModal').modal('hide');
     loadWithdrawals();
   });
 
   // ---- Save site note ----
-  $('#saveNoteBtn').on('click', async () => {
+  $('#saveNoteBtn').on('click', async function () {
     const body = {
       body: $('#noteBody').val(),
       color: 'red',
       visible: $('#noteVisible').is(':checked')
     };
     await api('/api/notes', { method: 'POST', body: JSON.stringify(body) });
-    const m = $('#noteMsg'); m.text('Saved.'); m.removeClass('hidden');
+    const m = $('#noteMsg'); m.text('Saved.').removeClass('hidden');
     setTimeout(() => m.addClass('hidden'), 1800);
   });
 
   // ---- Logout ----
-  $('#logoutLink').on('click', async (e) => {
+  $('#logoutLink').on('click', async function (e) {
     e.preventDefault();
     await api('/api/auth/logout', { method: 'POST' });
     location.href = '/';
   });
-
-  await loadClients();
-  await loadWithdrawals();
-  await loadNote();
-});
+}
 </script>
 </body>
 </html>
