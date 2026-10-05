@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PA Housing Fund — Client Portal</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/app.css" rel="stylesheet" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
+<link rel="icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a2540" />
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar navbar-pahf navbar-fixed-top">
+  <div class="container-fluid" style="padding-left:20px;padding-right:20px;">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#pahf-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/dashboard.html">
+        <img src="/assets/apple-touch-icon.png" alt="PHFA" class="pahf-logo" />
+        <span class="pahf-title">PA Housing Fund</span>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="pahf-nav">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" class="navbar-user" id="navUser">—</a></li>
+        <li><a href="#" id="logoutLink">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== MAIN ==================== -->
+<div class="page-wrap">
+
+  <!-- Global admin note (if any) -->
+  <div id="globalNote" class="alert-note-red hidden"></div>
+
+  <h1 class="page-title" id="orgName">Welcome</h1>
+
+  <!-- ==================== TWO COLUMN LAYOUT ==================== -->
+  <div class="row">
+
+    <!-- LEFT: Welcome / info -->
+    <div class="col-md-7">
+      <p style="font-size:15px;line-height:1.65;">
+        Welcome to the PA Housing Fund Proposal Submissions site
+        for <strong id="inlineOrg">your organization</strong>. This portal
+        provides program details, award information, and reporting for the
+        <strong>Housing-Related Programs and Services</strong> program.
+      </p>
+
+      <p>
+        To begin the reporting or submission process, please review the
+        information on the right and select the appropriate option from the
+        dropdown. Each organization uses one login to manage all activity.
+      </p>
+
+      <p style="font-weight:600;">
+        Important submission note: To prevent any potential submission
+        errors, please only work on one application at a time. Completing
+        multiple proposals simultaneously in different tabs/windows could
+        overwrite other work being completed at the same time and cause a
+        submission error.
+      </p>
+
+      <div class="pahf-card" style="margin-top:18px;">
+        <div class="pahf-card__header">PHARE Question Submissions</div>
+        <div class="pahf-card__body">
+          <ul style="padding-left:20px;margin:0;">
+            <li>Questions regarding the proposal requirements of the PHARE
+              RFP must be submitted via email to Clay Lambert at
+              <a href="mailto:clambert@pahousingawardgov.org">clambert@pahousingawardgov.org</a>.
+            </li>
+            <li style="margin-top:6px;">Questions regarding the electronic
+              PHARE proposal submissions process should be submitted via
+              email to
+              <a href="mailto:contactphare@phfa.org">contactphare@phfa.org</a>.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Award selection + allocated winnings -->
+    <div class="col-md-5">
+      <div class="pahf-card">
+        <div class="pahf-card__header">Your Award</div>
+        <div class="pahf-card__body">
+
+          <div class="award-panel">
+            <div class="award-panel__label">Grant Submission Period</div>
+            <div class="award-panel__value" id="submissionPeriod">—</div>
+
+            <div class="award-panel__label">Application Type</div>
+            <select id="appTypeSelect" class="form-control" style="margin-bottom:14px;">
+              <option value="">Select an application type</option>
+              <option value="housing_related" selected>Housing-Related Programs and Services</option>
+            </select>
+
+            <button type="button" id="viewWinningsBtn"
+                    class="btn btn-pahf-green btn-pahf-green-block">
+              View Allocated Winnings
+            </button>
+          </div>
+
+          <!-- PERSONALIZED REPORT -->
+          <div id="winningsReport" class="report-box hidden">
+            <div class="report-box__header">Allocated Winnings Report</div>
+            <div class="report-box__body">
+              <div class="report-row">
+                <div class="report-row__k">Organization / Name</div>
+                <div class="report-row__v" id="rName">—</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Account Email</div>
+                <div class="report-row__v" id="rEmail">—</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Program</div>
+                <div class="report-row__v">Housing-Related Programs and Services</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Allocated Amount</div>
+                <div class="report-row__v" id="rAllocated">$0.00</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Awarded Total</div>
+                <div class="report-row__v" id="rAwarded">$0.00</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Fund Status</div>
+                <div class="report-row__v" id="rFundStatus">—</div>
+              </div>
+              <div class="report-row">
+                <div class="report-row__k">Report Generated</div>
+                <div class="report-row__v" id="rGenerated">—</div>
+              </div>
+
+              <div id="rDetailsWrap" class="hidden" style="margin-top:16px;padding-top:14px;border-top:1px solid #eef2f6;">
+                <div class="award-panel__label">Admin Notes</div>
+                <div id="rDetails" style="white-space:pre-wrap;font-size:14px;"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GRANT WORK PROGRESS (prominent) ==================== -->
+  <div class="grant-progress" id="progressCard">
+    <h2 class="grant-progress__title">Grant Work Progress</h2>
+    <p class="grant-progress__sub" id="progressSub">No withdrawal activity yet.</p>
+
+    <div class="grant-progress__bar">
+      <div class="grant-progress__fill" id="progressFill" style="width:0%;">0%</div>
+    </div>
+
+    <div class="grant-progress__stages" id="progressStages">
+      <span data-stage="submitted">Submitted</span>
+      <span data-stage="under_review">Under Review</span>
+      <span data-stage="approved">Approved</span>
+      <span data-stage="processing">Processing</span>
+      <span data-stage="completed">Funds Sent</span>
+    </div>
+  </div>
+
+  <!-- ==================== WITHDRAWAL FORM ==================== -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="pahf-card">
+        <div class="pahf-card__header">Request a Withdrawal</div>
+        <div class="pahf-card__body">
+          <div id="lockNotice" class="alert-note-red hidden"></div>
+          <div id="wErr" class="alert alert-danger hidden"></div>
+          <div id="wOk"  class="alert alert-success hidden"></div>
+
+          <form id="wForm">
+            <div class="form-group">
+              <label>Amount (USD)</label>
+              <input id="wAmount" type="number" step="0.01" min="0.01"
+                     class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Routing Number (9 digits)</label>
+              <input id="wRouting" class="form-control" maxlength="9"
+                     inputmode="numeric" required />
+              <small id="bankName" class="text-muted"></small>
+            </div>
+            <div class="form-group">
+              <label>Account Number</label>
+              <input id="wAccount" class="form-control" inputmode="numeric" required />
+            </div>
+            <button class="btn btn-pahf-green btn-pahf-green-block" type="submit">
+              Submit Withdrawal Request
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="pahf-card">
+        <div class="pahf-card__header">My Withdrawal Requests</div>
+        <div class="pahf-card__body" id="wListWrap">
+          <div id="wListEmpty" class="empty-state">You currently have no withdrawal requests.</div>
+          <div id="wList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== APPLICATIONS ==================== -->
+  <div class="pahf-card">
+    <div class="pahf-card__header pahf-card__header--teal">Applications</div>
+    <p class="empty-state">You currently have no PHARE applications.</p>
+  </div>
+
+  <div class="pahf-card">
+    <div class="pahf-card__header pahf-card__header--teal">Archived Applications</div>
+    <p class="empty-state">You currently have no archived PHARE applications.</p>
+  </div>
+
+  <!-- ==================== PHARE REPORTING BUTTON ==================== -->
+  <a href="#" onclick="return false;"
+     class="btn btn-pahf-green btn-pahf-green-block"
+     style="margin-top:8px;">
+    PHARE Reporting
+  </a>
+
+  <div class="generated-at">
+    Page generated: <span id="nowStamp">—</span>
+  </div>
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+let me = null;
+
+function fmtDateTime(d) {
+  return d.toLocaleString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+}
+
+function updateNow() {
+  document.getElementById('nowStamp').textContent = fmtDateTime(new Date());
+}
+
+async function loadMe() {
+  const r = await api('/api/auth/me');
+  if (!r.ok) { location.href = '/'; return; }
+  me = r.data.user;
+
+  const displayName = me.fullName || me.email;
+  document.getElementById('navUser').textContent  = displayName;
+  document.getElementById('orgName').textContent  = displayName;
+  document.getElementById('inlineOrg').textContent = me.fullName || 'your organization';
+
+  // Award panel values
+  const allocated = Number(me.allocatedWinnings || 0) || Number(me.awardedAmount || 0) || 0;
+  document.getElementById('rName').textContent      = me.fullName || '—';
+  document.getElementById('rEmail').textContent     = me.email;
+  document.getElementById('rAllocated').textContent = money(allocated);
+  document.getElementById('rAwarded').textContent   = money(me.awardedAmount || 0);
+  document.getElementById('rFundStatus').textContent =
+    me.fundsLocked ? 'Locked — withdrawals not permitted' : 'Unlocked — withdrawals permitted';
+  document.getElementById('rGenerated').textContent = fmtDateTime(new Date());
+
+  if (me.siteNotes) {
+    const el = document.getElementById('globalNote');
+    el.textContent = me.siteNotes;
+    el.classList.remove('hidden');
+  }
+
+  if (me.reportDetails) {
+    document.getElementById('rDetailsWrap').classList.remove('hidden');
+    document.getElementById('rDetails').textContent = me.reportDetails;
+  }
+
+  // Submission period (fixed per current RFP — admin can edit later)
+  document.getElementById('submissionPeriod').textContent =
+    '09/14/2026 to 11/19/2026';
+
+  // Lock notice
+  if (me.fundsLocked) {
+    const n = document.getElementById('lockNotice');
+    n.innerHTML = '<b>Withdrawals are currently locked.</b><br/>' +
+      (me.lockReason ? escapeHtml(me.lockReason) : 'Please contact your administrator.');
+    n.classList.remove('hidden');
+    document.getElementById('wForm').querySelector('button').disabled = true;
+  }
+}
+
+async function loadGlobalNote() {
+  const r = await api('/api/notes');
+  if (r.ok && r.data && r.data.note && r.data.note.body) {
+    const el = document.getElementById('globalNote');
+    el.textContent = r.data.note.body;
+    el.classList.remove('hidden');
+  }
+}
+
+async function loadWithdrawals() {
+  const r = await api('/api/client/withdrawals');
+  if (!r.ok) return;
+  const list = r.data.withdrawals || [];
+
+  if (!list.length) {
+    document.getElementById('wListEmpty').classList.remove('hidden');
+    document.getElementById('wList').innerHTML = '';
+    document.getElementById('progressSub').textContent = 'No withdrawal activity yet.';
+    const f = document.getElementById('progressFill');
+    f.style.width = '0%';
+    f.textContent = '0%';
+    document.querySelectorAll('#progressStages span').forEach(s => s.classList.remove('active'));
+    return;
+  }
+
+  document.getElementById('wListEmpty').classList.add('hidden');
+  const latest = list[0];
+
+  // Progress bar
+  const pct = Math.max(0, Math.min(100, latest.progress || 0));
+  const fill = document.getElementById('progressFill');
+  fill.style.width = pct + '%';
+  fill.textContent = pct + '%';
+  document.getElementById('progressSub').textContent =
+    'Latest request: ' + money(latest.amount) + ' — Status: ' + latest.status;
+
+  // Highlight stage
+  document.querySelectorAll('#progressStages span').forEach(s => s.classList.remove('active'));
+  const activeStage = document.querySelector('#progressStages span[data-stage="' + latest.status + '"]');
+  if (activeStage) activeStage.classList.add('active');
+
+  // List
+  document.getElementById('wList').innerHTML = list.map(w => `
+    <div class="pahf-card" style="padding:12px;margin-bottom:12px;">
+      <div class="row">
+        <div class="col-xs-6"><b>${money(w.amount)}</b></div>
+        <div class="col-xs-6 text-right">
+          <span class="label label-${w.status === 'completed' ? 'success' : w.status === 'rejected' ? 'danger' : 'warning'}">
+            ${escapeHtml(w.status)}
+          </span>
+        </div>
+      </div>
+      <div class="text-muted-2" style="font-size:12px;margin-top:4px;">
+        ${escapeHtml(w.bank_name || '')} • ••••${String(w.account_number).slice(-4)}
+      </div>
+      <div class="progress" style="margin-top:8px;height:8px;">
+        <div class="progress-bar" style="width:${w.progress}%;background:var(--green);"></div>
+      </div>
+      ${w.note ? `<div class="text-muted-2" style="margin-top:6px;font-size:12px;">Note: ${escapeHtml(w.note)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// Show / hide winnings report
+document.getElementById('viewWinningsBtn').addEventListener('click', () => {
+  document.getElementById('winningsReport').classList.toggle('hidden');
+});
+
+// Bank auto-detect
+document.getElementById('wRouting').addEventListener('input', (e) => {
+  const v = e.target.value.replace(/\D/g, '').slice(0, 9);
+  e.target.value = v;
+  const bank = lookupBank(v);
+  document.getElementById('bankName').textContent = bank ? ('Bank: ' + bank) : '';
+});
+
+// Submit withdrawal
+document.getElementById('wForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById('wErr');
+  const okEl  = document.getElementById('wOk');
+  errEl.classList.add('hidden'); okEl.classList.add('hidden');
+
+  const body = {
+    amount: parseFloat(document.getElementById('wAmount').value),
+    routingNumber: document.getElementById('wRouting').value,
+    accountNumber: document.getElementById('wAccount').value,
+    bankName: lookupBank(document.getElementById('wRouting').value)
+  };
+  const r = await api('/api/client/withdrawals', { method: 'POST', body: JSON.stringify(body) });
+  if (!r.ok) {
+    errEl.textContent = (r.data && (r.data.error || r.data.reason)) || 'Withdrawal failed.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  okEl.textContent = 'Withdrawal request submitted.';
+  okEl.classList.remove('hidden');
+  document.getElementById('wForm').reset();
+  document.getElementById('bankName').textContent = '';
+  loadWithdrawals();
+});
+
+// Logout
+document.getElementById('logoutLink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await api('/api/auth/logout', { method: 'POST' });
+  location.href = '/';
+});
+
+// Init
+(async () => {
+  updateNow();
+  setInterval(updateNow, 1000);
+  await loadMe();
+  await loadGlobalNote();
+  await loadWithdrawals();
+})();
+</script>
+</body>
+</html>

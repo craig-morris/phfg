@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PA Housing Fund — Admin</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
+<link rel="icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a2540" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/app.css" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar navbar-pahf navbar-fixed-top">
+  <div class="container-fluid" style="padding-left:20px;padding-right:20px;">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img src="/assets/apple-touch-icon.png" alt="PHFA" class="pahf-logo" />
+        <span class="pahf-title">PA Housing Fund — Admin</span>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="admin-nav">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" id="logoutLink">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#clients" data-toggle="tab">Clients</a></li>
+    <li role="presentation"><a href="#withdrawals" data-toggle="tab">Withdrawals</a></li>
+    <li role="presentation"><a href="#sitenote" data-toggle="tab">Site Note</a></li>
+  </ul>
+
+  <div class="tab-content" style="padding-top:20px;">
+
+    <!-- ==================== CLIENTS TAB ==================== -->
+    <div role="tabpanel" class="tab-pane active" id="clients">
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-pahf-navy" data-toggle="modal" data-target="#newClientModal">
+            + New Client Account
+          </button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="clientsErr" class="alert alert-danger hidden"></div>
+          <table class="table table-bordered data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
+                <th>Awarded</th><th>Allocated</th><th>Funds</th><th>Notes</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="clientsTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== WITHDRAWALS TAB ==================== -->
+    <div role="tabpanel" class="tab-pane" id="withdrawals">
+      <table class="table table-bordered data-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Client</th><th>Amount</th><th>Bank</th>
+            <th>Status</th><th>Progress</th><th>Note</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="withdrawalsTbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ==================== SITE NOTE TAB ==================== -->
+    <div role="tabpanel" class="tab-pane" id="sitenote">
+      <div class="pahf-card">
+        <div class="pahf-card__header">Red Site Note (visible to all clients)</div>
+        <div class="pahf-card__body">
+          <textarea id="noteBody" class="form-control" rows="5"
+                    placeholder="This note appears on every client's dashboard."></textarea>
+          <div class="checkbox">
+            <label><input id="noteVisible" type="checkbox" checked /> Visible to clients</label>
+          </div>
+          <button id="saveNoteBtn" class="btn btn-pahf-navy">Save Note</button>
+          <div id="noteMsg" class="alert alert-success hidden" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== NEW CLIENT MODAL ==================== -->
+<div class="modal fade" id="newClientModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create Client Account</h4>
+      </div>
+      <form id="newClientForm">
+        <div class="modal-body">
+          <div id="newClientErr" class="alert alert-danger hidden"></div>
+
+          <div class="form-group"><label>Full Name</label>
+            <input name="fullName" class="form-control" required/></div>
+
+          <div class="form-group"><label>Email</label>
+            <input name="email" type="email" class="form-control" required/></div>
+
+          <div class="form-group"><label>Phone</label>
+            <input name="phone" class="form-control"/></div>
+
+          <div class="form-group"><label>Address</label>
+            <input name="address" class="form-control"/></div>
+
+          <div class="form-group"><label>Password</label>
+            <input name="password" type="text" class="form-control" required minlength="6"/></div>
+
+          <div class="form-group"><label>Awarded Amount (USD)</label>
+            <input name="awardedAmount" type="number" step="0.01" class="form-control" value="0"/></div>
+
+          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
+            <input name="allocatedWinnings" type="number" step="0.01" class="form-control" value="0"/></div>
+
+          <div class="form-group"><label>Report Details (free text shown inside report)</label>
+            <textarea name="reportDetails" class="form-control" rows="3"></textarea></div>
+
+          <div class="form-group"><label>Security Question</label>
+            <input name="securityQuestion" class="form-control"
+                   placeholder="e.g. What city were you born in?"/></div>
+
+          <div class="form-group"><label>Security Answer</label>
+            <input name="securityAnswer" class="form-control"/></div>
+
+          <div class="checkbox">
+            <label><input name="fundsLocked" type="checkbox" checked/> Lock funds initially</label>
+          </div>
+          <div class="form-group" style="margin-top:6px;">
+            <label>Lock Reason (shown to client when locked)</label>
+            <input name="lockReason" class="form-control"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-pahf-navy">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EDIT CLIENT MODAL ==================== -->
+<div class="modal fade" id="editClientModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Client</h4>
+      </div>
+      <form id="editClientForm">
+        <div class="modal-body">
+          <div id="editClientErr" class="alert alert-danger hidden"></div>
+          <input type="hidden" name="id"/>
+
+          <div class="form-group"><label>Full Name</label>
+            <input name="full_name" class="form-control"/></div>
+
+          <div class="form-group"><label>Email</label>
+            <input name="email" type="email" class="form-control"/></div>
+
+          <div class="form-group"><label>Phone</label>
+            <input name="phone" class="form-control"/></div>
+
+          <div class="form-group"><label>Address</label>
+            <input name="address" class="form-control"/></div>
+
+          <div class="form-group"><label>Awarded Amount (USD)</label>
+            <input name="awarded_amount" type="number" step="0.01" class="form-control"/></div>
+
+          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
+            <input name="allocated_winnings" type="number" step="0.01" class="form-control"/></div>
+
+          <div class="form-group"><label>Report Details (free text shown inside report)</label>
+            <textarea name="report_details" class="form-control" rows="4"></textarea></div>
+
+          <div class="form-group"><label>Client Site Note (visible to this client only)</label>
+            <textarea name="site_notes" class="form-control" rows="3"></textarea></div>
+
+          <div class="checkbox">
+            <label><input name="funds_locked" type="checkbox"/> Lock funds (block withdrawals)</label>
+          </div>
+
+          <div class="form-group"><label>Lock Reason (shown to client)</label>
+            <input name="lock_reason" class="form-control"/></div>
+
+          <div class="checkbox">
+            <label><input name="verified" type="checkbox"/> Verified</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-pahf-navy">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EDIT WITHDRAWAL MODAL ==================== -->
+<div class="modal fade" id="editWithdrawModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Update Withdrawal</h4>
+      </div>
+      <form id="editWithdrawForm">
+        <div class="modal-body">
+          <input type="hidden" name="id"/>
+          <div class="form-group">
+            <label>Status</label>
+            <select name="status" class="form-control">
+              <option value="pending">Pending</option>
+              <option value="under_review">Under Review</option>
+              <option value="approved">Approved</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed (Funds Sent)</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Progress (%)</label>
+            <input name="progress" type="number" min="0" max="100" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <label>Note to client</label>
+            <textarea name="note" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-pahf-navy">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+$(async () => {
+  // ---- Gate: must be admin ----
+  const me = await api('/api/auth/me');
+  if (!me.ok || me.data.user.role !== 'admin') {
+    location.href = '/';
+    return;
+  }
+
+  // ---- Load clients ----
+  async function loadClients() {
+    const r = await api('/api/admin/clients');
+    const rows = (r.data && r.data.clients) || [];
+    $('#clientsTbody').html(rows.map(c => `
+      <tr>
+        <td>${c.id}</td>
+        <td>${escapeHtml(c.full_name || '')}</td>
+        <td>${escapeHtml(c.email)}</td>
+        <td>${escapeHtml(c.phone || '')}</td>
+        <td>${money(c.awarded_amount)}</td>
+        <td>${money(c.allocated_winnings || 0)}</td>
+        <td>${c.funds_locked
+              ? '<span class="label label-danger">Locked</span>'
+              : '<span class="label label-success">Unlocked</span>'}</td>
+        <td>${escapeHtml((c.site_notes || '').slice(0, 40))}${(c.site_notes || '').length > 40 ? '…' : ''}</td>
+        <td>
+          <button class="btn btn-xs btn-pahf-navy edit-client" data-id="${c.id}">Edit</button>
+          <button class="btn btn-xs btn-danger del-client" data-id="${c.id}">Delete</button>
+        </td>
+      </tr>
+    `).join(''));
+  }
+
+  // ---- Load withdrawals ----
+  async function loadWithdrawals() {
+    const r = await api('/api/admin/withdrawals');
+    const rows = (r.data && r.data.withdrawals) || [];
+    $('#withdrawalsTbody').html(rows.map(w => `
+      <tr>
+        <td>${w.id}</td>
+        <td>${escapeHtml(w.user_name || w.user_email)}</td>
+        <td>${money(w.amount)}</td>
+        <td>${escapeHtml(w.bank_name || '')}<br/><small>••••${String(w.account_number).slice(-4)}</small></td>
+        <td><span class="label label-info">${escapeHtml(w.status)}</span></td>
+        <td>${w.progress}%</td>
+        <td>${escapeHtml(w.note || '')}</td>
+        <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}"
+              data-status="${escapeHtml(w.status)}" data-progress="${w.progress}"
+              data-note="${escapeHtml(w.note || '')}">Edit</button></td>
+      </tr>
+    `).join(''));
+  }
+
+  async function loadNote() {
+    const r = await api('/api/notes');
+    if (r.ok && r.data.note) {
+      $('#noteBody').val(r.data.note.body || '');
+      $('#noteVisible').prop('checked', !!r.data.note.visible);
+    }
+  }
+
+  // ---- Create client ----
+  $('#newClientForm').on('submit', async (e) => {
+    e.preventDefault();
+    const err = $('#newClientErr'); err.addClass('hidden');
+    const fd = new FormData(e.target);
+    const body = Object.fromEntries(fd.entries());
+    body.fundsLocked = fd.get('fundsLocked') ? true : false;
+    body.awardedAmount = parseFloat(body.awardedAmount) || 0;
+    body.allocatedWinnings = parseFloat(body.allocatedWinnings) || 0;
+
+    const r = await api('/api/admin/clients', { method: 'POST', body: JSON.stringify(body) });
+    if (!r.ok) {
+      err.textContent = (r.data && r.data.error) || 'Error';
+      err.removeClass('hidden');
+      return;
+    }
+    $('#newClientModal').modal('hide');
+    e.target.reset();
+    loadClients();
+  });
+
+  // ---- Edit client (populate) ----
+  $(document).on('click', '.edit-client', async (e) => {
+    const id = $(e.currentTarget).data('id');
+    const r = await api('/api/admin/clients/' + id);
+    if (!r.ok) return;
+    const c = r.data.client;
+    const f = $('#editClientForm')[0];
+    f.id.value = c.id;
+    f.full_name.value = c.full_name || '';
+    f.email.value = c.email || '';
+    f.phone.value = c.phone || '';
+    f.address.value = c.address || '';
+    f.awarded_amount.value = c.awarded_amount || 0;
+    f.allocated_winnings.value = c.allocated_winnings || 0;
+    f.report_details.value = c.report_details || '';
+    f.site_notes.value = c.site_notes || '';
+    f.funds_locked.checked = !!c.funds_locked;
+    f.lock_reason.value = c.lock_reason || '';
+    f.verified.checked = !!c.verified;
+    $('#editClientModal').modal('show');
+  });
+
+  // ---- Save edits ----
+  $('#editClientForm').on('submit', async (e) => {
+    e.preventDefault();
+    const err = $('#editClientErr'); err.addClass('hidden');
+    const f = e.target;
+    const id = f.id.value;
+    const body = {
+      full_name: f.full_name.value,
+      email: f.email.value,
+      phone: f.phone.value,
+      address: f.address.value,
+      awarded_amount: parseFloat(f.awarded_amount.value) || 0,
+      allocated_winnings: parseFloat(f.allocated_winnings.value) || 0,
+      report_details: f.report_details.value,
+      site_notes: f.site_notes.value,
+      funds_locked: f.funds_locked.checked,
+      lock_reason: f.lock_reason.value,
+      verified: f.verified.checked
+    };
+    const r = await api('/api/admin/clients/' + id, { method: 'PATCH', body: JSON.stringify(body) });
+    if (!r.ok) {
+      err.textContent = (r.data && r.data.error) || 'Error';
+      err.removeClass('hidden');
+      return;
+    }
+    $('#editClientModal').modal('hide');
+    loadClients();
+  });
+
+  // ---- Delete client ----
+  $(document).on('click', '.del-client', async (e) => {
+    if (!confirm('Delete this client and all their withdrawal records?')) return;
+    const id = $(e.currentTarget).data('id');
+    await api('/api/admin/clients/' + id, { method: 'DELETE' });
+    loadClients();
+  });
+
+  // ---- Edit withdrawal ----
+  $(document).on('click', '.edit-wd', (e) => {
+    const b = e.currentTarget;
+    const f = $('#editWithdrawForm')[0];
+    f.id.value = b.dataset.id;
+    f.status.value = b.dataset.status;
+    f.progress.value = b.dataset.progress;
+    f.note.value = b.dataset.note;
+    $('#editWithdrawModal').modal('show');
+  });
+
+  $('#editWithdrawForm').on('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const id = f.id.value;
+    const body = {
+      status: f.status.value,
+      progress: parseInt(f.progress.value, 10) || 0,
+      note: f.note.value
+    };
+    await api('/api/admin/withdrawals/' + id, { method: 'PATCH', body: JSON.stringify(body) });
+    $('#editWithdrawModal').modal('hide');
+    loadWithdrawals();
+  });
+
+  // ---- Save site note ----
+  $('#saveNoteBtn').on('click', async () => {
+    const body = {
+      body: $('#noteBody').val(),
+      color: 'red',
+      visible: $('#noteVisible').is(':checked')
+    };
+    await api('/api/notes', { method: 'POST', body: JSON.stringify(body) });
+    const m = $('#noteMsg'); m.text('Saved.'); m.removeClass('hidden');
+    setTimeout(() => m.addClass('hidden'), 1800);
+  });
+
+  // ---- Logout ----
+  $('#logoutLink').on('click', async (e) => {
+    e.preventDefault();
+    await api('/api/auth/logout', { method: 'POST' });
+    location.href = '/';
+  });
+
+  await loadClients();
+  await loadWithdrawals();
+  await loadNote();
+});
+</script>
+</body>
+</html>

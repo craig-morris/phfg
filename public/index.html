@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PA Housing Fund — Sign In</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
+<link rel="icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a2540" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/app.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-pahf navbar-fixed-top">
+  <div class="container-fluid" style="padding-left:20px;padding-right:20px;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img src="/assets/apple-touch-icon.png" alt="PHFA" class="pahf-logo" />
+        <span class="pahf-title">PA Housing Fund</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="margin-top: 90px;">
+  <div class="row">
+    <div class="col-md-8">
+      <h4>Thank you for visiting the PA Housing Fund website, created by the Pennsylvania Housing Finance Agency (PHFA).</h4>
+      <p>This website is created for organizations applying or reporting on the use of funds that were awarded to programs and projects through the PA Housing Fund program.</p>
+      <p>All grantees which submitted an online application requesting PA Housing Fund monies must also use this site to report on the use of those funds.</p>
+      <p><span style="color:#b60606;"><b>NOTE: It is very important that organizations monitor and update the contact/email address associated with this online account.</b></span></p>
+      <p><b>Important submission note:</b> To prevent submission errors, please only work on one application at a time.</p>
+      <p><b>PHARE Contacts</b><br/>
+        Clay Lambert: clambert@pahousingawardgov.org
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <div id="globalNote" class="alert-note-red hidden" style="margin-bottom:14px;"></div>
+
+      <h2>Please sign in</h2>
+      <div id="errMsg" class="alert alert-danger hidden"></div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="form-group">
+          <input id="email" type="email" class="form-control" placeholder="Email Address" required />
+        </div>
+        <div class="form-group">
+          <input id="password" type="password" class="form-control" placeholder="Password" required />
+        </div>
+
+        <div id="securityBlock" class="form-group hidden">
+          <label id="securityQuestionLabel" class="control-label"></label>
+          <input id="securityAnswer" type="text" class="form-control" placeholder="Your answer" />
+        </div>
+
+        <button id="submitBtn" type="submit" class="btn btn-lg btn-primary btn-block">SIGN IN</button>
+      </form>
+
+      <br/>
+      <div class="col-sm-12" style="padding:0;">
+        <a href="/register.html" class="btn btn-primary">CREATE ACCOUNT</a>
+        <a href="mailto:clambert@phfa.org" class="btn btn-default">FORGOT PASSWORD</a>
+      </div>
+      <br/><br/>
+      <a href="#" style="color:#054569;">Past PHARE Awards Search Tool</a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+<script>
+(async () => {
+  // Load any visible global note
+  const n = await api('/api/notes');
+  if (n.ok && n.data && n.data.note && n.data.note.body) {
+    const el = document.getElementById('globalNote');
+    el.textContent = n.data.note.body;
+    el.classList.remove('hidden');
+  }
+
+  const form = document.getElementById('loginForm');
+  const errEl = document.getElementById('errMsg');
+  const secBlock = document.getElementById('securityBlock');
+  const secLabel = document.getElementById('securityQuestionLabel');
+  const secInput = document.getElementById('securityAnswer');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    const body = { email, password };
+    if (!secBlock.classList.contains('hidden') && secInput.value.trim()) {
+      body.securityAnswer = secInput.value.trim();
+    }
+
+    const r = await api('/api/auth/login', { method: 'POST', body: JSON.stringify(body) });
+
+    if (r.ok && r.data.ok) {
+      window.location.href = r.data.user.role === 'admin' ? '/admin.html' : '/dashboard.html';
+      return;
+    }
+
+    if (r.data && r.data.needsSecurityAnswer) {
+      secLabel.textContent = 'Security Question: ' + r.data.securityQuestion;
+      secBlock.classList.remove('hidden');
+      secInput.focus();
+      errEl.textContent = r.data.error || 'Please answer your security question.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+
+    errEl.textContent = (r.data && r.data.error) || 'Sign in failed.';
+    errEl.classList.remove('hidden');
+  });
+})();
+</script>
+</body>
+</html>
