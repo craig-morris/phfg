@@ -5,4 +5,4 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "pa-housing-fund-db"
-database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+database_id = "2b23eef5-d4f6-493f-ab6c-7498a27d6eb9"
