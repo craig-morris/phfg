@@ -266,11 +266,37 @@
 <script>
 $(async () => {
   // ---- Gate: must be admin ----
+(async () => {
+  // ---- Gate ----
   const me = await api('/api/auth/me');
-  if (!me.ok || me.data.user.role !== 'admin') {
-    location.href = '/';
+  console.log('[admin gate]', me.status, me.data);
+
+  if (!me.ok) {
+    document.body.innerHTML =
+      '<div style="padding:60px;font-family:sans-serif;text-align:center;">' +
+      '<h2>Not signed in</h2><p>Redirecting to sign-in…</p></div>';
+    setTimeout(() => location.href = '/', 800);
     return;
   }
+  if (!me.data.user || me.data.user.role !== 'admin') {
+    document.body.innerHTML =
+      '<div style="padding:60px;font-family:sans-serif;text-align:center;">' +
+      '<h2>Access denied</h2>' +
+      '<p>You are signed in as <b>' + escapeHtml(me.data.user?.email || '?') +
+      '</b>, which is not an administrator.</p>' +
+      '<p><a href="/" onclick="document.cookie=\'session=;path=/;max-age=0\'">Sign out</a></p>' +
+      '</div>';
+    return;
+  }
+
+  // ---- Everything below this line only runs for admins ----
+  const form = document.getElementById('newClientForm');
+  if (form) {
+    form.setAttribute('onsubmit', 'return false'); // belt-and-braces against native submit
+  }
+
+  // ... your existing loadClients / loadWithdrawals / loadNote / handlers ...
+})();
 
   // ---- Load clients ----
   async function loadClients() {
