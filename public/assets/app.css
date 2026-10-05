@@ -367,3 +367,55 @@ table.data-table td, table.data-table th { vertical-align: middle !important; }
   .report-row { flex-direction: column; }
   .report-row__k { min-width: 0; margin-bottom: 2px; }
 }
+
+/* ---------- Collapsible sections (legislation page) ---------- */
+
+details.pahf-collapse {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+details.pahf-collapse > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 600;
+  color: var(--navy);
+  background: #f4f7fa;
+  border-radius: 4px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+details.pahf-collapse > summary::-webkit-details-marker { display: none; }
+details.pahf-collapse > summary::after {
+  content: '▾';
+  color: var(--muted);
+  transition: transform .15s ease;
+}
+details.pahf-collapse[open] > summary::after { transform: rotate(180deg); }
+details.pahf-collapse > summary:hover { background: #e8eff5; }
+details.pahf-collapse > ul {
+  padding: 12px 18px 12px 32px;
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+details.pahf-collapse > ul li { margin-bottom: 6px; }
+details.pahf-collapse > ul li a { color: var(--navy); }
+details.pahf-collapse > ul li a:hover { color: var(--navy-hover); text-decoration: underline; }
+
+/* ---------- Callout box (like .alert-phare on phfa.org) ---------- */
+
+.alert-phare {
+  background: #e8f1f8;
+  border-left: 4px solid var(--navy);
+  padding: 16px 20px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+.alert-phare p:last-child { margin-bottom: 0; }
+.alert-phare ul { margin: 8px 0 0 0; padding-left: 20px; }
+.alert-phare li { margin-bottom: 4px; }
+.alert-phare a { color: var(--navy); font-weight: 500; }
