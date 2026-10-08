@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funding Register | PA Housing Affordability and Rehabilitation Enhancement Fund</title>
+
+<link rel="stylesheet" href="css/pahf.css">
+
+<style>
+/* ============================================================
+   funding.html — “Public Register” classical layer
+   Paper stock, hairline rules, small caps, tabular figures.
+   ============================================================ */
+
+:root{
+  --paper:      #fbf9f4;
+  --paper-alt:  #f6f3eb;
+  --ink:        #14212e;
+  --ink-soft:   #46596b;
+  --rule:       #d8d2c4;
+  --rule-strong:#b9b0a0;
+  --serif:      Georgia, "Iowan Old Style", "Palatino Linotype",
+                "Book Antiqua", "Times New Roman", serif;
+}
+
+body{
+  background: #ece8de;
+  font-family: var(--serif);
+  color: var(--ink);
+}
+
+/* ---------- masthead ---------- */
+.navbar-pahf{
+  position: fixed; top:0; left:0; right:0; z-index:1030;
+  display:flex; align-items:center; justify-content:space-between;
+  height:56px; padding:0 22px;
+}
+.navbar-pahf__brand{ display:flex; align-items:center; gap:16px; min-width:0; }
+.pahf-logo-text{
+  font-family: var(--serif);
+  font-size:23px; font-weight:700; letter-spacing:2px;
+  color:var(--orange); text-decoration:none; line-height:1;
+}
+.navbar-pahf__title{
+  color:#fff; font-size:15px; font-weight:400; font-style:italic;
+  letter-spacing:.3px; text-decoration:none;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.navbar-pahf__nav{ display:flex; align-items:center; gap:2px; }
+.navbar-pahf__nav a{
+  color:#cfdde8; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:12px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
+  padding:9px 14px; border-radius:2px; text-decoration:none;
+}
+.navbar-pahf__nav a:hover,
+.navbar-pahf__nav a.is-active{ background:var(--navy); color:#fff; text-decoration:none; }
+
+/* ---------- page ---------- */
+.page-wrap{ max-width:1280px; margin:0 auto; padding:34px 26px 72px; }
+
+.masthead{ margin-bottom:26px; }
+.masthead__kicker{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:11px; font-weight:700; letter-spacing:2.4px; text-transform:uppercase;
+  color:var(--green-dark); margin:0 0 8px;
+}
+.page-title{
+  font-family: var(--serif);
+  font-size:40px; font-weight:400; letter-spacing:-.5px;
+  color:var(--navy-dark); margin:0 0 12px; line-height:1.12;
+}
+.page-title em{ font-style:italic; color:var(--navy); }
+.masthead__rule{
+  height:3px; border:0; margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 90px,var(--rule) 90px,var(--rule) 100%);
+}
+.masthead__sub{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:13px; color:var(--ink-soft); margin:10px 0 0; max-width:72ch; line-height:1.65;
+}
+
+/* ---------- notice ---------- */
+.notice{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-left:3px solid var(--gold);
+  padding:16px 20px; margin-bottom:26px;
+  font-size:14px; line-height:1.7; color:var(--ink-soft);
+}
+.notice strong{ color:var(--ink); font-weight:700; }
+.notice em{ font-style:italic; color:var(--navy); }
+
+/* ---------- figures strip ---------- */
+.figures{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0; margin-bottom:28px;
+  border:1px solid var(--rule); background:var(--paper);
+}
+.figure{ padding:16px 20px; border-right:1px solid var(--rule); }
+.figure:last-child{ border-right:0; }
+.figure__label{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:10px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase;
+  color:var(--ink-soft); margin-bottom:6px;
+}
+.figure__value{
+  font-family:var(--serif); font-size:28px; font-weight:700;
+  color:var(--navy-dark); line-height:1.1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.figure__value small{ font-size:14px; font-weight:400; color:var(--ink-soft); }
+.figure__sub{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:11px; color:var(--ink-soft); margin-top:2px;
+}
+
+/* ---------- register card ---------- */
+.register{
+  background:var(--paper);
+  border:1px solid var(--rule-strong);
+  box-shadow:0 1px 0 #fff inset, 0 2px 10px rgba(10,37,64,.06);
+}
+.register__head{
+  padding:18px 22px 14px;
+  border-bottom:3px double var(--rule-strong);
+}
+.register__title{
+  font-family:var(--serif); font-size:21px; font-weight:700;
+  color:var(--navy-dark); margin:0 0 3px; letter-spacing:.2px;
+}
+.register__meta{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--ink-soft);
+}
+.register__body{ padding:18px 22px 22px; }
+
+/* ---------- toolbar ---------- */
+.toolbar{
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+  padding-bottom:14px; margin-bottom:2px;
+  border-bottom:1px solid var(--rule);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px; color:var(--ink-soft);
+}
+.toolbar__group{ display:flex; align-items:center; gap:8px; }
+.toolbar__group--center{ margin:0 auto; }
+.toolbar label{ letter-spacing:.4px; }
+.toolbar select,
+.toolbar input[type="search"]{
+  font-family:inherit; font-size:13px; color:var(--ink);
+  background:#fffdf8;
+  border:1px solid var(--rule-strong);
+  border-radius:0; height:32px; padding:0 10px; outline:none;
+}
+.toolbar input[type="search"]{ min-width:230px; }
+.toolbar select:focus,
+.toolbar input[type="search"]:focus{
+  border-color:var(--navy); box-shadow:0 0 0 2px rgba(11,79,122,.13);
+}
+.toolbtn{
+  font-family:inherit; font-size:11px; font-weight:700;
+  letter-spacing:1.3px; text-transform:uppercase;
+  background:transparent; color:var(--navy);
+  border:0; border-bottom:1px solid var(--rule-strong);
+  padding:6px 2px; margin-right:14px; cursor:pointer;
+  transition:color .12s ease, border-color .12s ease;
+}
+.toolbtn:hover{ color:var(--orange); border-bottom-color:var(--orange); }
+.toolbtn:active{ color:var(--navy-dark); }
+
+/* ---------- ledger table ---------- */
+.ledger-scroll{
+  max-height:64vh; overflow:auto;
+  border-top:1px solid var(--rule);
+  -webkit-overflow-scrolling:touch;
+}
+table.ledger{
+  width:100%; min-width:1080px; border-collapse:collapse;
+  font-size:13.5px; line-height:1.45;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+table.ledger thead th{
+  position:sticky; top:0; z-index:3;
+  background:var(--paper-alt);
+  border-bottom:1px solid var(--rule-strong);
+  padding:10px 12px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+  color:var(--navy-dark); text-align:left; white-space:nowrap;
+  cursor:pointer; user-select:none;
+}
+table.ledger thead th:hover{ background:#efeade; }
+table.ledger thead th.no-sort{ cursor:default; }
+table.ledger thead th.no-sort:hover{ background:var(--paper-alt); }
+table.ledger thead th .caret{
+  font-size:9px; margin-left:5px; color:#a9a293; letter-spacing:0;
+}
+table.ledger thead th.is-sorted .caret{ color:var(--green-dark); }
+
+table.ledger tbody td{
+  padding:11px 12px;
+  border-bottom:1px solid var(--rule);
+  vertical-align:top; color:var(--ink);
+}
+table.ledger tbody tr:nth-child(even) td{ background:rgba(246,243,235,.55); }
+table.ledger tbody tr:hover td{ background:#f1f6fa; }
+table.ledger tbody tr{ cursor:pointer; }
+
+td.c-no{
+  width:56px; color:var(--ink-soft); font-size:12px;
+  font-variant-numeric: tabular-nums;
+}
+td.c-name{ font-weight:700; color:var(--navy-dark); }
+td.c-street{ color:var(--ink-soft); font-style:italic; }
+td.c-amount{
+  text-align:right; font-weight:700; color:var(--navy-dark); white-space:nowrap;
+}
+th.c-amount{ text-align:right; }
+
+/* status marks — classical, not pills */
+.mark{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:10.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  white-space:nowrap;
+}
+.mark::before{
+  content:"◆"; font-size:8px; margin-right:6px; vertical-align:1px;
+}
+.mark--pending{ color:#8a6d00; }
+.mark--awarded{ color:var(--green-dark); }
+.mark--review { color:var(--navy); }
+.mark--closed { color:var(--red); }
+
+.ledger-empty{
+  padding:52px 20px; text-align:center;
+  font-style:italic; font-size:15px; color:var(--gold);
+}
+
+/* ---------- footer ---------- */
+.ledger-foot{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  gap:12px; padding-top:14px; margin-top:2px; border-top:1px solid var(--rule);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:12px; color:var(--ink-soft); letter-spacing:.3px;
+}
+.pager{ display:flex; align-items:center; gap:2px; }
+.pager button{
+  font-family:inherit; font-size:12px; min-width:30px; height:30px;
+  padding:0 9px; background:#fffdf8; color:var(--navy);
+  border:1px solid var(--rule-strong); border-radius:0; cursor:pointer;
+}
+.pager button:hover:not(:disabled){ background:#f1f6fa; border-color:var(--navy); }
+.pager button.is-current{
+  background:var(--navy-dark); border-color:var(--navy-dark);
+  color:#fff; font-weight:700;
+}
+.pager button:disabled{ opacity:.4; cursor:default; }
+.pager .gap{ padding:0 4px; color:#b9b0a0; }
+
+.colophon{
+  margin-top:22px; padding-top:12px; border-top:1px solid var(--rule);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:11px; letter-spacing:.6px; color:var(--ink-soft); text-align:right;
+}
+
+/* ---------- dossier drawer ---------- */
+.backdrop{
+  position:fixed; inset:0; z-index:1040;
+  background:rgba(10,37,64,.5);
+  display:flex; align-items:center; justify-content:center; padding:22px;
+}
+.backdrop.hidden{ display:none !important; }
+.dossier{
+  width:100%; max-width:620px; max-height:86vh; overflow:auto;
+  background:var(--paper);
+  border:1px solid var(--rule-strong);
+  box-shadow:0 24px 60px rgba(10,37,64,.4);
+}
+.dossier__head{
+  position:sticky; top:0; z-index:2;
+  background:var(--navy-dark); color:#fff;
+  padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:3px double rgba(255,255,255,.35);
+}
+.dossier__head h3{
+  margin:0; font-family:var(--serif); font-size:17px; font-weight:400;
+  letter-spacing:.4px;
+}
+.dossier__close{
+  background:transparent; border:0; color:#fff; font-size:24px;
+  line-height:1; cursor:pointer; padding:0 4px;
+}
+.dossier__close:hover{ color:var(--gold); }
+.dossier__body{ padding:6px 22px 26px; }
+
+.dossier__label{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  color:var(--green-dark);
+  margin:22px 0 0; padding-bottom:6px;
+  border-bottom:3px double var(--rule-strong);
+}
+.entry{
+  display:flex; gap:18px; padding:11px 0;
+  border-bottom:1px solid var(--rule);
+  font-size:14px;
+}
+.entry:last-child{ border-bottom:0; }
+.entry__k{
+  flex:0 0 158px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--ink-soft); padding-top:3px;
+}
+.entry__v{ flex:1; color:var(--ink); font-weight:600; }
+.entry__v--script{
+  font-weight:400; font-style:italic; color:var(--ink-soft);
+}
+.entry__v--amount{
+  font-size:18px; font-weight:700; color:var(--navy-dark);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.redaction{
+  color:#a9a293; font-style:italic; letter-spacing:1px;
+}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed; right:24px; bottom:24px; z-index:1050;
+  background:var(--navy-dark); color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:13px; letter-spacing:.4px;
+  padding:13px 20px; border-left:3px solid var(--gold);
+  box-shadow:0 10px 30px rgba(10,37,64,.35);
+  opacity:0; transform:translateY(10px);
+  transition:opacity .2s ease, transform .2s ease;
+  pointer-events:none;
+}
+.toast.is-visible{ opacity:1; transform:translateY(0); }
+
+/* ---------- responsive ---------- */
+@media (max-width:991px){
+  .figures{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .figure:nth-child(2){ border-right:0; }
+  .figure:nth-child(1),
+  .figure:nth-child(2){ border-bottom:1px solid var(--rule); }
+  .page-title{ font-size:32px; }
+  .toolbar__group--center{ order:3; margin:0; width:100%; }
+}
+@media (max-width:767px){
+  .navbar-pahf__title{ display:none; }
+  .page-wrap{ padding:22px 14px 56px; }
+  .page-title{ font-size:26px; }
+  .register__body{ padding:14px; }
+  .toolbar input[type="search"]{ min-width:0; width:100%; }
+  .toolbar__group{ width:100%; }
+  .entry{ flex-direction:column; gap:2px; }
+  .entry__k{ flex:none; }
+}
+
+/* ---------- print ---------- */
+@media print{
+  .navbar-pahf, .toolbar, .pager, .backdrop, .toast, .colophon{ display:none !important; }
+  body{ background:#fff; padding-top:0; }
+  .page-wrap{ max-width:none; padding:0; }
+  .register{ border:0; box-shadow:none; }
+  .ledger-scroll{ max-height:none; overflow:visible; }
+  table.ledger{ min-width:0; font-size:10px; }
+  table.ledger thead th{ position:static; }
+  table.ledger tbody tr{ page-break-inside:avoid; }
+  .masthead__rule{ background:var(--rule); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================ MASTHEAD BAR ============================ -->
+<nav class="navbar-pahf">
+  <div class="navbar-pahf__brand">
+    <a class="pahf-logo-text" href="index.html">PHFA</a>
+    <a class="navbar-pahf__title" href="index.html">
+      PA Housing Affordability and Rehabilitation Enhancement Fund
+    </a>
+  </div>
+  <div class="navbar-pahf__nav">
+    <a href="index.html">Home</a>
+    <a href="funding.html" class="is-active">Funding</a>
+    <a href="legislation.html">Legislation</a>
+    <a href="apply.html">Apply</a>
+  </div>
+</nav>
+
+<!-- ============================ PAGE ============================ -->
+<div class="page-wrap">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Commonwealth of Pennsylvania · Public Register</p>
+    <h1 class="page-title">Applications Awarded <em>PHARE</em> Funding</h1>
+    <hr class="masthead__rule">
+    <p class="masthead__sub">
+      A register of every application submitted under the <strong>PHFA AWARD PA</strong>
+      programme through <strong>3T Group LLC</strong>, grant year 2026. Applicant
+      identification is limited to name and street address; all other personal
+      identifiers are withheld from this public record.
+    </p>
+  </header>
+
+  <div class="notice">
+    <p style="margin:0 0 6px">
+      <strong>Note on redaction.</strong> In accordance with the programme's public-record
+      policy, this register publishes <em>only</em> the applicant's name and street address.
+      City, state, ZIP code, telephone numbers, e-mail addresses, dates of birth and
+      Social Security numbers are held in the confidential case file and are not rendered,
+      searched, exported or printed from this page.
+    </p>
+    <p style="margin:0">
+      Sort any column by clicking its heading. Select a row to open the applicant dossier.
+    </p>
+  </div>
+
+  <!-- ---------- FIGURES ---------- -->
+  <section class="figures">
+    <div class="figure">
+      <div class="figure__label">Applications on Register</div>
+      <div class="figure__value" id="figCount">—</div>
+      <div class="figure__sub">Grant year 2026</div>
+    </div>
+    <div class="figure">
+      <div class="figure__label">Total Awarded</div>
+      <div class="figure__value" id="figTotal">—</div>
+      <div class="figure__sub">Aggregate request value</div>
+    </div>
+    <div class="figure">
+      <div class="figure__label">Pending Decision</div>
+      <div class="figure__value" id="figPending">—</div>
+      <div class="figure__sub">Awaiting PHFA review</div>
+    </div>
+    <div class="figure">
+      <div class="figure__label">Street Addresses</div>
+      <div class="figure__value" id="figStreets">—</div>
+      <div class="figure__sub">Applicants with address on file</div>
+    </div>
+  </section>
+
+  <!-- ---------- REGISTER ---------- -->
+  <section class="register">
+    <div class="register__head">
+      <h2 class="register__title">PHFA AWARD PA — 3T Group LLC</h2>
+      <div class="register__meta">2026 Funding Register · Redacted for Public Release</div>
+    </div>
+
+    <div class="register__body">
+
+      <div class="toolbar">
+        <div class="toolbar__group">
+          <label for="pageSize">Show</label>
+          <select id="pageSize">
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="all">All</option>
+          </select>
+          <span>entries</span>
+        </div>
+
+        <div class="toolbar__group toolbar__group--center">
+          <button type="button" class="toolbtn" data-act="copy">Copy</button>
+          <button type="button" class="toolbtn" data-act="excel">Excel</button>
+          <button type="button" class="toolbtn" data-act="pdf">PDF</button>
+          <button type="button" class="toolbtn" data-act="print">Print</button>
+        </div>
+
+        <div class="toolbar__group">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="Name or street address…" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="ledger-scroll" id="ledgerScroll">
+        <table class="ledger" id="ledger">
+          <thead><tr id="ledgerHead"></tr></thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+        <div class="ledger-empty hidden" id="ledgerEmpty">No matching records on this register.</div>
+      </div>
+
+      <div class="ledger-foot">
+        <div id="ledgerInfo">—</div>
+        <div class="pager" id="pager"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <p class="colophon" id="colophon"></p>
+</div>
+
+<!-- ============================ DOSSIER ============================ -->
+<div class="backdrop hidden" id="backdrop">
+  <div class="dossier" role="dialog" aria-modal="true" aria-labelledby="dossierTitle">
+    <div class="dossier__head">
+      <h3 id="dossierTitle">Applicant Dossier</h3>
+      <button type="button" class="dossier__close" id="dossierClose" aria-label="Close">×</button>
+    </div>
+    <div class="dossier__body" id="dossierBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/shared.js"></script>
+
+<script>
+/* ================================================================
+   funding.html — register logic
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- helpers (fall back if shared.js is absent) ---------- */
+  const esc = (typeof escapeHtml === 'function')
+    ? escapeHtml
+    : (s) => String(s ?? '').replace(/[&<>"']/g, c => (
+        { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+      ));
+
+  const fmtMoney = (typeof money === 'function')
+    ? money
+    : (n) => '$' + Number(n || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2, maximumFractionDigits: 2
+      });
+
+  /* ================================================================
+     1. AWARD BLOCK — the custom header applied to every row.
+        Change these five values once and the whole register updates.
+     ================================================================ */
+  const AWARD = {
+    program : 'PHFA AWARD PA',
+    org     : '3T Group LLC',
+    amount  : 2000000,
+    year    : '2026',
+    status  : 'PENDING'          // PENDING | AWARDED | REVIEW | CLOSED
+  };
+
+  /* ================================================================
+     2. APPLICANT REGISTER — redacted at source.
+        Only two fields are retained per applicant:
+          n = full name
+          a = street / house-number address
+        City, state, ZIP, phone, e-mail, DOB and SSN are intentionally
+        absent from this file. They never reach the browser.
+     ================================================================ */
+  const APPLICANTS = [
+    { n:'BRIAN J CARBERRY',            a:'8521 GLEN CAMPBELL RD' },
+    { n:'WERNER G. ZIEGMANN',          a:'204 W 2ND AVENUE' },
+    { n:'DANIEL M JONES',              a:'140 NORTH BRANDYWINE AVENUE' },
+    { n:'BETHANY MILLER',              a:'5412 GRANDVIEW AVENUE' },
+    { n:'ZACHARY J. BERTOLINA',        a:'453 BUTTERFIELD DRIVE' },
+    { n:'HOPE SCHAEFER',               a:'7631 STRAND AVENUE' },
+    { n:'MERCEDES MARTIN',             a:'576 GENERAL MUHLENBERG ROAD' },
+    { n:'CARLA E. GRIFFIN',            a:'4933 MORRIS STREET' },
+    { n:'LUCKY OKPE',                  a:'929 TYSON AVENUE, UNIT B14' },
+    { n:'DEBORAH OADDAMS',             a:'2425 75TH AVENUE' },
+    { n:'BONNIE LOUISE SUMMERS',       a:'820 ALLEGHENY AVENUE' },
+    { n:'MIA B. BERARDINELLI',         a:'521 SUMMIT STREET' },
+    { n:'DAN MCGARRY',                 a:'3421 ASHVILLE STREET' },
+    { n:'JESSE MAE GRAY',              a:'1058 DUNVEGAN ROAD' },
+    { n:'LUIS RICARDO SOTO CARRILLO',  a:'1703 CHARLEY LANE' },
+    { n:'MARGARET MASON',              a:'728 SAINT ALBANS STREET' },
+    { n:'ROSITA SHAW',                 a:'5157 EUSTON COURT' },
+    { n:'DENNIS A. JOHNSON, JR',       a:'5032 OLD SHARPTOWN ROAD' },
+    { n:'THOMAS M. LAROCCA',           a:'310 GLENSHANE PASS' },
+    { n:'ROBERT HIDEKI SCHAEFER',      a:'7631 STRAND AVENUE' },
+    { n:'DEBDUTTA BAKSI',              a:'1607 LORMONT COURT' },
+    { n:'CHARAN VELURI',               a:'1613 KINGS MILL ROAD' },
+    { n:'IAN RAU',                     a:'2116 HILL ROAD' },
+    { n:'EDWIN BUMM',                  a:'929 CHERRY LANE' },
+    { n:'EDWARD PHUAKWATANA',          a:'110 HUMBOLD PLACE' },
+    { n:'JOHN LENICK',                 a:'2068 OLD PHOENIX ROAD' },
+    { n:'TEMURBEK SABIROV',            a:'1426 BUTTONWOOD LANE' },
+    { n:'KYLE ALMEIDA',                a:'1705 NORTH LINE STREET' },
+    { n:'MARY A. KELLY',               a:'722 PUSEY AVENUE, 1ST FLOOR' },
+    { n:'JEFFREY M. IRWIN',            a:'222 WOODMONT CIRCLE' },
+    { n:'TROY SPRUILL',                a:'7916 COTTAGE STREET, UNIT B' },
+    { n:'WILLIAM ANDREW FAUCETT',      a:'149 GEARHART STREET' },
+    { n:'ANDREW ALBERGO',              a:'1226 ANNIN STREET' },
+    { n:'JOANNE ANGELA MINISCI',       a:'109 BUTT LANE' },
+    { n:'THERESA ANN HAWTHORNE',       a:'3502 GLOUCESTER LANE' },
+    { n:'LAUREN HEINLY',               a:'725 MICHELL STREET' },
+    { n:'ROBERT JOSEPH SULLIVAN',      a:'1257 BROOKSTONE DRIVE' },
+    { n:'VINAY KUMAR MAMIDALA',        a:'128 GLORY MAPLE LANE' },
+    { n:'BREANNA R. PORTER',           a:'324 REED AVENUE' },
+    { n:'ANGELA SANTILLO',             a:'1185 GREENLEAF DRIVE' },
+    { n:'ANIKA KILDEGAARD',            a:'4915 PULASKI AVENUE' },
+    { n:'VARGHESE ABRAHAM',            a:'334 RIDGEWAY PLACE' },
+    { n:'NATALIE EVANGELISTA',         a:'2808 GALLOWAY AVENUE' },
+    { n:'JIMMIE J. ACORD',             a:'2476 BALTIMORE PIKE' },
+    { n:'ROBERT SCHICKLING',           a:'4308 DEVEREAUX STREET' },
+    { n:'ERIC DEBRICK',                a:'8604 RUGBY STREET' },
+    { n:'CORA DEBRICK',                a:'8604 RUGBY STREET' },
+    { n:'LAUREN TILLSTROM BIEGLEY',    a:'162 ASHFORD DRIVE' },
+    { n:'RONALD P. LEACH, JR',         a:'2001 20TH STREET' },
+    { n:'KAREN BORCKY',                a:'9 DUTTON FARM LANE' },
+    { n:'CATHERINE A. GEARY',          a:'127 BORO-VU DRIVE' },
+    { n:'MARK GEARY',                  a:'127 BORO-VU DRIVE' },
+    { n:'RAMKRISHNA MITRA',            a:'118 N 9TH STREET' },
+    { n:'DIAMOND WHITE',               a:'4827 A STREET' },
+    { n:'JUSTIN DOMENICO',             a:'631 VILLA ROAD' },
+    { n:'BLAKE AUSTIN NEELY',          a:'1316 ROUTE 22' },
+    { n:'HAROLD ANTHONY COLAJEZZI',    a:'32 LAKEVIEW DRIVE' },
+    { n:'JANET RICAFORT',              a:'8117 COLFAX STREET' },
+    { n:'JANELLE PERRUSO',             a:'1816 FERRY STREET' },
+    { n:'MARISSA M. HEANEY',           a:'394 AVALON DRIVE' },
+    { n:'ROBERT A. CLARK, III',        a:'394 AVALON DRIVE' },
+    { n:'KYLE JAMES RUSNOCK',          a:'1618 LINCOLN AVENUE' },
+    { n:'DIANA CHORONES',              a:'146 NORTH SPRUCE STREET' },
+    { n:'THOMAS H. HODGE, JR',         a:'564 BATTS SWITCH ROAD' },
+    { n:'SAMANTHA K. HODGE',           a:'564 BATTS SWITCH ROAD' },
+    { n:'JOCELYN E. CRAWFORD',         a:'3346 HARTEL AVENUE, 2ND FLOOR' },
+    { n:'DOUGLAS FEDOROFF',            a:'2607 DOGWOOD LANE' },
+    { n:'JOSEPH LOUIS PINTO',          a:'5148 SPARROW LANE' },
+    { n:'MARIO CANTANDO',              a:'36 SOUTH LANE' },
+    { n:'JOEL D. MICHAEL',             a:'524 MANDATA RD' },
+    { n:'ERIC S. FLUCK',               a:'97 MISTY MEADOW' },
+    { n:'DEIDRA OSWALT',               a:'306 WAYNE STREET' },
+    { n:'LILI TRUONG',                 a:'1390 LORE AVENUE' },
+    { n:'ANDY AGRELO',                 a:'1138 DOGWOOD LANE' },
+    { n:'MARIANNA MATHEWSON',          a:'34 COUNTRY ROAD' },
+    { n:'SREEDHAR DAARAM',             a:'40 GREYLYNNE DRIVE' },
+    { n:'HOLLY WORFUL',                a:'653 STOVER COURT' },
+    { n:'KYLE ZELLI',                  a:'247 HEARTHSTONE RD' },
+    { n:'BRIDGET JOHNSON',             a:'165 OLD LIMESTONE ROAD' },
+    { n:'ROBERT GASIEWSKI',            a:'1158 WELSH ROAD, UNIT G2-27' },
+    { n:'JUSTINE MARIE SNELL',         a:'690 APPLE TREE LANE' },
+    { n:'BRADY ROCHE',                 a:'690 APPLE TREE LANE' },
+    { n:'JANINE R. EDWARDS',           a:'14 SALEM TERRACE' },
+    { n:'KRISTA L SCHOLL',             a:'523 NORTH 14TH STREET' },
+    { n:'TATIANA HOYOS',               a:'127 MADISON ROAD' },
+    { n:'BRANDON LUIS CRUZ',           a:'4788 WILLOWBROOK DRIVE' },
+    { n:'NICOLE WARREN',               a:'514 RANDOLF COURT, UNIT B' },
+    { n:'CRYSTAL ROSE LINK',           a:'404 WEST WALNUT STREET, UNIT 1' },
+    { n:'MIGUEL CASTILLO',             a:'1442 OXFORD VALLEY ROAD' },
+    { n:'TERESA KATHLEEN HARBAUGH',    a:'309 WASHINGTON STREET, UNIT 2201' },
+    { n:'ALLYSON IOZZIA',              a:'7 CARRINGTON WAY' },
+    { n:'BRIAN SCOTT SIPLER',          a:'1406 OLD YORK ROAD' },
+    { n:'DOROTHY SCHENKEL',            a:'7620 MONTGOMERY AVENUE' },
+    { n:'EMILIE DEFFENBAUGH',          a:'2119 2ND AVENUE' },
+    { n:'JOSE NOEL A. MORALES',        a:'435 BARROWS SHEEF' },
+    { n:'DERRICK ROY WOOLF',           a:'3131 POWHATAN AVENUE' },
+    { n:'CORINNE CANTWELL',            a:'1012 HUDSON AVENUE' },
+    { n:'DAVID DARVILLE',              a:'7317 FERRY ROAD' },
+    { n:'MARGUERITE TOLAND, ESQUIRE',  a:'509 GLENDALE AVENUE' },
+    { n:'JAMES YU',                    a:'224 MEETINGHOUSE ROAD' },
+    { n:'NAANA P. AMANKONAH HINNEH',   a:'1537 STONEY LANE' },
+    { n:'CLINT TYLER PETERS',          a:'98 WEST 26TH STREET' },
+    { n:'KEITH WARMKESSEL, JR',        a:'3483 MOUNTAIN ROAD' },
+    { n:'DENNIS FILLEBROWN',           a:'1295 STARK ROAD' },
+    { n:'MASON HETRICK',               a:'617 VINE STREET, UNIT 2' },
+    { n:'KARISSA J. KREITZ',           a:'528 MAIN STREET, UNIT FRNT' },
+    { n:'ELIAS MICHAEL BATIHK',        a:'141 STONEGATE VILLAGE' }
+  ];
+
+  /* ================================================================
+     3. BUILD THE REGISTER
+     ================================================================ */
+  const ROWS = APPLICANTS.map((a, i) => ({
+    id      : i + 1,
+    program : AWARD.program,
+    org     : AWARD.org,
+    amount  : AWARD.amount,
+    year    : AWARD.year,
+    status  : AWARD.status,
+    name    : a.n,
+    street  : a.a
+  }));
+
+  /* ================================================================
+     4. COLUMNS — the No. column is added separately, non-sortable.
+     ================================================================ */
+  const COLUMNS = [
+    { key:'program', label:'Project / Programme',  sortable:true  },
+    { key:'org',     label:'Organization',         sortable:true  },
+    { key:'amount',  label:'Total Awarded',        sortable:true, cls:'c-amount' },
+    { key:'year',    label:'Grant Year',           sortable:true  },
+    { key:'status',  label:'Status',               sortable:true  },
+    { key:'name',    label:'Applicant Name',       sortable:true, cls:'c-name' },
+    { key:'street',  label:'Street Address',       sortable:true, cls:'c-street' }
+  ];
+
+  /* ================================================================
+     5. STATE
+     ================================================================ */
+  const state = {
+    query    : '',
+    sortKey  : 'id',
+    sortDir  : 'asc',
+    page     : 1,
+    pageSize : 25
+  };
+
+  /* ================================================================
+     6. DOM
+     ================================================================ */
+  const $ = (id) => document.getElementById(id);
+  const headEl    = $('ledgerHead');
+  const bodyEl    = $('ledgerBody');
+  const emptyEl   = $('ledgerEmpty');
+  const infoEl    = $('ledgerInfo');
+  const pagerEl   = $('pager');
+  const searchEl  = $('searchInput');
+  const sizeEl    = $('pageSize');
+  const backdrop  = $('backdrop');
+  const dossierEl = $('dossierBody');
+  const toastEl   = $('toast');
+
+  /* ================================================================
+     7. HELPERS
+     ================================================================ */
+  const MARKS = {
+    PENDING : 'mark--pending',
+    AWARDED : 'mark--awarded',
+    REVIEW  : 'mark--review',
+    CLOSED  : 'mark--closed'
+  };
+
+  function statusMark(status) {
+    const key = String(status || '').toUpperCase();
+    return `<span class="mark ${MARKS[key] || 'mark--pending'}">${esc(key)}</span>`;
+  }
+
+  let toastTimer = null;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2300);
+  }
+
+  /* ================================================================
+     8. VIEW — filter + sort
+     ================================================================ */
+  function currentView() {
+    const q = state.query.trim().toLowerCase();
+
+    let rows = ROWS.filter((r) => {
+      if (!q) return true;
+      return [r.program, r.org, r.year, r.status, r.name, r.street]
+        .join(' ').toLowerCase().includes(q);
+    });
+
+    const dir = state.sortDir === 'asc' ? 1 : -1;
+    const key = state.sortKey;
+
+    rows.sort((a, b) => {
+      if (key === 'amount') return (Number(a.amount) - Number(b.amount)) * dir;
+      if (key === 'id')     return (a.id - b.id) * dir;
+      const va = String(a[key] ?? '').toLowerCase();
+      const vb = String(b[key] ?? '').toLowerCase();
+      return va.localeCompare(vb) * dir;
+    });
+
+    return rows;
+  }
+
+  /* ================================================================
+     9. HEAD
+     ================================================================ */
+  function renderHead() {
+    headEl.innerHTML =
+      `<th class="no-sort">No.</th>` +
+      COLUMNS.map((c) => {
+        const active = state.sortKey === c.key;
+        const caret  = active ? (state.sortDir === 'asc' ? '▲' : '▼') : '⇅';
+        return `<th data-key="${c.key}" class="${c.cls || ''} ${active ? 'is-sorted' : ''}">
+                  ${esc(c.label)}<span class="caret">${caret}</span>
+                </th>`;
+      }).join('');
+
+    headEl.querySelectorAll('th[data-key]').forEach((th) => {
+      th.addEventListener('click', () => {
+        const key = th.dataset.key;
+        if (state.sortKey === key) {
+          state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          state.sortKey = key;
+          state.sortDir = 'asc';
+        }
+        state.page = 1;
+        render();
+      });
+    });
+  }
+
+  /* ================================================================
+     10. BODY + PAGER
+     ================================================================ */
+  function render() {
+    const rows  = currentView();
+    const total = rows.length;
+
+    const size  = state.pageSize === 'all' ? (total || 1) : Number(state.pageSize);
+    const pages = Math.max(1, Math.ceil(total / size));
+    if (state.page > pages) state.page = pages;
+
+    const start = (state.page - 1) * size;
+    const slice = state.pageSize === 'all' ? rows : rows.slice(start, start + size);
+
+    emptyEl.classList.toggle('hidden', total !== 0);
+
+    bodyEl.innerHTML = slice.map((r, i) => `
+      <tr data-id="${r.id}">
+        <td class="c-no">${String(start + i + 1).padStart(3, '0')}</td>
+        <td>${esc(r.program)}</td>
+        <td>${esc(r.org)}</td>
+        <td class="c-amount">${fmtMoney(r.amount)}</td>
+        <td>${esc(r.year)}</td>
+        <td>${statusMark(r.status)}</td>
+        <td class="c-name">${esc(r.name)}</td>
+        <td class="c-street">${esc(r.street)}</td>
+      </tr>
+    `).join('');
+
+    bodyEl.querySelectorAll('tr').forEach((tr) => {
+      tr.addEventListener('click', () => openDossier(Number(tr.dataset.id)));
+    });
+
+    if (total === 0) {
+      infoEl.textContent = 'Showing 0 to 0 of 0 entries';
+    } else if (state.pageSize === 'all') {
+      infoEl.textContent = `Showing 1 to ${total} of ${total} entries`;
+    } else {
+      const to = Math.min(start + size, total);
+      infoEl.textContent = `Showing ${start + 1} to ${to} of ${total} entries` +
+        (state.query ? ` (filtered from ${ROWS.length})` : '');
+    }
+
+    renderPager(pages);
+  }
+
+  function renderPager(pages) {
+    if (state.pageSize === 'all' || pages <= 1) { pagerEl.innerHTML = ''; return; }
+
+    const win = 2;
+    let html = `<button type="button" data-page="${state.page - 1}" ${state.page === 1 ? 'disabled' : ''}>Prev</button>`;
+
+    for (let p = 1; p <= pages; p++) {
+      if (p === 1 || p === pages || Math.abs(p - state.page) <= win) {
+        html += `<button type="button" data-page="${p}" class="${p === state.page ? 'is-current' : ''}">${p}</button>`;
+      } else if (Math.abs(p - state.page) === win + 1) {
+        html += `<span class="gap">…</span>`;
+      }
+    }
+
+    html += `<button type="button" data-page="${state.page + 1}" ${state.page === pages ? 'disabled' : ''}>Next</button>`;
+    pagerEl.innerHTML = html;
+
+    pagerEl.querySelectorAll('button[data-page]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const p = Number(b.dataset.page);
+        if (p < 1 || p > pages || p === state.page) return;
+        state.page = p;
+        render();
+        $('ledgerScroll').scrollTop = 0;
+      });
+    });
+  }
+
+  /* ================================================================
+     11. DOSSIER
+     ================================================================ */
+  function entry(k, v, extraClass) {
+    return `<div class="entry">
+              <div class="entry__k">${esc(k)}</div>
+              <div class="entry__v ${extraClass || ''}">${v}</div>
+            </div>`;
+  }
+
+  function openDossier(id) {
+    const r = ROWS.find((x) => x.id === id);
+    if (!r) return;
+
+    dossierEl.innerHTML = `
+      <div class="dossier__label">Award Record</div>
+      ${entry('Project / Programme', esc(r.program))}
+      ${entry('Organization', esc(r.org))}
+      ${entry('Total Awarded', fmtMoney(r.amount), 'entry__v--amount')}
+      ${entry('Grant Year', esc(r.year))}
+      ${entry('Application Status', statusMark(r.status))}
+
+      <div class="dossier__label">Applicant</div>
+      ${entry('Name', esc(r.name))}
+      ${entry('Street Address', esc(r.street), 'entry__v--script')}
+
+      <div class="dossier__label">Withheld from Public Record</div>
+      ${entry('City / State / ZIP', '<span class="redaction">—— redacted ——</span>')}
+      ${entry('Telephone',         '<span class="redaction">—— redacted ——</span>')}
+      ${entry('E-mail',            '<span class="redaction">—— redacted ——</span>')}
+      ${entry('Date of Birth',     '<span class="redaction">—— redacted ——</span>')}
+      ${entry('Social Security No.','<span class="redaction">—— redacted ——</span>')}
+
+      <div class="dossier__label">Register Reference</div>
+      ${entry('Record No.', esc(String(r.id).padStart(4, '0')))}
+    `;
+
+    backdrop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDossier() {
+    backdrop.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  $('dossierClose').addEventListener('click', closeDossier);
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeDossier(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !backdrop.classList.contains('hidden')) closeDossier();
+  });
+
+  /* ================================================================
+     12. EXPORT — only the redacted fields leave the page.
+     ================================================================ */
+  function toCSV() {
+    const cols = [
+      'No.', 'Project/Programme', 'Organization', 'Total Awarded',
+      'Grant Year', 'Status', 'Applicant Name', 'Street Address'
+    ];
+    const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+
+    const lines = [cols.map(cell).join(',')];
+    currentView().forEach((r, i) => {
+      lines.push([
+        String(i + 1).padStart(3, '0'),
+        r.program, r.org, r.amount, r.year, r.status, r.name, r.street
+      ].map(cell).join(','));
+    });
+    return lines.join('\r\n');
+  }
+
+  function downloadCSV() {
+    const blob = new Blob(['\uFEFF' + toCSV()], { type:'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `phfa-register-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Redacted register downloaded (CSV)');
+  }
+
+  async function copyRegister() {
+    const text = toCSV().replace(/\r\n/g, '\n');
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      toast(`${currentView().length} rows copied`);
+    } catch (_) {
+      toast('Copy blocked by browser — use Excel');
+    }
+  }
+
+  document.querySelectorAll('.toolbtn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      switch (btn.dataset.act) {
+        case 'copy' : copyRegister(); break;
+        case 'excel': downloadCSV(); break;
+        case 'pdf'  : toast('Choose “Save as PDF” in the print dialog');
+                      setTimeout(() => window.print(), 350); break;
+        case 'print': window.print(); break;
+      }
+    });
+  });
+
+  /* ================================================================
+     13. FILTERS
+     ================================================================ */
+  let searchTimer = null;
+  searchEl.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      state.query = searchEl.value;
+      state.page  = 1;
+      render();
+    }, 140);
+  });
+
+  sizeEl.addEventListener('change', () => {
+    state.pageSize = sizeEl.value === 'all' ? 'all' : Number(sizeEl.value);
+    state.page = 1;
+    render();
+  });
+
+  /* ================================================================
+     14. FIGURES
+     ================================================================ */
+  function renderFigures() {
+    const total   = ROWS.length;
+    const sum     = ROWS.reduce((acc, r) => acc + Number(r.amount || 0), 0);
+    const pending = ROWS.filter((r) => String(r.status).toUpperCase() === 'PENDING').length;
+    const streets = ROWS.filter((r) => r.street && r.street.trim()).length;
+
+    $('figCount').textContent   = total.toLocaleString('en-US');
+    $('figTotal').innerHTML     = fmtMoney(sum).replace(/\.00$/, '') +
+                                  '<small>.00</small>';
+    $('figPending').textContent = pending.toLocaleString('en-US');
+    $('figStreets').textContent = streets.toLocaleString('en-US');
+  }
+
+  /* ================================================================
+     15. BOOT
+     ================================================================ */
+  renderHead();
+  render();
+  renderFigures();
+
+  $('colophon').textContent =
+    'Register compiled ' + new Date().toLocaleString('en-US') +
+    ' · ' + ROWS.length + ' records · personal identifiers withheld';
+
+})();
+</script>
+</body>
+</html>
