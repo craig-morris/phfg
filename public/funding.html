@@ -5,379 +5,446 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Funding Register | PA Housing Affordability and Rehabilitation Enhancement Fund</title>
 
+<!-- Project stylesheet -->
 <link rel="stylesheet" href="css/pahf.css">
 
 <style>
 /* ============================================================
-   funding.html — “Public Register” classical layer
-   Paper stock, hairline rules, small caps, tabular figures.
+   funding.html — PHFA Screenshot Theme (Bootstrap-like)
    ============================================================ */
 
-:root{
-  --paper:      #fbf9f4;
-  --paper-alt:  #f6f3eb;
-  --ink:        #14212e;
-  --ink-soft:   #46596b;
-  --rule:       #d8d2c4;
-  --rule-strong:#b9b0a0;
-  --serif:      Georgia, "Iowan Old Style", "Palatino Linotype",
-                "Book Antiqua", "Times New Roman", serif;
+body {
+  background: #ffffff;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 64px;
 }
 
-body{
-  background: #ece8de;
-  font-family: var(--serif);
-  color: var(--ink);
+/* ---------- Navbar ---------- */
+.navbar-pahf {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1030;
+  background: #0a2540;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 64px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
-
-/* ---------- masthead ---------- */
-.navbar-pahf{
-  position: fixed; top:0; left:0; right:0; z-index:1030;
-  display:flex; align-items:center; justify-content:space-between;
-  height:56px; padding:0 22px;
+.navbar-pahf__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
 }
-.navbar-pahf__brand{ display:flex; align-items:center; gap:16px; min-width:0; }
-.pahf-logo-text{
-  font-family: var(--serif);
-  font-size:23px; font-weight:700; letter-spacing:2px;
-  color:var(--orange); text-decoration:none; line-height:1;
+.pahf-logo-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #d94f04;
+  line-height: 1;
+  text-decoration: none;
 }
-.navbar-pahf__title{
-  color:#fff; font-size:15px; font-weight:400; font-style:italic;
-  letter-spacing:.3px; text-decoration:none;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+.navbar-pahf__title {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.navbar-pahf__nav{ display:flex; align-items:center; gap:2px; }
-.navbar-pahf__nav a{
-  color:#cfdde8; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:12px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
-  padding:9px 14px; border-radius:2px; text-decoration:none;
+.navbar-pahf__title:hover {
+  color: #dbe7f0;
+  text-decoration: underline;
+}
+.navbar-pahf__nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.navbar-pahf__nav a {
+  color: #cfdde8;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
 }
 .navbar-pahf__nav a:hover,
-.navbar-pahf__nav a.is-active{ background:var(--navy); color:#fff; text-decoration:none; }
-
-/* ---------- page ---------- */
-.page-wrap{ max-width:1280px; margin:0 auto; padding:34px 26px 72px; }
-
-.masthead{ margin-bottom:26px; }
-.masthead__kicker{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:11px; font-weight:700; letter-spacing:2.4px; text-transform:uppercase;
-  color:var(--green-dark); margin:0 0 8px;
-}
-.page-title{
-  font-family: var(--serif);
-  font-size:40px; font-weight:400; letter-spacing:-.5px;
-  color:var(--navy-dark); margin:0 0 12px; line-height:1.12;
-}
-.page-title em{ font-style:italic; color:var(--navy); }
-.masthead__rule{
-  height:3px; border:0; margin:0 0 6px;
-  background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 90px,var(--rule) 90px,var(--rule) 100%);
-}
-.masthead__sub{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:13px; color:var(--ink-soft); margin:10px 0 0; max-width:72ch; line-height:1.65;
+.navbar-pahf__nav a.is-active {
+  background: #0b4f7a;
+  color: #ffffff;
+  text-decoration: none;
 }
 
-/* ---------- notice ---------- */
-.notice{
-  background:var(--paper);
-  border:1px solid var(--rule);
-  border-left:3px solid var(--gold);
-  padding:16px 20px; margin-bottom:26px;
-  font-size:14px; line-height:1.7; color:var(--ink-soft);
-}
-.notice strong{ color:var(--ink); font-weight:700; }
-.notice em{ font-style:italic; color:var(--navy); }
-
-/* ---------- figures strip ---------- */
-.figures{
-  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:0; margin-bottom:28px;
-  border:1px solid var(--rule); background:var(--paper);
-}
-.figure{ padding:16px 20px; border-right:1px solid var(--rule); }
-.figure:last-child{ border-right:0; }
-.figure__label{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:10px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase;
-  color:var(--ink-soft); margin-bottom:6px;
-}
-.figure__value{
-  font-family:var(--serif); font-size:28px; font-weight:700;
-  color:var(--navy-dark); line-height:1.1;
-  font-variant-numeric: tabular-nums lining-nums;
-}
-.figure__value small{ font-size:14px; font-weight:400; color:var(--ink-soft); }
-.figure__sub{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:11px; color:var(--ink-soft); margin-top:2px;
+/* ---------- Page Layout ---------- */
+.page-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
 }
 
-/* ---------- register card ---------- */
-.register{
-  background:var(--paper);
-  border:1px solid var(--rule-strong);
-  box-shadow:0 1px 0 #fff inset, 0 2px 10px rgba(10,37,64,.06);
+.page-title {
+  color: #0b4f7a;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.3px;
 }
-.register__head{
-  padding:18px 22px 14px;
-  border-bottom:3px double var(--rule-strong);
-}
-.register__title{
-  font-family:var(--serif); font-size:21px; font-weight:700;
-  color:var(--navy-dark); margin:0 0 3px; letter-spacing:.2px;
-}
-.register__meta{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--ink-soft);
-}
-.register__body{ padding:18px 22px 22px; }
 
-/* ---------- toolbar ---------- */
-.toolbar{
-  display:flex; flex-wrap:wrap; align-items:center; gap:14px;
-  padding-bottom:14px; margin-bottom:2px;
-  border-bottom:1px solid var(--rule);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:12.5px; color:var(--ink-soft);
+/* ---------- Toolbar ---------- */
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #333;
 }
-.toolbar__group{ display:flex; align-items:center; gap:8px; }
-.toolbar__group--center{ margin:0 auto; }
-.toolbar label{ letter-spacing:.4px; }
+.toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toolbar__group--center {
+  margin: 0 auto;
+}
 .toolbar select,
-.toolbar input[type="search"]{
-  font-family:inherit; font-size:13px; color:var(--ink);
-  background:#fffdf8;
-  border:1px solid var(--rule-strong);
-  border-radius:0; height:32px; padding:0 10px; outline:none;
+.toolbar input[type="search"] {
+  font-family: inherit;
+  font-size: 14px;
+  color: #333;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 34px;
+  padding: 0 10px;
+  outline: none;
 }
-.toolbar input[type="search"]{ min-width:230px; }
+.toolbar input[type="search"] {
+  min-width: 200px;
+}
 .toolbar select:focus,
-.toolbar input[type="search"]:focus{
-  border-color:var(--navy); box-shadow:0 0 0 2px rgba(11,79,122,.13);
-}
-.toolbtn{
-  font-family:inherit; font-size:11px; font-weight:700;
-  letter-spacing:1.3px; text-transform:uppercase;
-  background:transparent; color:var(--navy);
-  border:0; border-bottom:1px solid var(--rule-strong);
-  padding:6px 2px; margin-right:14px; cursor:pointer;
-  transition:color .12s ease, border-color .12s ease;
-}
-.toolbtn:hover{ color:var(--orange); border-bottom-color:var(--orange); }
-.toolbtn:active{ color:var(--navy-dark); }
-
-/* ---------- ledger table ---------- */
-.ledger-scroll{
-  max-height:64vh; overflow:auto;
-  border-top:1px solid var(--rule);
-  -webkit-overflow-scrolling:touch;
-}
-table.ledger{
-  width:100%; min-width:1080px; border-collapse:collapse;
-  font-size:13.5px; line-height:1.45;
-  font-variant-numeric: tabular-nums lining-nums;
-}
-table.ledger thead th{
-  position:sticky; top:0; z-index:3;
-  background:var(--paper-alt);
-  border-bottom:1px solid var(--rule-strong);
-  padding:10px 12px;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
-  color:var(--navy-dark); text-align:left; white-space:nowrap;
-  cursor:pointer; user-select:none;
-}
-table.ledger thead th:hover{ background:#efeade; }
-table.ledger thead th.no-sort{ cursor:default; }
-table.ledger thead th.no-sort:hover{ background:var(--paper-alt); }
-table.ledger thead th .caret{
-  font-size:9px; margin-left:5px; color:#a9a293; letter-spacing:0;
-}
-table.ledger thead th.is-sorted .caret{ color:var(--green-dark); }
-
-table.ledger tbody td{
-  padding:11px 12px;
-  border-bottom:1px solid var(--rule);
-  vertical-align:top; color:var(--ink);
-}
-table.ledger tbody tr:nth-child(even) td{ background:rgba(246,243,235,.55); }
-table.ledger tbody tr:hover td{ background:#f1f6fa; }
-table.ledger tbody tr{ cursor:pointer; }
-
-td.c-no{
-  width:56px; color:var(--ink-soft); font-size:12px;
-  font-variant-numeric: tabular-nums;
-}
-td.c-name{ font-weight:700; color:var(--navy-dark); }
-td.c-street{ color:var(--ink-soft); font-style:italic; }
-td.c-amount{
-  text-align:right; font-weight:700; color:var(--navy-dark); white-space:nowrap;
-}
-th.c-amount{ text-align:right; }
-
-/* status marks — classical, not pills */
-.mark{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:10.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-  white-space:nowrap;
-}
-.mark::before{
-  content:"◆"; font-size:8px; margin-right:6px; vertical-align:1px;
-}
-.mark--pending{ color:#8a6d00; }
-.mark--awarded{ color:var(--green-dark); }
-.mark--review { color:var(--navy); }
-.mark--closed { color:var(--red); }
-
-.ledger-empty{
-  padding:52px 20px; text-align:center;
-  font-style:italic; font-size:15px; color:var(--gold);
+.toolbar input[type="search"]:focus {
+  border-color: #0b4f7a;
+  box-shadow: 0 0 0 2px rgba(11,79,122,.15);
 }
 
-/* ---------- footer ---------- */
-.ledger-foot{
-  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
-  gap:12px; padding-top:14px; margin-top:2px; border-top:1px solid var(--rule);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:12px; color:var(--ink-soft); letter-spacing:.3px;
+.tool-btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  background: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-left-width: 0;
+  height: 34px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
 }
-.pager{ display:flex; align-items:center; gap:2px; }
-.pager button{
-  font-family:inherit; font-size:12px; min-width:30px; height:30px;
-  padding:0 9px; background:#fffdf8; color:var(--navy);
-  border:1px solid var(--rule-strong); border-radius:0; cursor:pointer;
+.tool-btn:first-child {
+  border-left-width: 1px;
+  border-radius: 4px 0 0 4px;
 }
-.pager button:hover:not(:disabled){ background:#f1f6fa; border-color:var(--navy); }
-.pager button.is-current{
-  background:var(--navy-dark); border-color:var(--navy-dark);
-  color:#fff; font-weight:700;
+.tool-btn:last-child {
+  border-radius: 0 4px 4px 0;
 }
-.pager button:disabled{ opacity:.4; cursor:default; }
-.pager .gap{ padding:0 4px; color:#b9b0a0; }
-
-.colophon{
-  margin-top:22px; padding-top:12px; border-top:1px solid var(--rule);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:11px; letter-spacing:.6px; color:var(--ink-soft); text-align:right;
+.tool-btn:hover {
+  background: #f4f6f8;
+  color: #0b4f7a;
 }
-
-/* ---------- dossier drawer ---------- */
-.backdrop{
-  position:fixed; inset:0; z-index:1040;
-  background:rgba(10,37,64,.5);
-  display:flex; align-items:center; justify-content:center; padding:22px;
-}
-.backdrop.hidden{ display:none !important; }
-.dossier{
-  width:100%; max-width:620px; max-height:86vh; overflow:auto;
-  background:var(--paper);
-  border:1px solid var(--rule-strong);
-  box-shadow:0 24px 60px rgba(10,37,64,.4);
-}
-.dossier__head{
-  position:sticky; top:0; z-index:2;
-  background:var(--navy-dark); color:#fff;
-  padding:14px 20px;
-  display:flex; align-items:center; justify-content:space-between;
-  border-bottom:3px double rgba(255,255,255,.35);
-}
-.dossier__head h3{
-  margin:0; font-family:var(--serif); font-size:17px; font-weight:400;
-  letter-spacing:.4px;
-}
-.dossier__close{
-  background:transparent; border:0; color:#fff; font-size:24px;
-  line-height:1; cursor:pointer; padding:0 4px;
-}
-.dossier__close:hover{ color:var(--gold); }
-.dossier__body{ padding:6px 22px 26px; }
-
-.dossier__label{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-  color:var(--green-dark);
-  margin:22px 0 0; padding-bottom:6px;
-  border-bottom:3px double var(--rule-strong);
-}
-.entry{
-  display:flex; gap:18px; padding:11px 0;
-  border-bottom:1px solid var(--rule);
-  font-size:14px;
-}
-.entry:last-child{ border-bottom:0; }
-.entry__k{
-  flex:0 0 158px;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
-  color:var(--ink-soft); padding-top:3px;
-}
-.entry__v{ flex:1; color:var(--ink); font-weight:600; }
-.entry__v--script{
-  font-weight:400; font-style:italic; color:var(--ink-soft);
-}
-.entry__v--amount{
-  font-size:18px; font-weight:700; color:var(--navy-dark);
-  font-variant-numeric: tabular-nums lining-nums;
-}
-.redaction{
-  color:#a9a293; font-style:italic; letter-spacing:1px;
+.tool-btn:active {
+  background: #e8eff5;
 }
 
-/* ---------- toast ---------- */
-.toast{
-  position:fixed; right:24px; bottom:24px; z-index:1050;
-  background:var(--navy-dark); color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:13px; letter-spacing:.4px;
-  padding:13px 20px; border-left:3px solid var(--gold);
-  box-shadow:0 10px 30px rgba(10,37,64,.35);
-  opacity:0; transform:translateY(10px);
-  transition:opacity .2s ease, transform .2s ease;
-  pointer-events:none;
+/* ---------- Table ---------- */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
 }
-.toast.is-visible{ opacity:1; transform:translateY(0); }
+table.data-table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+table.data-table thead th {
+  background: #f4f6f8;
+  color: #333;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+table.data-table thead th:hover {
+  background: #eef2f6;
+}
+table.data-table thead th.no-sort {
+  cursor: default;
+}
+table.data-table thead th.no-sort:hover {
+  background: #f4f6f8;
+}
+table.data-table thead th .sort-icon {
+  display: inline-block;
+  margin-left: 6px;
+  color: #a0aab5;
+  font-size: 11px;
+}
+table.data-table thead th.is-sorted .sort-icon {
+  color: #0b4f7a;
+}
 
-/* ---------- responsive ---------- */
-@media (max-width:991px){
-  .figures{ grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .figure:nth-child(2){ border-right:0; }
-  .figure:nth-child(1),
-  .figure:nth-child(2){ border-bottom:1px solid var(--rule); }
-  .page-title{ font-size:32px; }
-  .toolbar__group--center{ order:3; margin:0; width:100%; }
+table.data-table tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+  color: #333;
 }
-@media (max-width:767px){
-  .navbar-pahf__title{ display:none; }
-  .page-wrap{ padding:22px 14px 56px; }
-  .page-title{ font-size:26px; }
-  .register__body{ padding:14px; }
-  .toolbar input[type="search"]{ min-width:0; width:100%; }
-  .toolbar__group{ width:100%; }
-  .entry{ flex-direction:column; gap:2px; }
-  .entry__k{ flex:none; }
+table.data-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+table.data-table tbody tr:hover {
+  background: #f1f6fa;
+}
+table.data-table tbody tr {
+  cursor: pointer;
 }
 
-/* ---------- print ---------- */
-@media print{
-  .navbar-pahf, .toolbar, .pager, .backdrop, .toast, .colophon{ display:none !important; }
-  body{ background:#fff; padding-top:0; }
-  .page-wrap{ max-width:none; padding:0; }
-  .register{ border:0; box-shadow:none; }
-  .ledger-scroll{ max-height:none; overflow:visible; }
-  table.ledger{ min-width:0; font-size:10px; }
-  table.ledger thead th{ position:static; }
-  table.ledger tbody tr{ page-break-inside:avoid; }
-  .masthead__rule{ background:var(--rule); }
+td.c-no { width: 60px; color: #6b7a89; font-size: 13px; }
+td.c-name { font-weight: 600; color: #0b4f7a; }
+td.c-amount { text-align: right; font-weight: 600; white-space: nowrap; }
+th.c-amount { text-align: right; }
+
+.status-text {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.status-text--pending { color: #8a6d00; }
+.status-text--awarded { color: #558b2f; }
+.status-text--review  { color: #0b4f7a; }
+.status-text--closed  { color: #b60606; }
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7a89;
+  font-style: italic;
+}
+
+/* ---------- Footer / Pagination ---------- */
+.table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6b7a89;
+}
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pager button {
+  font-family: inherit;
+  font-size: 13px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #0b4f7a;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pager button:hover:not(:disabled) {
+  background: #f4f6f8;
+  border-color: #0b4f7a;
+}
+.pager button.is-current {
+  background: #0b4f7a;
+  border-color: #0b4f7a;
+  color: #ffffff;
+  font-weight: 700;
+}
+.pager button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+.pager .gap {
+  padding: 0 4px;
+  color: #a0aab5;
+}
+
+/* ---------- Dossier Drawer ---------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background: rgba(10, 37, 64, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.backdrop.hidden { display: none !important; }
+.dossier {
+  width: 100%;
+  max-width: 600px;
+  max-height: 86vh;
+  overflow: auto;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 20px 50px rgba(10,37,64,.35);
+}
+.dossier__head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0a2540;
+  color: #ffffff;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dossier__head h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.dossier__close {
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.dossier__close:hover { color: #d94f04; }
+.dossier__body {
+  padding: 20px 24px 28px;
+}
+.dossier__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #0b4f7a;
+  margin: 22px 0 6px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+.dossier__label:first-child { margin-top: 0; }
+.entry {
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f4f6f8;
+  font-size: 14px;
+}
+.entry:last-child { border-bottom: 0; }
+.entry__k {
+  flex: 0 0 150px;
+  color: #6b7a89;
+  font-weight: 500;
+  font-size: 13px;
+}
+.entry__v {
+  flex: 1;
+  color: #333;
+  font-weight: 600;
+}
+.entry__v--amount {
+  font-size: 16px;
+  color: #0b4f7a;
+}
+.entry__v--script {
+  font-weight: 400;
+  color: #6b7a89;
+}
+.redaction {
+  color: #a0aab5;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1050;
+  background: #0a2540;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(10,37,64,.3);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+  .page-title { font-size: 28px; }
+  .toolbar__group--center { order: 3; margin: 0; width: 100%; }
+  .tool-btn { flex: 1; }
+}
+@media (max-width: 767px) {
+  .navbar-pahf__title { display: none; }
+  .page-wrap { padding: 20px 14px 40px; }
+  .page-title { font-size: 24px; }
+  .toolbar input[type="search"] { min-width: 0; width: 100%; }
+  .toolbar__group { width: 100%; }
+  .entry { flex-direction: column; gap: 2px; }
+  .entry__k { flex: none; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .navbar-pahf, .table-toolbar, .pager, .backdrop, .toast { display: none !important; }
+  body { padding-top: 0; background: #fff; }
+  .page-wrap { max-width: none; padding: 0; }
+  .table-scroll { overflow: visible; border: 0; }
+  table.data-table { min-width: 0; font-size: 10px; }
+  table.data-table thead th { position: static; }
+  table.data-table tbody tr { page-break-inside: avoid; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ============================ MASTHEAD BAR ============================ -->
+<!-- ============================ NAVBAR ============================ -->
 <nav class="navbar-pahf">
   <div class="navbar-pahf__brand">
     <a class="pahf-logo-text" href="index.html">PHFA</a>
@@ -396,107 +463,52 @@ th.c-amount{ text-align:right; }
 <!-- ============================ PAGE ============================ -->
 <div class="page-wrap">
 
-  <header class="masthead">
-    <p class="masthead__kicker">Commonwealth of Pennsylvania · Public Register</p>
-    <h1 class="page-title">Applications Awarded <em>PHARE</em> Funding</h1>
-    <hr class="masthead__rule">
-    <p class="masthead__sub">
-      A register of every application submitted under the <strong>PHFA AWARD PA</strong>
-      programme through <strong>3T Group LLC</strong>, grant year 2026. Applicant
-      identification is limited to name and street address; all other personal
-      identifiers are withheld from this public record.
-    </p>
-  </header>
+  <h1 class="page-title">Applications Awarded PHARE Funding</h1>
 
-  <div class="notice">
-    <p style="margin:0 0 6px">
-      <strong>Note on redaction.</strong> In accordance with the programme's public-record
-      policy, this register publishes <em>only</em> the applicant's name and street address.
-      City, state, ZIP code, telephone numbers, e-mail addresses, dates of birth and
-      Social Security numbers are held in the confidential case file and are not rendered,
-      searched, exported or printed from this page.
-    </p>
-    <p style="margin:0">
-      Sort any column by clicking its heading. Select a row to open the applicant dossier.
-    </p>
+  <!-- ---------- TOOLBAR ---------- -->
+  <div class="table-toolbar">
+    <div class="toolbar__group">
+      <label for="pageSize">Show</label>
+      <select id="pageSize">
+        <option value="10">10</option>
+        <option value="25" selected>25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="all">All</option>
+      </select>
+      <span>entries</span>
+    </div>
+
+    <div class="toolbar__group toolbar__group--center">
+      <button type="button" class="tool-btn" data-act="copy">Copy</button>
+      <button type="button" class="tool-btn" data-act="excel">Excel</button>
+      <button type="button" class="tool-btn" data-act="pdf">PDF</button>
+      <button type="button" class="tool-btn" data-act="print">Print</button>
+    </div>
+
+    <div class="toolbar__group">
+      <label for="searchInput">Search:</label>
+      <input id="searchInput" type="search" placeholder="Name or street address…" autocomplete="off">
+    </div>
   </div>
 
-  <!-- ---------- FIGURES ---------- -->
-  <section class="figures">
-    <div class="figure">
-      <div class="figure__label">Applications on Register</div>
-      <div class="figure__value" id="figCount">—</div>
-      <div class="figure__sub">Grant year 2026</div>
-    </div>
-    <div class="figure">
-      <div class="figure__label">Total Awarded</div>
-      <div class="figure__value" id="figTotal">—</div>
-      <div class="figure__sub">Aggregate request value</div>
-    </div>
-    <div class="figure">
-      <div class="figure__label">Pending Decision</div>
-      <div class="figure__value" id="figPending">—</div>
-      <div class="figure__sub">Awaiting PHFA review</div>
-    </div>
-    <div class="figure">
-      <div class="figure__label">Street Addresses</div>
-      <div class="figure__value" id="figStreets">—</div>
-      <div class="figure__sub">Applicants with address on file</div>
-    </div>
-  </section>
+  <!-- ---------- TABLE ---------- -->
+  <div class="table-scroll" id="tableScroll">
+    <table class="data-table" id="dataTable">
+      <thead>
+        <tr id="tableHeadRow"></tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty-state hidden" id="emptyState">No matching records found.</div>
+  </div>
 
-  <!-- ---------- REGISTER ---------- -->
-  <section class="register">
-    <div class="register__head">
-      <h2 class="register__title">PHFA AWARD PA — 3T Group LLC</h2>
-      <div class="register__meta">2026 Funding Register · Redacted for Public Release</div>
-    </div>
+  <!-- ---------- FOOTER ---------- -->
+  <div class="table-footer">
+    <div id="tableInfo">—</div>
+    <div class="pager" id="pager"></div>
+  </div>
 
-    <div class="register__body">
-
-      <div class="toolbar">
-        <div class="toolbar__group">
-          <label for="pageSize">Show</label>
-          <select id="pageSize">
-            <option value="10">10</option>
-            <option value="25" selected>25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="all">All</option>
-          </select>
-          <span>entries</span>
-        </div>
-
-        <div class="toolbar__group toolbar__group--center">
-          <button type="button" class="toolbtn" data-act="copy">Copy</button>
-          <button type="button" class="toolbtn" data-act="excel">Excel</button>
-          <button type="button" class="toolbtn" data-act="pdf">PDF</button>
-          <button type="button" class="toolbtn" data-act="print">Print</button>
-        </div>
-
-        <div class="toolbar__group">
-          <label for="searchInput">Search</label>
-          <input id="searchInput" type="search" placeholder="Name or street address…" autocomplete="off">
-        </div>
-      </div>
-
-      <div class="ledger-scroll" id="ledgerScroll">
-        <table class="ledger" id="ledger">
-          <thead><tr id="ledgerHead"></tr></thead>
-          <tbody id="ledgerBody"></tbody>
-        </table>
-        <div class="ledger-empty hidden" id="ledgerEmpty">No matching records on this register.</div>
-      </div>
-
-      <div class="ledger-foot">
-        <div id="ledgerInfo">—</div>
-        <div class="pager" id="pager"></div>
-      </div>
-
-    </div>
-  </section>
-
-  <p class="colophon" id="colophon"></p>
 </div>
 
 <!-- ============================ DOSSIER ============================ -->
@@ -512,16 +524,17 @@ th.c-amount{ text-align:right; }
 
 <div class="toast" id="toast"></div>
 
+<!-- Project helpers -->
 <script src="js/shared.js"></script>
 
 <script>
 /* ================================================================
-   funding.html — register logic
+   funding.html — application logic
    ================================================================ */
 (function () {
   'use strict';
 
-  /* ---------- helpers (fall back if shared.js is absent) ---------- */
+  /* ---------- helpers ---------- */
   const esc = (typeof escapeHtml === 'function')
     ? escapeHtml
     : (s) => String(s ?? '').replace(/[&<>"']/g, c => (
@@ -535,8 +548,8 @@ th.c-amount{ text-align:right; }
       });
 
   /* ================================================================
-     1. AWARD BLOCK — the custom header applied to every row.
-        Change these five values once and the whole register updates.
+     1. CUSTOM HEADER BLOCK
+        Applied to every row. Edit once here to update all rows.
      ================================================================ */
   const AWARD = {
     program : 'PHFA AWARD PA',
@@ -547,12 +560,9 @@ th.c-amount{ text-align:right; }
   };
 
   /* ================================================================
-     2. APPLICANT REGISTER — redacted at source.
-        Only two fields are retained per applicant:
-          n = full name
-          a = street / house-number address
-        City, state, ZIP, phone, e-mail, DOB and SSN are intentionally
-        absent from this file. They never reach the browser.
+     2. APPLICANT CONTACT RECORDS (REDACTED)
+        Only name and street address are retained.
+        City, state, ZIP, phone, email, DOB, SSN have been removed.
      ================================================================ */
   const APPLICANTS = [
     { n:'BRIAN J CARBERRY',            a:'8521 GLEN CAMPBELL RD' },
@@ -665,7 +675,7 @@ th.c-amount{ text-align:right; }
   ];
 
   /* ================================================================
-     3. BUILD THE REGISTER
+     3. BUILD ROWS
      ================================================================ */
   const ROWS = APPLICANTS.map((a, i) => ({
     id      : i + 1,
@@ -679,16 +689,16 @@ th.c-amount{ text-align:right; }
   }));
 
   /* ================================================================
-     4. COLUMNS — the No. column is added separately, non-sortable.
+     4. COLUMNS
      ================================================================ */
   const COLUMNS = [
-    { key:'program', label:'Project / Programme',  sortable:true  },
-    { key:'org',     label:'Organization',         sortable:true  },
-    { key:'amount',  label:'Total Awarded',        sortable:true, cls:'c-amount' },
-    { key:'year',    label:'Grant Year',           sortable:true  },
-    { key:'status',  label:'Status',               sortable:true  },
-    { key:'name',    label:'Applicant Name',       sortable:true, cls:'c-name' },
-    { key:'street',  label:'Street Address',       sortable:true, cls:'c-street' }
+    { key:'program', label:'Project/Program Name', type:'text'  },
+    { key:'org',     label:'Organization Name',    type:'text'  },
+    { key:'amount',  label:'Total Awarded',        type:'money' },
+    { key:'year',    label:'Grant Year',           type:'text'  },
+    { key:'status',  label:'Application Status',   type:'text'  },
+    { key:'name',    label:'Name',                 type:'text', cls:'c-name'  },
+    { key:'street',  label:'Street Address',       type:'text'  }
   ];
 
   /* ================================================================
@@ -703,33 +713,27 @@ th.c-amount{ text-align:right; }
   };
 
   /* ================================================================
-     6. DOM
+     6. DOM REFS
      ================================================================ */
   const $ = (id) => document.getElementById(id);
-  const headEl    = $('ledgerHead');
-  const bodyEl    = $('ledgerBody');
-  const emptyEl   = $('ledgerEmpty');
-  const infoEl    = $('ledgerInfo');
-  const pagerEl   = $('pager');
-  const searchEl  = $('searchInput');
-  const sizeEl    = $('pageSize');
-  const backdrop  = $('backdrop');
-  const dossierEl = $('dossierBody');
-  const toastEl   = $('toast');
+  const headRow    = $('tableHeadRow');
+  const tbody      = $('tableBody');
+  const emptyEl    = $('emptyState');
+  const infoEl     = $('tableInfo');
+  const pagerEl    = $('pager');
+  const searchEl   = $('searchInput');
+  const sizeEl     = $('pageSize');
+  const backdrop   = $('backdrop');
+  const dossierEl  = $('dossierBody');
+  const toastEl    = $('toast');
 
   /* ================================================================
      7. HELPERS
      ================================================================ */
-  const MARKS = {
-    PENDING : 'mark--pending',
-    AWARDED : 'mark--awarded',
-    REVIEW  : 'mark--review',
-    CLOSED  : 'mark--closed'
-  };
-
-  function statusMark(status) {
+  function statusText(status) {
     const key = String(status || '').toUpperCase();
-    return `<span class="mark ${MARKS[key] || 'mark--pending'}">${esc(key)}</span>`;
+    const cls = 'status-text status-text--' + key.toLowerCase();
+    return `<span class="${cls}">${esc(key)}</span>`;
   }
 
   let toastTimer = null;
@@ -767,20 +771,18 @@ th.c-amount{ text-align:right; }
   }
 
   /* ================================================================
-     9. HEAD
+     9. RENDER — HEAD
      ================================================================ */
   function renderHead() {
-    headEl.innerHTML =
-      `<th class="no-sort">No.</th>` +
-      COLUMNS.map((c) => {
-        const active = state.sortKey === c.key;
-        const caret  = active ? (state.sortDir === 'asc' ? '▲' : '▼') : '⇅';
-        return `<th data-key="${c.key}" class="${c.cls || ''} ${active ? 'is-sorted' : ''}">
-                  ${esc(c.label)}<span class="caret">${caret}</span>
-                </th>`;
-      }).join('');
+    headRow.innerHTML = COLUMNS.map((c) => {
+      const active = state.sortKey === c.key;
+      const icon   = active ? (state.sortDir === 'asc' ? '▲' : '▼') : '⇅';
+      return `<th data-key="${c.key}" class="${c.cls || ''} ${active ? 'is-sorted' : ''}">
+                ${esc(c.label)}<span class="sort-icon">${icon}</span>
+              </th>`;
+    }).join('');
 
-    headEl.querySelectorAll('th[data-key]').forEach((th) => {
+    headRow.querySelectorAll('th').forEach((th) => {
       th.addEventListener('click', () => {
         const key = th.dataset.key;
         if (state.sortKey === key) {
@@ -796,7 +798,7 @@ th.c-amount{ text-align:right; }
   }
 
   /* ================================================================
-     10. BODY + PAGER
+     10. RENDER — BODY + PAGER
      ================================================================ */
   function render() {
     const rows  = currentView();
@@ -811,20 +813,19 @@ th.c-amount{ text-align:right; }
 
     emptyEl.classList.toggle('hidden', total !== 0);
 
-    bodyEl.innerHTML = slice.map((r, i) => `
+    tbody.innerHTML = slice.map((r) => `
       <tr data-id="${r.id}">
-        <td class="c-no">${String(start + i + 1).padStart(3, '0')}</td>
         <td>${esc(r.program)}</td>
         <td>${esc(r.org)}</td>
         <td class="c-amount">${fmtMoney(r.amount)}</td>
         <td>${esc(r.year)}</td>
-        <td>${statusMark(r.status)}</td>
+        <td>${statusText(r.status)}</td>
         <td class="c-name">${esc(r.name)}</td>
-        <td class="c-street">${esc(r.street)}</td>
+        <td>${esc(r.street)}</td>
       </tr>
     `).join('');
 
-    bodyEl.querySelectorAll('tr').forEach((tr) => {
+    tbody.querySelectorAll('tr').forEach((tr) => {
       tr.addEventListener('click', () => openDossier(Number(tr.dataset.id)));
     });
 
@@ -864,7 +865,7 @@ th.c-amount{ text-align:right; }
         if (p < 1 || p > pages || p === state.page) return;
         state.page = p;
         render();
-        $('ledgerScroll').scrollTop = 0;
+        $('tableScroll').scrollTop = 0;
       });
     });
   }
@@ -885,11 +886,11 @@ th.c-amount{ text-align:right; }
 
     dossierEl.innerHTML = `
       <div class="dossier__label">Award Record</div>
-      ${entry('Project / Programme', esc(r.program))}
+      ${entry('Project/Program', esc(r.program))}
       ${entry('Organization', esc(r.org))}
       ${entry('Total Awarded', fmtMoney(r.amount), 'entry__v--amount')}
       ${entry('Grant Year', esc(r.year))}
-      ${entry('Application Status', statusMark(r.status))}
+      ${entry('Application Status', statusText(r.status))}
 
       <div class="dossier__label">Applicant</div>
       ${entry('Name', esc(r.name))}
@@ -922,19 +923,18 @@ th.c-amount{ text-align:right; }
   });
 
   /* ================================================================
-     12. EXPORT — only the redacted fields leave the page.
+     12. EXPORT
      ================================================================ */
   function toCSV() {
     const cols = [
-      'No.', 'Project/Programme', 'Organization', 'Total Awarded',
-      'Grant Year', 'Status', 'Applicant Name', 'Street Address'
+      'Project/Program Name','Organization Name','Total Awarded','Grant Year',
+      'Application Status','Name','Street Address'
     ];
     const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
 
     const lines = [cols.map(cell).join(',')];
-    currentView().forEach((r, i) => {
+    currentView().forEach((r) => {
       lines.push([
-        String(i + 1).padStart(3, '0'),
         r.program, r.org, r.amount, r.year, r.status, r.name, r.street
       ].map(cell).join(','));
     });
@@ -946,12 +946,12 @@ th.c-amount{ text-align:right; }
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href     = url;
-    a.download = `phfa-register-${new Date().toISOString().slice(0,10)}.csv`;
+    a.download = `phfa-funding-register-${new Date().toISOString().slice(0,10)}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast('Redacted register downloaded (CSV)');
+    toast('Register downloaded (CSV)');
   }
 
   async function copyRegister() {
@@ -971,11 +971,11 @@ th.c-amount{ text-align:right; }
       }
       toast(`${currentView().length} rows copied`);
     } catch (_) {
-      toast('Copy blocked by browser — use Excel');
+      toast('Copy blocked — use Excel');
     }
   }
 
-  document.querySelectorAll('.toolbtn').forEach((btn) => {
+  document.querySelectorAll('.tool-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       switch (btn.dataset.act) {
         case 'copy' : copyRegister(); break;
@@ -1007,31 +1007,10 @@ th.c-amount{ text-align:right; }
   });
 
   /* ================================================================
-     14. FIGURES
-     ================================================================ */
-  function renderFigures() {
-    const total   = ROWS.length;
-    const sum     = ROWS.reduce((acc, r) => acc + Number(r.amount || 0), 0);
-    const pending = ROWS.filter((r) => String(r.status).toUpperCase() === 'PENDING').length;
-    const streets = ROWS.filter((r) => r.street && r.street.trim()).length;
-
-    $('figCount').textContent   = total.toLocaleString('en-US');
-    $('figTotal').innerHTML     = fmtMoney(sum).replace(/\.00$/, '') +
-                                  '<small>.00</small>';
-    $('figPending').textContent = pending.toLocaleString('en-US');
-    $('figStreets').textContent = streets.toLocaleString('en-US');
-  }
-
-  /* ================================================================
-     15. BOOT
+     14. BOOT
      ================================================================ */
   renderHead();
   render();
-  renderFigures();
-
-  $('colophon').textContent =
-    'Register compiled ' + new Date().toLocaleString('en-US') +
-    ' · ' + ROWS.length + ' records · personal identifiers withheld';
 
 })();
 </script>
