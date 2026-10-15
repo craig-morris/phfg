@@ -1,551 +1,931 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PA Housing Fund — Admin</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
-<link rel="icon" href="/assets/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content="#0a2540" />
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
-<link href="/assets/app.css" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · Clients | PHFA Grants</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a2540'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23d94f04' text-anchor='middle'>P</text></svg>">
+<link rel="stylesheet" href="css/pahf.css">
+
+<style>
+:root{
+  --navy-dark:#0a2540;--navy:#0b4f7a;--navy-hover:#083d5e;
+  --green:#7cb342;--green-dark:#558b2f;--gold:#c9a227;--orange:#d94f04;--red:#b60606;
+  --bg:#f5f7fa;--card:#ffffff;--border:#dfe4ea;--border-strong:#cbd3db;
+  --text:#2c3540;--muted:#6b7a89;--header-cell:#eef2f6;
+  --shadow-sm:0 1px 3px rgba(10,37,64,.06);
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:14.5px;line-height:1.5;margin:0;padding-top:64px;
+}
+img{max-width:100%;display:block;}
+.hidden{display:none !important;}
+
+/* ---------- navbar (same as site) ---------- */
+.navbar-pahf{
+  position:fixed;top:0;left:0;right:0;z-index:1030;
+  background:var(--navy-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:64px;box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.navbar-pahf__brand{display:flex;align-items:center;gap:14px;min-width:0;}
+.pahf-logo-text{
+  font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:700;
+  letter-spacing:1px;color:var(--orange);line-height:1;text-decoration:none;
+}
+.navbar-pahf__title{
+  color:#fff;font-size:15px;font-weight:600;text-decoration:underline;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.navbar-pahf__nav{display:flex;align-items:center;gap:2px;}
+.navbar-pahf__nav a{
+  color:#cfdde8;font-size:13px;font-weight:600;letter-spacing:.5px;
+  padding:8px 14px;border-radius:4px;text-decoration:none;
+}
+.navbar-pahf__nav a:hover,
+.navbar-pahf__nav a.is-active{background:var(--navy);color:#fff;text-decoration:none;}
+.navbar-pahf__badge{
+  display:inline-block;margin-left:8px;
+  background:var(--gold);color:#3a2b00;
+  font-size:10.5px;font-weight:700;letter-spacing:1px;
+  padding:2px 8px;border-radius:10px;text-transform:uppercase;
+}
+
+/* ---------- page ---------- */
+.page-wrap{max-width:1300px;margin:0 auto;padding:28px 24px 80px;}
+
+.page-head{
+  display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;
+  gap:16px;margin-bottom:22px;
+}
+.page-head__title{
+  font-size:24px;font-weight:700;color:var(--navy-dark);
+  margin:0 0 4px;letter-spacing:-.3px;
+}
+.page-head__sub{font-size:14px;color:var(--muted);margin:0;max-width:70ch;}
+.page-head__meta{
+  font-size:12.5px;color:var(--muted);text-align:right;line-height:1.6;
+}
+.page-head__meta strong{color:var(--navy-dark);font-weight:700;}
+
+/* ---------- tabs (screenshot style) ---------- */
+.tabs{
+  display:flex;align-items:flex-end;gap:2px;
+  border-bottom:1px solid var(--border-strong);
+  margin-bottom:22px;
+}
+.tab{
+  background:transparent;border:1px solid transparent;
+  border-bottom:0;
+  font-family:inherit;font-size:14px;font-weight:500;
+  color:var(--navy);cursor:pointer;
+  padding:11px 20px 10px;
+  border-radius:4px 4px 0 0;
+  position:relative;top:1px;
+  transition:background .12s ease,color .12s ease;
+}
+.tab:hover{color:var(--navy-hover);text-decoration:underline;}
+.tab.is-active{
+  background:#fff;
+  border-color:var(--border-strong);
+  color:#3b4652;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow:0 -1px 0 var(--border-strong) inset, -1px 0 0 var(--border-strong) inset, 1px 0 0 var(--border-strong) inset;
+  top:1px;
+}
+.tab.is-active::after{
+  content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:#fff;
+}
+
+/* ---------- toolbar (New Client Account button) ---------- */
+.panel-toolbar{
+  display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:space-between;gap:14px;
+  margin-bottom:16px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:inherit;font-size:13.5px;font-weight:600;
+  padding:10px 18px;border-radius:4px;cursor:pointer;
+  border:1px solid transparent;text-decoration:none;
+  transition:background .12s ease,border-color .12s ease,color .12s ease;
+}
+.btn-navy{background:var(--navy-dark);border-color:var(--navy-dark);color:#fff;}
+.btn-navy:hover{background:var(--navy-hover);border-color:var(--navy-hover);color:#fff;}
+.btn-outline{background:#fff;border-color:var(--border-strong);color:var(--navy);}
+.btn-outline:hover{background:#f4f6f8;border-color:var(--navy);}
+.btn-green{background:var(--green);border-color:var(--green);color:#fff;}
+.btn-green:hover{background:var(--green-dark);border-color:var(--green-dark);}
+.btn-danger{background:transparent;border-color:#e0b4ae;color:var(--red);}
+.btn-danger:hover{background:#fdecea;}
+.btn-sm{padding:6px 12px;font-size:12.5px;}
+
+.panel-toolbar__info{
+  font-size:13px;color:var(--muted);
+}
+.panel-toolbar__info strong{color:var(--navy-dark);}
+
+/* ---------- table (matches screenshot) ---------- */
+.data-card{
+  background:#fff;border:1px solid var(--border-strong);border-radius:2px;
+  box-shadow:var(--shadow-sm);overflow:hidden;
+}
+.data-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.data-table{
+  width:100%;min-width:960px;border-collapse:collapse;font-size:14px;
+}
+table.data-table thead th{
+  background:var(--header-cell);
+  color:var(--navy-dark);
+  font-weight:700;font-size:13px;
+  text-align:left;
+  padding:12px 16px;
+  border-bottom:1px solid var(--border-strong);
+  border-right:1px solid #e5eaef;
+  white-space:nowrap;
+}
+table.data-table thead th:last-child{border-right:0;}
+table.data-table tbody td{
+  padding:12px 16px;
+  border-bottom:1px solid #eef2f6;
+  color:var(--text);
+  vertical-align:middle;
+}
+table.data-table tbody tr:last-child td{border-bottom:0;}
+table.data-table tbody tr:hover td{background:#f7fafd;}
+table.data-table td.c-id{color:var(--muted);font-size:13px;width:70px;font-variant-numeric:tabular-nums;}
+table.data-table td.c-name{font-weight:600;color:var(--navy-dark);}
+table.data-table td.c-money{white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;}
+table.data-table th.c-money{text-align:right;}
+table.data-table td.c-notes{color:var(--muted);font-size:13px;max-width:220px;}
+table.data-table td.c-actions{text-align:right;white-space:nowrap;}
+table.data-table td.c-actions button{font-family:inherit;font-size:12px;background:transparent;border:0;color:var(--navy);cursor:pointer;padding:2px 6px;}
+table.data-table td.c-actions button:hover{color:var(--orange);text-decoration:underline;}
+
+.empty-row td{
+  padding:56px 24px;text-align:center;color:var(--muted);font-size:14.5px;
+  border-bottom:0 !important;
+}
+.empty-row td strong{color:var(--navy-dark);font-weight:700;}
+
+/* status pill */
+.pill{
+  display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.6px;
+  text-transform:uppercase;padding:2px 9px;border-radius:10px;
+}
+.pill--pending{background:#fff8e1;color:#8a6d00;border:1px solid #f0c14b;}
+.pill--awarded{background:#eaf5e1;color:var(--green-dark);border:1px solid #a9d17e;}
+.pill--allocated{background:#e8f1f8;color:var(--navy);border:1px solid #9dc0da;}
+.pill--withdrawn{background:#eef2f6;color:#55606e;border:1px solid #cbd3db;}
+
+/* ---------- site note tab ---------- */
+.note-editor{
+  background:#fff;border:1px solid var(--border-strong);border-radius:2px;
+  box-shadow:var(--shadow-sm);padding:0;overflow:hidden;
+}
+.note-editor__head{
+  background:var(--header-cell);border-bottom:1px solid var(--border-strong);
+  padding:12px 18px;font-size:13px;font-weight:700;color:var(--navy-dark);
+  letter-spacing:.4px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.note-editor__body{padding:18px;}
+.note-editor textarea{
+  width:100%;min-height:320px;
+  font-family:inherit;font-size:14.5px;line-height:1.6;
+  border:1px solid var(--border-strong);border-radius:4px;
+  padding:14px 16px;resize:vertical;color:var(--text);outline:none;
+}
+.note-editor textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,79,122,.12);}
+.note-editor__foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px 18px;font-size:12.5px;color:var(--muted);
+}
+
+/* ---------- modal (New Client Account) ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:1080;background:rgba(10,37,64,.55);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:40px 20px;overflow:auto;
+}
+.modal{
+  width:100%;max-width:640px;background:#fff;border-radius:4px;
+  box-shadow:0 24px 60px rgba(10,37,64,.4);overflow:hidden;
+}
+.modal__head{
+  background:var(--navy-dark);color:#fff;padding:15px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal__head h3{margin:0;font-size:16px;font-weight:600;}
+.modal__close{background:transparent;border:0;color:#fff;font-size:22px;line-height:1;cursor:pointer;}
+.modal__close:hover{color:var(--orange);}
+.modal__body{padding:22px 24px 6px;}
+.modal__foot{
+  padding:16px 24px 20px;display:flex;justify-content:flex-end;gap:10px;
+  border-top:1px solid #eef2f6;margin-top:10px;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-row{margin-bottom:14px;}
+.form-row--full{grid-column:1 / -1;}
+.form-row label{
+  display:block;font-size:12px;font-weight:700;letter-spacing:.4px;
+  color:var(--navy);margin-bottom:5px;
+}
+.form-row input,
+.form-row textarea,
+.form-row select{
+  width:100%;font-family:inherit;font-size:14px;color:var(--text);
+  border:1px solid var(--border-strong);border-radius:3px;
+  background:#fff;padding:9px 12px;outline:none;
+  height:40px;
+}
+.form-row textarea{height:auto;min-height:70px;resize:vertical;padding:10px 12px;}
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,79,122,.12);}
+.form-row.is-error input,
+.form-row.is-error textarea{border-color:var(--red);box-shadow:0 0 0 3px rgba(182,6,6,.12);}
+.field-error{color:var(--red);font-size:11.5px;margin-top:4px;display:none;}
+.form-row.is-error .field-error{display:block;}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;right:24px;bottom:24px;z-index:1150;
+  background:var(--navy-dark);color:#fff;font-size:13.5px;font-weight:500;
+  padding:13px 20px;border-radius:4px;
+  box-shadow:0 10px 30px rgba(10,37,64,.35);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .2s ease,transform .2s ease;
+  pointer-events:none;max-width:340px;
+}
+.toast.is-visible{opacity:1;transform:translateY(0);}
+
+/* ---------- responsive ---------- */
+@media (max-width:767px){
+  .page-wrap{padding:22px 14px 60px;}
+  .page-head__meta{text-align:left;}
+  .form-grid{grid-template-columns:1fr;}
+  .tab{padding:10px 14px;font-size:13px;}
+}
+</style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-pahf navbar-fixed-top">
-  <div class="container-fluid" style="padding-left:20px;padding-right:20px;">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-nav">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">
-        <img src="/assets/apple-touch-icon.png" alt="PHFA" class="pahf-logo" />
-        <span class="pahf-title">PA Housing Fund — Admin</span>
-      </a>
-    </div>
-    <div class="collapse navbar-collapse" id="admin-nav">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" id="logoutLink">Log Out</a></li>
-      </ul>
-    </div>
+<nav class="navbar-pahf">
+  <div class="navbar-pahf__brand">
+    <a class="pahf-logo-text" href="index.html">PHFA</a>
+    <a class="navbar-pahf__title" href="index.html">
+      PA Housing Affordability and Rehabilitation Enhancement Fund
+    </a>
+  </div>
+  <div class="navbar-pahf__nav">
+    <a href="index.html">Home</a>
+    <a href="funding.html">Programs</a>
+    <a href="admin.html" class="is-active">Admin<span class="navbar-pahf__badge" id="adminCount">0</span></a>
   </div>
 </nav>
 
 <div class="page-wrap">
 
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#clients" data-toggle="tab">Clients</a></li>
-    <li role="presentation"><a href="#withdrawals" data-toggle="tab">Withdrawals</a></li>
-    <li role="presentation"><a href="#sitenote" data-toggle="tab">Site Note</a></li>
-  </ul>
-
-  <div class="tab-content" style="padding-top:20px;">
-
-    <!-- ==================== CLIENTS TAB ==================== -->
-    <div role="tabpanel" class="tab-pane active" id="clients">
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-pahf-navy" data-toggle="modal" data-target="#newClientModal">
-            + New Client Account
-          </button>
-        </div>
-      </div>
-      <br/>
-      <div class="row">
-        <div class="col-md-12">
-          <div id="clientsErr" class="alert alert-danger hidden"></div>
-          <table class="table table-bordered data-table">
-            <thead>
-              <tr>
-                <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
-                <th>Awarded</th><th>Allocated</th><th>Funds</th><th>Notes</th><th></th>
-              </tr>
-            </thead>
-            <tbody id="clientsTbody"></tbody>
-          </table>
-        </div>
-      </div>
+  <header class="page-head">
+    <div>
+      <h1 class="page-head__title">Grant Administration</h1>
+      <p class="page-head__sub">
+        Review incoming eligibility submissions, allocate awards, manage withdrawals
+        and keep site-wide notes. Every field a homeowner entered on the public site
+        appears here in real time.
+      </p>
     </div>
-
-    <!-- ==================== WITHDRAWALS TAB ==================== -->
-    <div role="tabpanel" class="tab-pane" id="withdrawals">
-      <table class="table table-bordered data-table">
-        <thead>
-          <tr>
-            <th>ID</th><th>Client</th><th>Amount</th><th>Bank</th>
-            <th>Status</th><th>Progress</th><th>Note</th><th></th>
-          </tr>
-        </thead>
-        <tbody id="withdrawalsTbody"></tbody>
-      </table>
+    <div class="page-head__meta">
+      Signed in as <strong>Administrator</strong><br>
+      <span id="lastSync">—</span>
     </div>
+  </header>
 
-    <!-- ==================== SITE NOTE TAB ==================== -->
-    <div role="tabpanel" class="tab-pane" id="sitenote">
-      <div class="pahf-card">
-        <div class="pahf-card__header">Red Site Note (visible to all clients)</div>
-        <div class="pahf-card__body">
-          <textarea id="noteBody" class="form-control" rows="5"
-                    placeholder="This note appears on every client's dashboard."></textarea>
-          <div class="checkbox">
-            <label><input id="noteVisible" type="checkbox" checked /> Visible to clients</label>
-          </div>
-          <button id="saveNoteBtn" class="btn btn-pahf-navy">Save Note</button>
-          <div id="noteMsg" class="alert alert-success hidden" style="margin-top:10px;"></div>
-        </div>
-      </div>
-    </div>
-
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab is-active" data-tab="clients" role="tab">Clients</button>
+    <button class="tab" data-tab="withdrawals" role="tab">Withdrawals</button>
+    <button class="tab" data-tab="sitenote" role="tab">Site Note</button>
   </div>
+
+  <!-- ============ CLIENTS TAB ============ -->
+  <section id="panel-clients">
+    <div class="panel-toolbar">
+      <button class="btn btn-navy" id="newClientBtn">+ New Client Account</button>
+      <div class="panel-toolbar__info">
+        <strong id="clientCount">0</strong> client accounts ·
+        <strong id="clientAwarded">$0</strong> awarded ·
+        <strong id="clientAllocated">$0</strong> allocated
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="data-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th class="c-money">Awarded</th>
+              <th class="c-money">Allocated</th>
+              <th class="c-money">Funds</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="clientsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WITHDRAWALS TAB ============ -->
+  <section id="panel-withdrawals" class="hidden">
+    <div class="panel-toolbar">
+      <button class="btn btn-navy" id="newWithdrawalBtn">+ Record Withdrawal</button>
+      <div class="panel-toolbar__info">
+        <strong id="wdCount">0</strong> withdrawals ·
+        <strong id="wdTotal">$0</strong> total withdrawn
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="data-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Client</th>
+              <th>Date</th>
+              <th class="c-money">Amount</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="withdrawalsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SITE NOTE TAB ============ -->
+  <section id="panel-sitenote" class="hidden">
+    <div class="note-editor">
+      <div class="note-editor__head">
+        <span>Site-wide note · visible to administrators only</span>
+        <button class="btn btn-green btn-sm" id="saveNoteBtn">Save note</button>
+      </div>
+      <div class="note-editor__body">
+        <textarea id="siteNote" placeholder="Add internal notes, reminders, or a message you want every administrator to see…"></textarea>
+      </div>
+      <div class="note-editor__foot">
+        <span id="noteSavedAt">Last saved —</span>
+        <span id="noteCharCount">0 characters</span>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<!-- ==================== NEW CLIENT MODAL ==================== -->
-<div class="modal fade" id="newClientModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Create Client Account</h4>
-      </div>
-      <form id="newClientForm">
-        <div class="modal-body">
-          <div id="newClientErr" class="alert alert-danger hidden"></div>
-
-          <div class="form-group"><label>Full Name</label>
-            <input name="fullName" class="form-control" required/></div>
-
-          <div class="form-group"><label>Email</label>
-            <input name="email" type="email" class="form-control" required/></div>
-
-          <div class="form-group"><label>Phone</label>
-            <input name="phone" class="form-control"/></div>
-
-          <div class="form-group"><label>Address</label>
-            <input name="address" class="form-control"/></div>
-
-          <div class="form-group"><label>Password</label>
-            <input name="password" type="text" class="form-control" required minlength="6"/></div>
-
-          <div class="form-group"><label>Awarded Amount (USD)</label>
-            <input name="awardedAmount" type="number" step="0.01" class="form-control" value="0"/></div>
-
-          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
-            <input name="allocatedWinnings" type="number" step="0.01" class="form-control" value="0"/></div>
-
-          <div class="form-group"><label>Report Details (free text shown inside report)</label>
-            <textarea name="reportDetails" class="form-control" rows="3"></textarea></div>
-
-          <div class="form-group"><label>Security Question</label>
-            <input name="securityQuestion" class="form-control"
-                   placeholder="e.g. What city were you born in?"/></div>
-
-          <div class="form-group"><label>Security Answer</label>
-            <input name="securityAnswer" class="form-control"/></div>
-
-          <div class="checkbox">
-            <label><input name="fundsLocked" type="checkbox" checked/> Lock funds initially</label>
-          </div>
-          <div class="form-group" style="margin-top:6px;">
-            <label>Lock Reason (shown to client when locked)</label>
-            <input name="lockReason" class="form-control"/>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-pahf-navy">Create</button>
-        </div>
-      </form>
+<!-- ============ NEW CLIENT MODAL ============ -->
+<div class="modal-backdrop hidden" id="clientModal">
+  <div class="modal">
+    <div class="modal__head">
+      <h3 id="clientModalTitle">New Client Account</h3>
+      <button class="modal__close" id="clientModalClose" aria-label="Close">×</button>
     </div>
-  </div>
-</div>
-
-<!-- ==================== EDIT CLIENT MODAL ==================== -->
-<div class="modal fade" id="editClientModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit Client</h4>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="cName">Full name</label>
+          <input type="text" id="cName" placeholder="e.g. Jane A. Doe">
+          <div class="field-error">Please enter a name.</div>
+        </div>
+        <div class="form-row">
+          <label for="cEmail">Email address</label>
+          <input type="text" id="cEmail" placeholder="you@example.com">
+          <div class="field-error">Please enter an email.</div>
+        </div>
+        <div class="form-row">
+          <label for="cPhone">Phone number</label>
+          <input type="text" id="cPhone" placeholder="(555) 000-0000">
+          <div class="field-error">Please enter a phone number.</div>
+        </div>
+        <div class="form-row">
+          <label for="cStatus">Status</label>
+          <select id="cStatus">
+            <option value="pending">Pending review</option>
+            <option value="awarded">Awarded</option>
+            <option value="allocated">Allocated</option>
+            <option value="withdrawn">Withdrawn</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="cAwarded">Awarded ($)</label>
+          <input type="number" id="cAwarded" min="0" step="1000" placeholder="0">
+        </div>
+        <div class="form-row">
+          <label for="cAllocated">Allocated ($)</label>
+          <input type="number" id="cAllocated" min="0" step="1000" placeholder="0">
+        </div>
+        <div class="form-row">
+          <label for="cFunds">Funds / Programme</label>
+          <input type="text" id="cFunds" placeholder="PHFA · 2026">
+        </div>
+        <div class="form-row">
+          <label for="cRegion">Region</label>
+          <select id="cRegion">
+            <option value="US">United States (USD)</option>
+            <option value="UK">United Kingdom (GBP)</option>
+            <option value="EU">Europe (EUR)</option>
+          </select>
+        </div>
+        <div class="form-row form-row--full">
+          <label for="cAddress">Street address</label>
+          <input type="text" id="cAddress" placeholder="House number and street">
+        </div>
+        <div class="form-row form-row--full">
+          <label for="cNotes">Internal notes</label>
+          <textarea id="cNotes" placeholder="Any notes about this client…"></textarea>
+        </div>
       </div>
-      <form id="editClientForm">
-        <div class="modal-body">
-          <div id="editClientErr" class="alert alert-danger hidden"></div>
-          <input type="hidden" name="id"/>
-
-          <div class="form-group"><label>Full Name</label>
-            <input name="full_name" class="form-control"/></div>
-
-          <div class="form-group"><label>Email</label>
-            <input name="email" type="email" class="form-control"/></div>
-
-          <div class="form-group"><label>Phone</label>
-            <input name="phone" class="form-control"/></div>
-
-          <div class="form-group"><label>Address</label>
-            <input name="address" class="form-control"/></div>
-
-          <div class="form-group"><label>Awarded Amount (USD)</label>
-            <input name="awarded_amount" type="number" step="0.01" class="form-control"/></div>
-
-          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
-            <input name="allocated_winnings" type="number" step="0.01" class="form-control"/></div>
-
-          <div class="form-group"><label>Report Details (free text shown inside report)</label>
-            <textarea name="report_details" class="form-control" rows="4"></textarea></div>
-
-          <div class="form-group"><label>Client Site Note (visible to this client only)</label>
-            <textarea name="site_notes" class="form-control" rows="3"></textarea></div>
-
-          <div class="checkbox">
-            <label><input name="funds_locked" type="checkbox"/> Lock funds (block withdrawals)</label>
-          </div>
-
-          <div class="form-group"><label>Lock Reason (shown to client)</label>
-            <input name="lock_reason" class="form-control"/></div>
-
-          <div class="checkbox">
-            <label><input name="verified" type="checkbox"/> Verified</label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-pahf-navy">Save Changes</button>
-        </div>
-      </form>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn-outline" id="clientCancel">Cancel</button>
+      <button class="btn btn-navy" id="clientSave">Save client account</button>
     </div>
   </div>
 </div>
 
-<!-- ==================== EDIT WITHDRAWAL MODAL ==================== -->
-<div class="modal fade" id="editWithdrawModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Update Withdrawal</h4>
+<!-- ============ WITHDRAWAL MODAL ============ -->
+<div class="modal-backdrop hidden" id="wdModal">
+  <div class="modal">
+    <div class="modal__head">
+      <h3>Record Withdrawal</h3>
+      <button class="modal__close" id="wdModalClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="wClient">Client</label>
+          <select id="wClient"></select>
+          <div class="field-error">Please select a client.</div>
+        </div>
+        <div class="form-row">
+          <label for="wDate">Date</label>
+          <input type="date" id="wDate">
+        </div>
+        <div class="form-row">
+          <label for="wAmount">Amount</label>
+          <input type="number" id="wAmount" min="0" step="100" placeholder="0">
+          <div class="field-error">Please enter an amount.</div>
+        </div>
+        <div class="form-row">
+          <label for="wMethod">Method</label>
+          <select id="wMethod">
+            <option>Bank transfer</option>
+            <option>Cheque</option>
+            <option>Wire</option>
+            <option>Card</option>
+          </select>
+        </div>
+        <div class="form-row form-row--full">
+          <label for="wNotes">Notes</label>
+          <textarea id="wNotes" placeholder="Optional reference or memo"></textarea>
+        </div>
       </div>
-      <form id="editWithdrawForm">
-        <div class="modal-body">
-          <input type="hidden" name="id"/>
-          <div class="form-group">
-            <label>Status</label>
-            <select name="status" class="form-control">
-              <option value="pending">Pending</option>
-              <option value="under_review">Under Review</option>
-              <option value="approved">Approved</option>
-              <option value="processing">Processing</option>
-              <option value="completed">Completed (Funds Sent)</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Progress (%)</label>
-            <input name="progress" type="number" min="0" max="100" class="form-control"/>
-          </div>
-          <div class="form-group">
-            <label>Note to client</label>
-            <textarea name="note" class="form-control" rows="3"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-pahf-navy">Save</button>
-        </div>
-      </form>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn-outline" id="wdCancel">Cancel</button>
+      <button class="btn btn-navy" id="wdSave">Record withdrawal</button>
     </div>
   </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<div class="toast" id="toast"></div>
+
 <script>
-/* ============================================================
-   PA Housing Fund — Admin
-   Single, self-contained script. No dependency on app.js.
-   Every failure is printed to a visible banner at the top.
-   ============================================================ */
+/* ================================================================
+   admin.html — Clients · Withdrawals · Site Note
+   Data sources:
+     phfa.intake   → submissions written by the public eligibility flow
+     phfa.clients  → manually created client accounts (this panel)
+     phfa.wds      → withdrawal records
+     phfa.sitenote → site-wide note
+   ================================================================ */
+(function () {
+  'use strict';
 
-/* ---------------- visible error banner ---------------- */
-function adminFatal(msg) {
-  let el = document.getElementById('adminFatalBanner');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'adminFatalBanner';
-    el.style.cssText =
-      'background:#b60606;color:#fff;padding:12px 18px;font-family:monospace;' +
-      'font-size:13px;white-space:pre-wrap;position:relative;z-index:9999;';
-    document.body.insertBefore(el, document.body.firstChild);
-  }
-  el.textContent = msg;
-}
+  const $ = (id) => document.getElementById(id);
+  const qsa = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const KEY = { intake:'phfa.intake', clients:'phfa.clients', wds:'phfa.wds', note:'phfa.sitenote' };
 
-/* ---------------- helpers (inlined) ---------------- */
-async function api(path, opts = {}) {
-  const res = await fetch(path, {
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
-    ...opts
-  });
-  let data = null;
-  try { data = await res.json(); } catch (_) {}
-  return { ok: res.ok, status: res.status, data };
-}
+  /* ---------- storage helpers ---------- */
+  const read = (k, fallback) => {
+    try { return JSON.parse(localStorage.getItem(k)) || fallback; }
+    catch (_) { return fallback; }
+  };
+  const write = (k, v) => {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {}
+  };
 
-function escapeHtml(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[c]));
-}
-
-function money(n) {
-  return '$' + Number(n || 0).toLocaleString('en-US', {
-    minimumFractionDigits: 2, maximumFractionDigits: 2
-  });
-}
-
-/* ---------------- data loaders ---------------- */
-async function loadClients() {
-  const r = await api('/api/admin/clients');
-  console.log('[loadClients]', r.status, r.data);
-
-  if (!r.ok || !r.data || !r.data.clients) {
-    $('#clientsErr').text('Failed to load clients — status ' + r.status +
-      (r.data && r.data.error ? ' — ' + r.data.error : '')).removeClass('hidden');
-    $('#clientsTbody').html('');
-    return;
-  }
-  $('#clientsErr').addClass('hidden');
-
-  const rows = r.data.clients;
-  if (!rows.length) {
-    $('#clientsTbody').html(
-      '<tr><td colspan="9" class="text-center text-muted" style="padding:24px;">' +
-      'No client accounts yet. Click <b>+ New Client Account</b> to add one.' +
-      '</td></tr>'
-    );
-    return;
+  /* ---------- toast ---------- */
+  let toastTimer = null;
+  function toast(msg) {
+    const el = $('toast');
+    el.textContent = msg;
+    el.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('is-visible'), 2400);
   }
 
-  $('#clientsTbody').html(rows.map(c => `
-    <tr>
-      <td>${c.id}</td>
-      <td>${escapeHtml(c.full_name || '')}</td>
-      <td>${escapeHtml(c.email || '')}</td>
-      <td>${escapeHtml(c.phone || '')}</td>
-      <td>${money(c.awarded_amount)}</td>
-      <td>${money(c.allocated_winnings)}</td>
-      <td>${c.funds_locked
-            ? '<span class="label label-danger">Locked</span>'
-            : '<span class="label label-success">Unlocked</span>'}</td>
-      <td>${escapeHtml((c.site_notes || '').slice(0, 40))}${(c.site_notes || '').length > 40 ? '…' : ''}</td>
-      <td>
-        <button class="btn btn-xs btn-pahf-navy edit-client" data-id="${c.id}">Edit</button>
-        <button class="btn btn-xs btn-danger del-client" data-id="${c.id}">Delete</button>
-      </td>
-    </tr>
-  `).join(''));
-}
-
-async function loadWithdrawals() {
-  const r = await api('/api/admin/withdrawals');
-  console.log('[loadWithdrawals]', r.status, r.data);
-  if (!r.ok || !r.data) return;
-  const rows = r.data.withdrawals || [];
-  $('#withdrawalsTbody').html(rows.map(w => `
-    <tr>
-      <td>${w.id}</td>
-      <td>${escapeHtml(w.user_name || w.user_email || '')}</td>
-      <td>${money(w.amount)}</td>
-      <td>${escapeHtml(w.bank_name || '')}<br/><small>••••${String(w.account_number || '').slice(-4)}</small></td>
-      <td><span class="label label-info">${escapeHtml(w.status)}</span></td>
-      <td>${w.progress}%</td>
-      <td>${escapeHtml(w.note || '')}</td>
-      <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}"
-            data-status="${escapeHtml(w.status)}" data-progress="${w.progress}"
-            data-note="${escapeHtml(w.note || '')}">Edit</button></td>
-    </tr>
-  `).join(''));
-}
-
-async function loadNote() {
-  const r = await api('/api/notes');
-  if (r.ok && r.data && r.data.note) {
-    $('#noteBody').val(r.data.note.body || '');
-    $('#noteVisible').prop('checked', !!r.data.note.visible);
-  }
-}
-
-/* ---------------- init ---------------- */
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    console.log('=== admin init ===');
-
-    // 1. Auth gate
-    const me = await api('/api/auth/me');
-    console.log('[gate]', me.status, me.data);
-
-    if (!me.ok || !me.data || !me.data.user) {
-      adminFatal('Not signed in. Redirecting…');
-      setTimeout(() => location.href = '/', 800);
-      return;
+  /* ---------- currency ---------- */
+  const CUR = {
+    US:{ locale:'en-US', code:'USD', symbol:'$' },
+    UK:{ locale:'en-GB', code:'GBP', symbol:'£' },
+    EU:{ locale:'de-DE', code:'EUR', symbol:'€' }
+  };
+  function fmt(amount, region) {
+    const cfg = CUR[region] || CUR.US;
+    try {
+      return new Intl.NumberFormat(cfg.locale, {
+        style:'currency', currency:cfg.code, maximumFractionDigits:0
+      }).format(Number(amount) || 0);
+    } catch (_) {
+      return cfg.symbol + Number(amount || 0).toLocaleString('en-US');
     }
-    if (me.data.user.role !== 'admin') {
-      adminFatal(
-        'Access denied. You are signed in as ' + me.data.user.email +
-        ' (role=' + me.data.user.role + '). ' +
-        'Clear cookies and log in as the admin account.'
-      );
-      return;
+  }
+
+  /* ---------- merge intake + manual clients ---------- */
+  function allClients() {
+    const intake  = read(KEY.intake, []);
+    const manual  = read(KEY.clients, []);
+
+    const intakeRows = intake.map((r, i) => ({
+      id        : 'I-' + String(i + 1).padStart(3, '0'),
+      source    : 'intake',
+      createdAt : r.ts || Date.now(),
+      name      : r.name || '—',
+      email     : r.email || '',
+      phone     : r.phone || '',
+      address   : r.address || '',
+      region    : r.region || 'US',
+      awarded   : Number(r.amount) || 0,
+      allocated : 0,
+      funds     : (r.region === 'US' ? 'PHFA' : 'GEF SGP') + ' · 2026',
+      status    : 'pending',
+      notes     : r.ownsHome
+        ? `Homeowner · purchased ${r.year || '—'} · employed: ${r.employed ? 'yes' : 'no'} · loans: ${r.loans ?? '—'}`
+        : `Renter · employed: ${r.employed ? 'yes' : 'no'} · loans: ${r.loans ?? '—'}`
+    }));
+
+    return intakeRows.concat(manual);
+  }
+
+  /* ---------- CLIENTS ---------- */
+  function renderClients() {
+    const rows = allClients().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const body = $('clientsBody');
+
+    if (!rows.length) {
+      body.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="9">
+            No client accounts yet. Click <strong>+ New Client Account</strong> to add one.
+          </td>
+        </tr>`;
+    } else {
+      body.innerHTML = rows.map((r) => `
+        <tr data-id="${r.id}">
+          <td class="c-id">${r.id}</td>
+          <td class="c-name">${esc(r.name)}</td>
+          <td>${r.email ? `<a href="mailto:${esc(r.email)}" style="color:var(--navy);text-decoration:none;">${esc(r.email)}</a>` : '—'}</td>
+          <td>${r.phone ? esc(r.phone) : '—'}</td>
+          <td class="c-money">${fmt(r.awarded, r.region)}</td>
+          <td class="c-money">${fmt(r.allocated, r.region)}</td>
+          <td>${esc(r.funds || '—')}</td>
+          <td class="c-notes">${esc(r.notes || '')}</td>
+          <td class="c-actions">
+            <button data-act="view">View</button>
+            ${r.source === 'intake' ? '<button data-act="promote">Promote</button>' : '<button data-act="delete">Delete</button>'}
+          </td>
+        </tr>
+      `).join('');
     }
 
-    console.log('[gate] admin confirmed:', me.data.user.email);
+    /* totals */
+    const totalAwarded = rows.reduce((s, r) => s + (Number(r.awarded) || 0), 0);
+    const totalAlloc   = rows.reduce((s, r) => s + (Number(r.allocated) || 0), 0);
+    $('clientCount').textContent     = rows.length;
+    $('clientAwarded').textContent   = fmt(totalAwarded, 'US');
+    $('clientAllocated').textContent = fmt(totalAlloc, 'US');
+    $('adminCount').textContent      = rows.length;
+    $('lastSync').textContent        = 'Last sync: ' + new Date().toLocaleString('en-US');
 
-    // 2. Attach handlers (only after admin confirmed)
-    attachHandlers();
-
-    // 3. Load initial data
-    await loadClients();
-    await loadWithdrawals();
-    await loadNote();
-
-    console.log('=== admin init complete ===');
-  } catch (err) {
-    console.error('INIT ERROR:', err);
-    adminFatal('Init error: ' + ((err && err.message) || err));
-  }
-});
-
-/* ---------------- event handlers ---------------- */
-function attachHandlers() {
-
-  // ---- Create client ----
-  $('#newClientForm').on('submit', async function (e) {
-    e.preventDefault();
-    const err = $('#newClientErr'); err.addClass('hidden');
-    const fd = new FormData(this);
-    const body = Object.fromEntries(fd.entries());
-    body.fundsLocked       = fd.get('fundsLocked') ? true : false;
-    body.awardedAmount     = parseFloat(body.awardedAmount) || 0;
-    body.allocatedWinnings = parseFloat(body.allocatedWinnings) || 0;
-
-    const r = await api('/api/admin/clients', { method: 'POST', body: JSON.stringify(body) });
-    console.log('[create client]', r.status, r.data);
-    if (!r.ok) {
-      err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
-      return;
-    }
-    $('#newClientModal').modal('hide');
-    this.reset();
-    loadClients();
-  });
-
-  // ---- Populate edit client ----
-  $(document).on('click', '.edit-client', async function () {
-    const id = $(this).data('id');
-    const r = await api('/api/admin/clients/' + id);
-    if (!r.ok || !r.data || !r.data.client) return;
-    const c = r.data.client;
-    const f = $('#editClientForm')[0];
-    f.id.value                = c.id;
-    f.full_name.value         = c.full_name || '';
-    f.email.value             = c.email || '';
-    f.phone.value             = c.phone || '';
-    f.address.value           = c.address || '';
-    f.awarded_amount.value    = c.awarded_amount || 0;
-    f.allocated_winnings.value= c.allocated_winnings || 0;
-    f.report_details.value    = c.report_details || '';
-    f.site_notes.value        = c.site_notes || '';
-    f.funds_locked.checked    = !!c.funds_locked;
-    f.lock_reason.value       = c.lock_reason || '';
-    f.verified.checked        = !!c.verified;
-    $('#editClientModal').modal('show');
-  });
-
-  // ---- Save edit ----
-  $('#editClientForm').on('submit', async function (e) {
-    e.preventDefault();
-    const err = $('#editClientErr'); err.addClass('hidden');
-    const f = this;
-    const id = f.id.value;
-    const body = {
-      full_name:          f.full_name.value,
-      email:              f.email.value,
-      phone:              f.phone.value,
-      address:            f.address.value,
-      awarded_amount:     parseFloat(f.awarded_amount.value) || 0,
-      allocated_winnings: parseFloat(f.allocated_winnings.value) || 0,
-      report_details:     f.report_details.value,
-      site_notes:         f.site_notes.value,
-      funds_locked:       f.funds_locked.checked,
-      lock_reason:        f.lock_reason.value,
-      verified:           f.verified.checked
-    };
-    const r = await api('/api/admin/clients/' + id, { method: 'PATCH', body: JSON.stringify(body) });
-    console.log('[save client]', r.status, r.data);
-    if (!r.ok) {
-      err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
-      return;
-    }
-    $('#editClientModal').modal('hide');
-    loadClients();
-  });
-
-  // ---- Delete ----
-  $(document).on('click', '.del-client', async function () {
-    if (!confirm('Delete this client and all their withdrawal records?')) return;
-    const id = $(this).data('id');
-    await api('/api/admin/clients/' + id, { method: 'DELETE' });
-    loadClients();
-  });
-
-  // ---- Edit withdrawal ----
-  $(document).on('click', '.edit-wd', function () {
-    const f = $('#editWithdrawForm')[0];
-    f.id.value       = this.dataset.id;
-    f.status.value   = this.dataset.status;
-    f.progress.value = this.dataset.progress;
-    f.note.value     = this.dataset.note;
-    $('#editWithdrawModal').modal('show');
-  });
-
-  $('#editWithdrawForm').on('submit', async function (e) {
-    e.preventDefault();
-    const f = this;
-    const body = {
-      status:   f.status.value,
-      progress: parseInt(f.progress.value, 10) || 0,
-      note:     f.note.value
-    };
-    await api('/api/admin/withdrawals/' + f.id.value, {
-      method: 'PATCH', body: JSON.stringify(body)
+    /* row actions */
+    qsa('#clientsBody tr[data-id]').forEach((tr) => {
+      tr.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-act]');
+        if (!btn) return;
+        const id = tr.dataset.id;
+        const act = btn.dataset.act;
+        if (act === 'view') return viewClient(id);
+        if (act === 'delete') return deleteManualClient(id);
+        if (act === 'promote') return promoteIntake(id);
+      });
     });
-    $('#editWithdrawModal').modal('hide');
-    loadWithdrawals();
+  }
+
+  function viewClient(id) {
+    const c = allClients().find((x) => x.id === id);
+    if (!c) return;
+    const lines = [
+      `ID: ${c.id}`,
+      `Name: ${c.name}`,
+      `Email: ${c.email || '—'}`,
+      `Phone: ${c.phone || '—'}`,
+      `Address: ${c.address || '—'}`,
+      `Region: ${c.region}`,
+      `Awarded: ${fmt(c.awarded, c.region)}`,
+      `Allocated: ${fmt(c.allocated, c.region)}`,
+      `Funds: ${c.funds || '—'}`,
+      `Status: ${c.status}`,
+      `Notes: ${c.notes || '—'}`
+    ].join('\n');
+    alert(lines);
+  }
+
+  function deleteManualClient(id) {
+    if (!confirm('Delete this client account?')) return;
+    const rows = read(KEY.clients, []).filter((r) => r.id !== id);
+    write(KEY.clients, rows);
+    renderClients();
+    toast('Client account deleted');
+  }
+
+  function promoteIntake(id) {
+    const intake = read(KEY.intake, []);
+    const idx    = Number(id.replace('I-', '')) - 1;
+    const r      = intake[idx];
+    if (!r) return;
+
+    const manual = read(KEY.clients, []);
+    const nextId = 'C-' + String(manual.length + 1).padStart(3, '0');
+
+    manual.push({
+      id        : nextId,
+      source    : 'manual',
+      createdAt : Date.now(),
+      name      : r.name,
+      email     : r.email || '',
+      phone     : r.phone || '',
+      address   : r.address || '',
+      region    : r.region || 'US',
+      awarded   : Number(r.amount) || 0,
+      allocated : 0,
+      funds     : (r.region === 'US' ? 'PHFA' : 'GEF SGP') + ' · 2026',
+      status    : 'awarded',
+      notes     : 'Promoted from intake · eligible'
+    });
+    write(KEY.clients, manual);
+    renderClients();
+    toast('Intake promoted to active client · ' + nextId);
+  }
+
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  /* ---------- modal: new client ---------- */
+  const clientModal = $('clientModal');
+
+  function openClientModal(prefill) {
+    ['cName','cEmail','cPhone','cAwarded','cAllocated','cFunds','cAddress','cNotes']
+      .forEach((id) => { const el = $(id); if (el) el.value = ''; });
+    $('cStatus').value = 'pending';
+    $('cRegion').value = 'US';
+
+    if (prefill) {
+      $('cName').value    = prefill.name || '';
+      $('cEmail').value   = prefill.email || '';
+      $('cPhone').value   = prefill.phone || '';
+      $('cAwarded').value = prefill.awarded || '';
+      $('cAddress').value = prefill.address || '';
+      $('cFunds').value   = prefill.funds || 'PHFA · 2026';
+      $('cRegion').value  = prefill.region || 'US';
+    } else {
+      $('cFunds').value = 'PHFA · 2026';
+    }
+
+    clientModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeClientModal() {
+    clientModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  $('newClientBtn').addEventListener('click', () => openClientModal(null));
+  $('clientModalClose').addEventListener('click', closeClientModal);
+  $('clientCancel').addEventListener('click', closeClientModal);
+  clientModal.addEventListener('click', (e) => { if (e.target === clientModal) closeClientModal(); });
+
+  $('clientSave').addEventListener('click', () => {
+    let ok = true;
+    const name = $('cName'), email = $('cEmail'), phone = $('cPhone');
+    [name, email, phone].forEach((el) => el.closest('.form-row').classList.remove('is-error'));
+    if (!name.value.trim())  { name.closest('.form-row').classList.add('is-error');  ok = false; }
+    if (!email.value.trim()) { email.closest('.form-row').classList.add('is-error'); ok = false; }
+    if (!phone.value.trim()) { phone.closest('.form-row').classList.add('is-error'); ok = false; }
+    if (!ok) return;
+
+    const manual = read(KEY.clients, []);
+    const nextId = 'C-' + String(manual.length + 1).padStart(3, '0');
+
+    manual.push({
+      id        : nextId,
+      source    : 'manual',
+      createdAt : Date.now(),
+      name      : name.value.trim(),
+      email     : email.value.trim(),
+      phone     : phone.value.trim(),
+      address   : $('cAddress').value.trim(),
+      region    : $('cRegion').value,
+      awarded   : Number($('cAwarded').value) || 0,
+      allocated : Number($('cAllocated').value) || 0,
+      funds     : $('cFunds').value.trim(),
+      status    : $('cStatus').value,
+      notes     : $('cNotes').value.trim()
+    });
+    write(KEY.clients, manual);
+    closeClientModal();
+    renderClients();
+    toast('Client ' + nextId + ' created');
   });
 
-  // ---- Save site note ----
-  $('#saveNoteBtn').on('click', async function () {
-    const body = {
-      body: $('#noteBody').val(),
-      color: 'red',
-      visible: $('#noteVisible').is(':checked')
-    };
-    await api('/api/notes', { method: 'POST', body: JSON.stringify(body) });
-    const m = $('#noteMsg'); m.text('Saved.').removeClass('hidden');
-    setTimeout(() => m.addClass('hidden'), 1800);
+  /* ---------- WITHDRAWALS ---------- */
+  function renderWithdrawals() {
+    const wds = read(KEY.wds, []).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const body = $('withdrawalsBody');
+
+    if (!wds.length) {
+      body.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="8">No withdrawals recorded yet.</td>
+        </tr>`;
+    } else {
+      body.innerHTML = wds.map((w) => `
+        <tr data-id="${w.id}">
+          <td class="c-id">${w.id}</td>
+          <td class="c-name">${esc(w.clientName)}</td>
+          <td>${esc(w.date)}</td>
+          <td class="c-money">${fmt(w.amount, w.region)}</td>
+          <td>${esc(w.method)}</td>
+          <td><span class="pill pill--withdrawn">Recorded</span></td>
+          <td class="c-notes">${esc(w.notes || '—')}</td>
+          <td class="c-actions"><button data-act="delete">Delete</button></td>
+        </tr>
+      `).join('');
+    }
+
+    const total = wds.reduce((s, w) => s + (Number(w.amount) || 0), 0);
+    $('wdCount').textContent = wds.length;
+    $('wdTotal').textContent = fmt(total, 'US');
+
+    qsa('#withdrawalsBody tr[data-id]').forEach((tr) => {
+      tr.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-act="delete"]');
+        if (!btn) return;
+        if (!confirm('Delete this withdrawal record?')) return;
+        const rows = read(KEY.wds, []).filter((r) => r.id !== tr.dataset.id);
+        write(KEY.wds, rows);
+        renderWithdrawals();
+        toast('Withdrawal deleted');
+      });
+    });
+  }
+
+  const wdModal = $('wdModal');
+  function openWdModal() {
+    const clients = allClients();
+    if (!clients.length) {
+      toast('Add a client first before recording a withdrawal');
+      return;
+    }
+    $('wClient').innerHTML = clients.map((c) =>
+      `<option value="${c.id}">${esc(c.name)} · ${c.id}</option>`
+    ).join('');
+    $('wDate').value = new Date().toISOString().slice(0, 10);
+    $('wAmount').value = '';
+    $('wNotes').value = '';
+    wdModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWdModal() {
+    wdModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  $('newWithdrawalBtn').addEventListener('click', openWdModal);
+  $('wdModalClose').addEventListener('click', closeWdModal);
+  $('wdCancel').addEventListener('click', closeWdModal);
+  wdModal.addEventListener('click', (e) => { if (e.target === wdModal) closeWdModal(); });
+
+  $('wdSave').addEventListener('click', () => {
+    const amount = Number($('wAmount').value) || 0;
+    if (!amount) {
+      $('wAmount').closest('.form-row').classList.add('is-error');
+      return;
+    }
+    $('wAmount').closest('.form-row').classList.remove('is-error');
+
+    const clients = allClients();
+    const cid = $('wClient').value;
+    const client = clients.find((c) => c.id === cid) || { name: '—', region: 'US' };
+
+    const wds = read(KEY.wds, []);
+    wds.push({
+      id        : 'W-' + String(wds.length + 1).padStart(3, '0'),
+      clientId  : cid,
+      clientName: client.name,
+      region    : client.region,
+      date      : $('wDate').value,
+      amount    : amount,
+      method    : $('wMethod').value,
+      notes     : $('wNotes').value.trim(),
+      createdAt : Date.now()
+    });
+    write(KEY.wds, wds);
+    closeWdModal();
+    renderWithdrawals();
+    toast('Withdrawal recorded');
   });
 
-  // ---- Logout ----
-  $('#logoutLink').on('click', async function (e) {
-    e.preventDefault();
-    await api('/api/auth/logout', { method: 'POST' });
-    location.href = '/';
+  /* ---------- SITE NOTE ---------- */
+  const noteKey = KEY.note;
+  const noteEl  = $('siteNote');
+
+  (function loadNote() {
+    try {
+      const raw = localStorage.getItem(noteKey);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        noteEl.value = obj.text || '';
+        $('noteSavedAt').textContent = 'Last saved ' + new Date(obj.ts).toLocaleString('en-US');
+      }
+    } catch (_) {}
+    updateNoteCount();
+  })();
+
+  function updateNoteCount() {
+    $('noteCharCount').textContent = noteEl.value.length + ' characters';
+  }
+  noteEl.addEventListener('input', updateNoteCount);
+
+  $('saveNoteBtn').addEventListener('click', () => {
+    write(noteKey, { text: noteEl.value, ts: Date.now() });
+    $('noteSavedAt').textContent = 'Last saved ' + new Date().toLocaleString('en-US');
+    toast('Site note saved');
   });
-}
+
+  /* ---------- TAB SWITCHING ---------- */
+  const panels = {
+    clients    : $('panel-clients'),
+    withdrawals: $('panel-withdrawals'),
+    sitenote   : $('panel-sitenote')
+  };
+
+  qsa('.tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      qsa('.tab').forEach((t) => t.classList.toggle('is-active', t === tab));
+      Object.values(panels).forEach((p) => p.classList.add('hidden'));
+      panels[tab.dataset.tab].classList.remove('hidden');
+    });
+  });
+
+  /* ---------- LIVE SYNC ---------- */
+  window.addEventListener('storage', (e) => {
+    if (e.key === KEY.intake || e.key === KEY.clients) renderClients();
+    if (e.key === KEY.wds) renderWithdrawals();
+  });
+
+  /* ---------- BOOT ---------- */
+  renderClients();
+  renderWithdrawals();
+})();
 </script>
+
 </body>
 </html>
