@@ -5,30 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home | PA Housing Affordability and Rehabilitation Enhancement Fund</title>
 
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a2540'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='bold' fill='%23d94f04' text-anchor='middle'>P</text></svg>">
+
 <link rel="stylesheet" href="css/pahf.css">
 
 <style>
-/* ============================================================
-   index.html — Home · Region Router · Eligibility · Extended
-   Theme: PHFA / government-web (matches funding.html)
-   ============================================================ */
-
 :root{
-  --navy-dark:#0a2540;
-  --navy:#0b4f7a;
-  --navy-hover:#083d5e;
-  --green:#7cb342;
-  --green-dark:#558b2f;
-  --gold:#c9a227;
-  --orange:#d94f04;
-  --red:#b60606;
-  --gray-bg:#f4f6f8;
-  --card:#ffffff;
-  --border:#e0e0e0;
-  --text:#333333;
-  --muted:#6b7a89;
-  --shadow-sm:0 1px 3px rgba(10,37,64,.08);
-  --shadow-md:0 4px 14px rgba(10,37,64,.10);
+  --navy-dark:#0a2540;--navy:#0b4f7a;--navy-hover:#083d5e;
+  --green:#7cb342;--green-dark:#558b2f;--gold:#c9a227;--orange:#d94f04;--red:#b60606;
+  --gray-bg:#f4f6f8;--card:#ffffff;--border:#e0e0e0;--text:#333333;--muted:#6b7a89;
+  --shadow-sm:0 1px 3px rgba(10,37,64,.08);--shadow-md:0 4px 14px rgba(10,37,64,.10);
 }
 *{box-sizing:border-box;}
 body{
@@ -39,178 +25,83 @@ body{
 .hidden{display:none !important;}
 img{max-width:100%;height:auto;display:block;}
 
-/* ---------- Navbar ---------- */
+/* ---------- navbar ---------- */
 .navbar-pahf{
   position:fixed;top:0;left:0;right:0;z-index:1030;
-  background:var(--navy-dark);
-  display:flex;align-items:center;justify-content:space-between;
+  background:var(--navy-dark);display:flex;align-items:center;justify-content:space-between;
   padding:0 24px;height:64px;box-shadow:0 1px 3px rgba(0,0,0,.1);
 }
 .navbar-pahf__brand{display:flex;align-items:center;gap:14px;min-width:0;}
-.pahf-logo-text{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:26px;font-weight:700;letter-spacing:1px;
-  color:var(--orange);line-height:1;text-decoration:none;
-}
-.navbar-pahf__title{
-  color:#fff;font-size:16px;font-weight:600;text-decoration:underline;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.pahf-logo-text{font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:700;letter-spacing:1px;color:var(--orange);line-height:1;text-decoration:none;}
+.navbar-pahf__title{color:#fff;font-size:16px;font-weight:600;text-decoration:underline;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .navbar-pahf__nav{display:flex;align-items:center;gap:2px;}
-.navbar-pahf__nav a{
-  color:#cfdde8;font-size:13px;font-weight:600;letter-spacing:.5px;
-  padding:8px 14px;border-radius:4px;text-decoration:none;
-}
-.navbar-pahf__nav a:hover,
-.navbar-pahf__nav a.is-active{background:var(--navy);color:#fff;text-decoration:none;}
-.navbar-pahf__flag{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
-  border-radius:20px;padding:4px 12px;color:#fff;
-  font-size:12px;font-weight:600;letter-spacing:.4px;cursor:pointer;margin-left:8px;
-}
+.navbar-pahf__nav a{color:#cfdde8;font-size:13px;font-weight:600;letter-spacing:.5px;padding:8px 14px;border-radius:4px;text-decoration:none;}
+.navbar-pahf__nav a:hover,.navbar-pahf__nav a.is-active{background:var(--navy);color:#fff;text-decoration:none;}
+.navbar-pahf__flag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:4px 12px;color:#fff;font-size:12px;font-weight:600;letter-spacing:.4px;cursor:pointer;margin-left:8px;}
 .navbar-pahf__flag:hover{background:rgba(255,255,255,.16);}
 
-/* ---------- Security strip ---------- */
-.security-strip{
-  position:fixed;top:64px;left:0;right:0;z-index:1020;
-  background:linear-gradient(90deg,#0f3a24 0%,#14532d 100%);
-  color:#d9f2df;font-size:11.5px;font-weight:600;letter-spacing:.6px;
-  padding:7px 24px;display:flex;flex-wrap:wrap;align-items:center;
-  justify-content:center;gap:22px;text-align:center;
-}
+/* ---------- security strip ---------- */
+.security-strip{position:fixed;top:64px;left:0;right:0;z-index:1020;background:linear-gradient(90deg,#0f3a24 0%,#14532d 100%);color:#d9f2df;font-size:11.5px;font-weight:600;letter-spacing:.6px;padding:7px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:22px;text-align:center;}
 .security-strip .lock{color:#7cf0a5;}
 
-/* ---------- Page wrap ---------- */
+/* ---------- page ---------- */
 .page-wrap{max-width:1200px;margin:0 auto;padding:28px 24px 80px;}
-
-.section-eyebrow{
-  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--green-dark);margin:0 0 8px;
-}
-.section-title{
-  color:var(--navy);font-size:30px;font-weight:400;
-  letter-spacing:-.3px;margin:0 0 10px;line-height:1.2;
-}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green-dark);margin:0 0 8px;}
+.section-title{color:var(--navy);font-size:30px;font-weight:400;letter-spacing:-.3px;margin:0 0 10px;line-height:1.2;}
 .section-sub{color:var(--muted);font-size:15px;max-width:74ch;margin:0 0 22px;}
 
-/* ---------- Region picker ---------- */
+/* ---------- region picker ---------- */
 .region-picker{margin-bottom:40px;}
 .region-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:22px;}
-.region-card{
-  position:relative;background:var(--card);border:2px solid var(--border);
-  border-radius:8px;padding:26px 24px 22px;cursor:pointer;
-  transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;
-  overflow:hidden;
-}
+.region-card{position:relative;background:var(--card);border:2px solid var(--border);border-radius:8px;padding:26px 24px 22px;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;overflow:hidden;}
 .region-card:hover{border-color:var(--navy);transform:translateY(-3px);box-shadow:var(--shadow-md);}
 .region-card.is-selected{border-color:var(--green);box-shadow:0 0 0 3px rgba(124,179,66,.22);}
-.region-card__flag{
-  display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.8px;
-  text-transform:uppercase;background:var(--navy);color:#fff;
-  padding:4px 10px;border-radius:3px;margin-bottom:14px;
-}
+.region-card__flag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;background:var(--navy);color:#fff;padding:4px 10px;border-radius:3px;margin-bottom:14px;}
 .region-card.is-eu .region-card__flag{background:#1f4e8c;}
 .region-card__map{width:100%;height:190px;display:block;margin:0 auto 16px;}
-.region-card__map path,
-.region-card__map polygon{transition:fill .2s ease,stroke .2s ease;}
+.region-card__map path,.region-card__map polygon{transition:fill .2s,stroke .2s;}
 .region-card:hover .region-card__map .map-land{fill:#1f6ba8;}
 .region-card__title{font-size:20px;font-weight:700;color:var(--navy-dark);margin:0 0 6px;}
 .region-card__desc{font-size:13.5px;color:var(--muted);margin:0 0 14px;min-height:40px;}
-.region-card__cta{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-  color:var(--navy);
-}
+.region-card__cta{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--navy);}
 .region-card:hover .region-card__cta{color:var(--orange);}
 .region-card__cta::after{content:'→';font-size:16px;}
-
 .map-sea{fill:#eef4f9;}
 .map-land{fill:#c8dcec;stroke:#0b4f7a;stroke-width:1.6;stroke-linejoin:round;}
 .map-land-2{fill:#b6d2e6;stroke:#0b4f7a;stroke-width:1.4;stroke-linejoin:round;}
 .map-dot{fill:#0b4f7a;}
 .map-line{stroke:#7cb342;stroke-width:1.4;stroke-dasharray:4 4;fill:none;}
 
-/* ---------- Program hero ---------- */
-.program-hero{
-  background:linear-gradient(135deg,#0a2540 0%,#0b4f7a 100%);
-  color:#fff;border-radius:10px;padding:38px 40px 34px;margin-bottom:30px;
-  position:relative;overflow:hidden;
-}
-.program-hero::after{
-  content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;
-  border-radius:50%;background:rgba(255,255,255,.05);
-}
-.program-hero__region{
-  font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;
-  color:#8fd0a5;margin:0 0 10px;
-}
+/* ---------- hero ---------- */
+.program-hero{background:linear-gradient(135deg,#0a2540 0%,#0b4f7a 100%);color:#fff;border-radius:10px;padding:38px 40px 34px;margin-bottom:30px;position:relative;overflow:hidden;}
+.program-hero::after{content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.05);}
+.program-hero__region{font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:#8fd0a5;margin:0 0 10px;}
 .program-hero__title{font-size:34px;font-weight:400;margin:0 0 12px;letter-spacing:-.4px;line-height:1.15;}
 .program-hero__desc{font-size:15px;color:#d6e4ef;max-width:70ch;margin:0 0 22px;}
-.amount-chip{
-  display:inline-block;background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.25);border-radius:6px;
-  padding:14px 22px;margin-right:12px;margin-bottom:10px;
-}
-.amount-chip__label{
-  font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-  color:#a8c6dd;display:block;margin-bottom:3px;
-}
+.amount-chip{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:14px 22px;margin-right:12px;margin-bottom:10px;}
+.amount-chip__label{font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#a8c6dd;display:block;margin-bottom:3px;}
 .amount-chip__value{font-size:22px;font-weight:700;color:#fff;letter-spacing:.3px;}
-.program-hero__switch{
-  background:transparent;border:1px solid rgba(255,255,255,.4);
-  color:#fff;font-size:12px;font-weight:700;letter-spacing:1.2px;
-  text-transform:uppercase;padding:9px 16px;border-radius:4px;
-  cursor:pointer;margin-top:12px;
-}
+.program-hero__switch{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;margin-top:12px;}
 .program-hero__switch:hover{background:rgba(255,255,255,.12);}
 
-/* ---------- Info columns ---------- */
+/* ---------- eligibility + aims ---------- */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:30px;}
-.info-card{
-  background:var(--card);border:1px solid var(--border);border-radius:8px;
-  box-shadow:var(--shadow-sm);overflow:hidden;
-}
-.info-card__head{
-  background:#f4f6f8;border-bottom:1px solid var(--border);
-  padding:14px 20px;font-size:13px;font-weight:700;
-  letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);
-}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-sm);overflow:hidden;}
+.info-card__head{background:#f4f6f8;border-bottom:1px solid var(--border);padding:14px 20px;font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);}
 .info-card__body{padding:8px 20px 18px;}
 .check-list,.aim-list{list-style:none;margin:0;padding:0;}
-.check-list li,
-.aim-list li{
-  display:flex;gap:12px;padding:11px 0;
-  border-bottom:1px solid #eef2f6;font-size:14.5px;color:var(--text);
-}
-.check-list li:last-child,
-.aim-list li:last-child{border-bottom:0;}
-.check-list li::before{
-  content:'✓';flex:0 0 22px;height:22px;line-height:22px;text-align:center;
-  background:#eaf5e1;color:var(--green-dark);font-weight:700;font-size:12px;border-radius:50%;
-}
-.aim-list li::before{
-  content:'◆';flex:0 0 22px;height:22px;line-height:22px;text-align:center;
-  background:#e8f1f8;color:var(--navy);font-size:9px;border-radius:50%;
-}
+.check-list li,.aim-list li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #eef2f6;font-size:14.5px;color:var(--text);}
+.check-list li:last-child,.aim-list li:last-child{border-bottom:0;}
+.check-list li::before{content:'✓';flex:0 0 22px;height:22px;line-height:22px;text-align:center;background:#eaf5e1;color:var(--green-dark);font-weight:700;font-size:12px;border-radius:50%;}
+.aim-list li::before{content:'◆';flex:0 0 22px;height:22px;line-height:22px;text-align:center;background:#e8f1f8;color:var(--navy);font-size:9px;border-radius:50%;}
 
 /* ---------- CTA ---------- */
-.cta-box{
-  background:#f8fafc;border:1px solid #dbe4ec;border-left:4px solid var(--green);
-  border-radius:8px;padding:24px 28px;
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;
-}
+.cta-box{background:#f8fafc;border:1px solid #dbe4ec;border-left:4px solid var(--green);border-radius:8px;padding:24px 28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;}
 .cta-box__copy h3{margin:0 0 4px;font-size:20px;color:var(--navy-dark);font-weight:700;}
 .cta-box__copy p{margin:0;font-size:14px;color:var(--muted);max-width:56ch;}
 
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-family:inherit;font-size:13px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;
-  padding:14px 28px;border-radius:5px;cursor:pointer;
-  border:1px solid transparent;text-decoration:none;
-  transition:background .13s ease,border-color .13s ease,color .13s ease;
-}
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:5px;cursor:pointer;border:1px solid transparent;text-decoration:none;transition:background .13s,border-color .13s,color .13s;}
 .btn-primary{background:var(--green);border-color:var(--green);color:#fff;}
 .btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
 .btn-navy{background:var(--navy);border-color:var(--navy);color:#fff;}
@@ -221,202 +112,93 @@ img{max-width:100%;height:auto;display:block;}
 .btn[disabled]{opacity:.55;cursor:not-allowed;}
 .btn-arrow::after{content:'→';font-size:16px;margin-left:4px;}
 
-/* ============================================================
-   UNDP-INSPIRED EXTENDED SECTIONS
-   ============================================================ */
-
-/* ---------- Mission (two-column, label left / statement right) ---------- */
-.mission{
-  display:grid;grid-template-columns:1fr 2fr;gap:36px;
-  padding:48px 0;margin:36px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-}
-.mission__label{
-  font-size:22px;font-weight:700;color:var(--navy-dark);
-  letter-spacing:-.3px;line-height:1.25;
-}
-.mission__label small{
-  display:block;font-size:11px;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--green-dark);margin-bottom:6px;
-}
-.mission__statement{
-  font-size:22px;font-weight:400;color:var(--navy-dark);
-  line-height:1.5;letter-spacing:-.2px;margin:0;
-}
+/* ---------- mission ---------- */
+.mission{display:grid;grid-template-columns:1fr 2fr;gap:36px;padding:48px 0;margin:36px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.mission__label{font-size:22px;font-weight:700;color:var(--navy-dark);letter-spacing:-.3px;line-height:1.25;}
+.mission__label small{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:6px;}
+.mission__statement{font-size:22px;font-weight:400;color:var(--navy-dark);line-height:1.5;letter-spacing:-.2px;margin:0;}
 .mission__statement strong{font-weight:700;color:var(--navy);}
 
-/* ---------- Impact stats strip ---------- */
+/* ---------- impact stats ---------- */
 .impact{margin:0 0 44px;}
 .impact__head{display:grid;grid-template-columns:1fr 2fr;gap:36px;margin-bottom:24px;}
 .impact__head h2{font-size:24px;font-weight:700;color:var(--navy-dark);margin:0;letter-spacing:-.3px;line-height:1.25;}
 .impact__head p{font-size:15px;color:var(--muted);margin:0;max-width:64ch;line-height:1.6;}
 .impact__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;}
-.impact__card{
-  padding:26px 22px;border-right:1px solid var(--border);
-  position:relative;background:#fff;
-}
+.impact__card{padding:26px 22px;border-right:1px solid var(--border);position:relative;background:#fff;}
 .impact__card:last-child{border-right:0;}
-.impact__card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green);
-}
+.impact__card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green);}
 .impact__card:nth-child(2)::before{background:#1f6ba8;}
 .impact__card:nth-child(3)::before{background:var(--gold);}
 .impact__card:nth-child(4)::before{background:var(--orange);}
-.impact__value{
-  font-size:34px;font-weight:700;color:var(--navy-dark);
-  line-height:1.1;letter-spacing:-1px;margin:0 0 4px;
-}
+.impact__value{font-size:34px;font-weight:700;color:var(--navy-dark);line-height:1.1;letter-spacing:-1px;margin:0 0 4px;}
 .impact__value small{font-size:15px;font-weight:400;color:var(--muted);letter-spacing:0;margin-left:4px;}
-.impact__label{
-  font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
-  color:var(--green-dark);margin:0 0 8px;
-}
+.impact__label{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--green-dark);margin:0 0 8px;}
 .impact__card p{font-size:13px;color:var(--muted);margin:0;line-height:1.5;}
 
-/* ---------- Featured stories grid ---------- */
+/* ---------- featured stories with real images ---------- */
 .featured{margin:0 0 48px;padding-top:36px;border-top:1px solid var(--border);}
-.featured__head{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:18px;margin-bottom:22px;flex-wrap:wrap;
-}
+.featured__head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px;flex-wrap:wrap;}
 .featured__head h2{font-size:26px;font-weight:700;color:var(--navy-dark);margin:0;letter-spacing:-.3px;}
-.featured__head a{
-  font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
-  color:var(--navy);text-decoration:none;
-}
+.featured__head a{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);text-decoration:none;}
 .featured__head a:hover{color:var(--orange);}
 .featured__head a::after{content:' →';}
 .featured__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;}
-.story{
-  background:#fff;border:1px solid var(--border);border-radius:8px;
-  overflow:hidden;text-decoration:none;color:inherit;
-  display:flex;flex-direction:column;
-  transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease;
-}
+.story{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s,border-color .15s;}
 .story:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);border-color:#c8d3dc;text-decoration:none;}
-.story__media{
-  aspect-ratio:16/9;background:linear-gradient(135deg,#e8eff5 0%,#c8dcec 100%);
-  position:relative;overflow:hidden;
-}
-.story__media img{width:100%;height:100%;object-fit:cover;}
-.story__media--ph::after{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(circle at 30% 40%,rgba(11,79,122,.18) 0%,transparent 45%),
-    radial-gradient(circle at 70% 65%,rgba(124,179,66,.2) 0%,transparent 40%);
-}
+.story__media{aspect-ratio:16/9;background:#eef2f6;position:relative;overflow:hidden;}
+.story__media img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.story:hover .story__media img{transform:scale(1.04);}
 .story__body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;}
-.story__cat{
-  font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-  color:var(--green-dark);margin:0 0 8px;
-}
-.story__title{
-  font-size:17px;font-weight:700;color:var(--navy-dark);
-  margin:0 0 8px;line-height:1.3;letter-spacing:-.2px;
-}
+.story__cat{font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green-dark);margin:0 0 8px;}
+.story__title{font-size:17px;font-weight:700;color:var(--navy-dark);margin:0 0 8px;line-height:1.3;letter-spacing:-.2px;}
 .story__desc{font-size:13.5px;color:var(--muted);margin:0 0 14px;line-height:1.55;flex:1;}
-.story__cta{
-  font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
-  color:var(--navy);margin-top:auto;
-}
+.story__cta{font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);margin-top:auto;}
 .story:hover .story__cta{color:var(--orange);}
 .story__cta::after{content:' →';}
 
-/* ---------- Trusted partnerships CTA ---------- */
-.partners{
-  background:linear-gradient(135deg,#0a2540 0%,#0b4f7a 100%);
-  color:#fff;border-radius:10px;padding:44px 46px;
-  margin:0 0 48px;display:grid;grid-template-columns:2fr 1fr;gap:36px;align-items:center;
-  position:relative;overflow:hidden;
-}
-.partners::after{
-  content:'';position:absolute;right:-80px;bottom:-80px;width:280px;height:280px;
-  border-radius:50%;background:rgba(124,179,66,.15);
-}
+/* ---------- partners ---------- */
+.partners{background:linear-gradient(135deg,#0a2540 0%,#0b4f7a 100%);color:#fff;border-radius:10px;padding:44px 46px;margin:0 0 48px;display:grid;grid-template-columns:2fr 1fr;gap:36px;align-items:center;position:relative;overflow:hidden;}
+.partners::after{content:'';position:absolute;right:-80px;bottom:-80px;width:280px;height:280px;border-radius:50%;background:rgba(124,179,66,.15);}
 .partners h2{font-size:28px;font-weight:400;color:#fff;margin:0 0 12px;letter-spacing:-.3px;line-height:1.2;}
 .partners p{font-size:14.5px;color:#d6e4ef;margin:0;max-width:60ch;line-height:1.6;}
 .partners__cta{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;}
-.partners .btn-primary{background:var(--green);border-color:var(--green);color:#fff;}
-.partners .btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark);}
-.partners .btn-outline-light{
-  background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;
-}
+.partners .btn-outline-light{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;}
 .partners .btn-outline-light:hover{background:rgba(255,255,255,.12);color:#fff;}
 
-/* ---------- Publications strip ---------- */
+/* ---------- publications with real cover images ---------- */
 .publications{margin:0 0 56px;padding-top:36px;border-top:1px solid var(--border);}
 .publications h2{font-size:26px;font-weight:700;color:var(--navy-dark);margin:0 0 22px;letter-spacing:-.3px;}
 .pub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;}
-.pub{
-  text-decoration:none;color:inherit;display:flex;flex-direction:column;
-}
-.pub__cover{
-  aspect-ratio:3/4;background:linear-gradient(160deg,#0a2540 0%,#0b4f7a 100%);
-  border-radius:6px;position:relative;overflow:hidden;margin-bottom:12px;
-  border:1px solid #dbe4ec;
-  display:flex;align-items:center;justify-content:center;color:#fff;
-}
-.pub__cover--alt{background:linear-gradient(160deg,#0f3a24 0%,#14532d 100%);}
-.pub__cover--gold{background:linear-gradient(160deg,#7a5a00 0%,#c9a227 100%);}
-.pub__cover--orange{background:linear-gradient(160deg,#8c3100 0%,#d94f04 100%);}
-.pub__cover span{
-  font-family:Georgia,serif;font-size:32px;font-weight:700;letter-spacing:2px;
-  opacity:.7;
-}
+.pub{text-decoration:none;color:inherit;display:flex;flex-direction:column;}
+.pub__cover{aspect-ratio:3/4;background:#eef2f6;border-radius:6px;overflow:hidden;margin-bottom:12px;border:1px solid #dbe4ec;position:relative;}
+.pub__cover img{width:100%;height:100%;object-fit:cover;}
 .pub__cat{font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green-dark);margin-bottom:4px;}
 .pub__title{font-size:14.5px;font-weight:700;color:var(--navy-dark);margin:0 0 4px;line-height:1.3;}
 .pub__desc{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;}
 .pub:hover .pub__title{color:var(--navy);}
 
-/* ---------- Footer ---------- */
-.site-footer{
-  background:#0a2540;color:#cfdde8;margin-top:40px;
-  padding:52px 24px 28px;
-}
+/* ---------- footer ---------- */
+.site-footer{background:#0a2540;color:#cfdde8;margin-top:40px;padding:52px 24px 28px;}
 .site-footer__inner{max-width:1200px;margin:0 auto;}
-.site-footer__top{
-  display:grid;grid-template-columns:1.2fr 3fr;gap:40px;
-  padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12);
-}
+.site-footer__top{display:grid;grid-template-columns:1.2fr 3fr;gap:40px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12);}
 .site-footer__brand{display:flex;align-items:flex-start;gap:14px;}
-.site-footer__logo{
-  font-family:Georgia,serif;font-size:28px;font-weight:700;letter-spacing:2px;
-  color:var(--orange);line-height:1;text-decoration:none;
-}
+.site-footer__logo{font-family:Georgia,serif;font-size:28px;font-weight:700;letter-spacing:2px;color:var(--orange);line-height:1;text-decoration:none;}
 .site-footer__brand p{font-size:13px;color:#a8c6dd;margin:6px 0 0;line-height:1.5;max-width:24ch;}
 .site-footer__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;}
-.site-footer__col h6{
-  font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
-  color:#fff;margin:0 0 12px;
-}
-.site-footer__col a{
-  display:block;color:#a8c6dd;text-decoration:none;
-  font-size:13.5px;padding:5px 0;line-height:1.4;
-}
+.site-footer__col h6{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#fff;margin:0 0 12px;}
+.site-footer__col a{display:block;color:#a8c6dd;text-decoration:none;font-size:13.5px;padding:5px 0;line-height:1.4;}
 .site-footer__col a:hover{color:#fff;text-decoration:underline;}
-.site-footer__bottom{
-  padding-top:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
-  font-size:12.5px;color:#8fa8bd;
-}
+.site-footer__bottom{padding-top:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;font-size:12.5px;color:#8fa8bd;}
 .site-footer__legal{display:flex;flex-wrap:wrap;gap:18px;}
 .site-footer__legal a{color:#a8c6dd;text-decoration:none;}
 .site-footer__legal a:hover{color:#fff;text-decoration:underline;}
 .site-footer__social{display:flex;gap:8px;}
-.site-footer__social a{
-  width:32px;height:32px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.08);color:#cfdde8;
-  font-size:11px;font-weight:700;text-decoration:none;
-}
+.site-footer__social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:#cfdde8;font-size:11px;font-weight:700;text-decoration:none;}
 .site-footer__social a:hover{background:var(--green);color:#fff;}
 
-/* ---------- Cookie banner ---------- */
-.cookie-banner{
-  position:fixed;left:0;right:0;bottom:0;z-index:1090;
-  background:#0a2540;color:#dfeaf3;padding:16px 24px;
-  box-shadow:0 -4px 20px rgba(10,37,64,.35);
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
-  font-size:13.5px;
-}
+/* ---------- cookie banner ---------- */
+.cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:1090;background:#0a2540;color:#dfeaf3;padding:16px 24px;box-shadow:0 -4px 20px rgba(10,37,64,.35);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;font-size:13.5px;}
 .cookie-banner__copy{max-width:72ch;}
 .cookie-banner__copy strong{color:#fff;}
 .cookie-banner__copy a{color:#8fd0a5;text-decoration:underline;}
@@ -427,115 +209,65 @@ img{max-width:100%;height:auto;display:block;}
 .cookie-btn-reject{background:transparent;border-color:rgba(255,255,255,.4);color:#fff;}
 .cookie-btn-reject:hover{background:rgba(255,255,255,.12);}
 
-/* ---------- Modal ---------- */
-.modal-backdrop{
-  position:fixed;inset:0;z-index:1100;background:rgba(10,37,64,.62);
-  display:flex;align-items:flex-start;justify-content:center;
-  padding:40px 20px;overflow:auto;
-}
-.modal{
-  width:100%;max-width:600px;background:#fff;border-radius:8px;
-  box-shadow:0 24px 60px rgba(10,37,64,.45);overflow:hidden;
-}
-.modal__head{
-  background:var(--navy-dark);color:#fff;padding:16px 22px;
-  display:flex;align-items:center;justify-content:space-between;
-}
+/* ---------- modal ---------- */
+.modal-backdrop{position:fixed;inset:0;z-index:1100;background:rgba(10,37,64,.62);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;overflow:auto;}
+.modal{width:100%;max-width:600px;background:#fff;border-radius:8px;box-shadow:0 24px 60px rgba(10,37,64,.45);overflow:hidden;}
+.modal__head{background:var(--navy-dark);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;}
 .modal__head h3{margin:0;font-size:17px;font-weight:600;}
 .modal__close{background:transparent;border:0;color:#fff;font-size:24px;line-height:1;cursor:pointer;padding:0 4px;}
 .modal__close:hover{color:var(--orange);}
 .modal__body{padding:24px 26px 10px;}
-.modal__foot{
-  padding:16px 26px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;
-  border-top:1px solid #eef2f6;margin-top:16px;
-}
+.modal__foot{padding:16px 26px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #eef2f6;margin-top:16px;}
 .steps{display:flex;align-items:center;gap:0;margin-bottom:24px;}
 .step-dot{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
-.step-dot__circle{
-  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:#eef2f6;color:var(--muted);font-size:12px;font-weight:700;
-  border:2px solid #eef2f6;z-index:2;
-}
+.step-dot__circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eef2f6;color:var(--muted);font-size:12px;font-weight:700;border:2px solid #eef2f6;z-index:2;}
 .step-dot__label{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);}
 .step-dot.is-active .step-dot__circle{background:var(--navy);border-color:var(--navy);color:#fff;}
 .step-dot.is-active .step-dot__label{color:var(--navy);}
 .step-dot.is-done .step-dot__circle{background:var(--green);border-color:var(--green);color:#fff;}
 .step-dot.is-done .step-dot__label{color:var(--green-dark);}
-.step-dot::before{
-  content:'';position:absolute;top:15px;left:-50%;width:100%;height:2px;
-  background:#eef2f6;z-index:1;
-}
+.step-dot::before{content:'';position:absolute;top:15px;left:-50%;width:100%;height:2px;background:#eef2f6;z-index:1;}
 .step-dot:first-child::before{display:none;}
-
 .form-row{margin-bottom:16px;}
 .form-row label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.4px;color:var(--navy);margin-bottom:6px;}
 .form-row .hint{font-size:11.5px;color:var(--muted);font-weight:400;margin-top:4px;}
-.form-row input[type="text"],
-.form-row input[type="date"],
-.form-row input[type="number"],
-.form-row input[type="password"],
-.form-row select,
-.form-row textarea{
-  width:100%;font-family:inherit;font-size:14.5px;color:var(--text);
-  border:1px solid #cbd3db;border-radius:5px;background:#fff;
-  height:44px;padding:0 12px;outline:none;
-}
-.form-row input:focus,
-.form-row select:focus,
-.form-row textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,79,122,.13);}
-.form-row.is-error input,
-.form-row.is-error select{border-color:var(--red);box-shadow:0 0 0 3px rgba(182,6,6,.12);}
+.form-row input[type="text"],.form-row input[type="date"],.form-row input[type="number"],.form-row input[type="password"],.form-row select,.form-row textarea{width:100%;font-family:inherit;font-size:14.5px;color:var(--text);border:1px solid #cbd3db;border-radius:5px;background:#fff;height:44px;padding:0 12px;outline:none;}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,79,122,.13);}
+.form-row.is-error input,.form-row.is-error select{border-color:var(--red);box-shadow:0 0 0 3px rgba(182,6,6,.12);}
 .field-error{color:var(--red);font-size:12px;margin-top:5px;display:none;}
 .form-row.is-error .field-error{display:block;}
 .radio-row{display:flex;gap:10px;}
 .radio-pill{flex:1;position:relative;}
 .radio-pill input{position:absolute;opacity:0;pointer-events:none;}
-.radio-pill span{
-  display:block;text-align:center;border:1px solid #cbd3db;border-radius:5px;
-  padding:11px 10px;font-size:13.5px;font-weight:600;color:var(--muted);
-  cursor:pointer;transition:all .12s ease;
-}
+.radio-pill span{display:block;text-align:center;border:1px solid #cbd3db;border-radius:5px;padding:11px 10px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .12s;}
 .radio-pill input:checked + span{background:var(--navy);border-color:var(--navy);color:#fff;}
 .result-panel{text-align:center;padding:10px 0 6px;}
 .result-panel__eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green-dark);margin:0 0 8px;}
-.result-amount{
-  font-size:44px;font-weight:700;color:var(--navy-dark);letter-spacing:-1px;
-  line-height:1.1;margin:0 0 10px;font-variant-numeric:tabular-nums;
-}
+.result-amount{font-size:44px;font-weight:700;color:var(--navy-dark);letter-spacing:-1px;line-height:1.1;margin:0 0 10px;font-variant-numeric:tabular-nums;}
 .result-panel__note{font-size:13.5px;color:var(--muted);max-width:44ch;margin:0 auto 18px;}
-.result-breakdown{
-  background:#f8fafc;border:1px solid #dbe4ec;border-radius:6px;
-  padding:14px 18px;text-align:left;margin:0 auto 6px;max-width:420px;
-}
-.result-breakdown div{
-  display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px;
-  border-bottom:1px solid #eef2f6;
-}
+.result-breakdown{background:#f8fafc;border:1px solid #dbe4ec;border-radius:6px;padding:14px 18px;text-align:left;margin:0 auto 6px;max-width:440px;}
+.result-breakdown div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13.5px;border-bottom:1px solid #eef2f6;}
 .result-breakdown div:last-child{border-bottom:0;}
 .result-breakdown dt{color:var(--muted);font-weight:500;}
-.result-breakdown dd{margin:0;color:var(--text);font-weight:700;text-align:right;}
-.spinner{
-  width:44px;height:44px;margin:20px auto 16px;
-  border:4px solid #eef2f6;border-top-color:var(--navy);
-  border-radius:50%;animation:spin .8s linear infinite;
-}
+.result-breakdown dd{margin:0;color:var(--text);font-weight:700;text-align:right;word-break:break-word;}
+.spinner{width:44px;height:44px;margin:20px auto 16px;border:4px solid #eef2f6;border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .processing-copy{text-align:center;color:var(--muted);font-size:14px;}
 
-.toast{
-  position:fixed;right:24px;bottom:24px;z-index:1150;background:var(--navy-dark);color:#fff;
-  font-size:13.5px;font-weight:500;padding:13px 20px;border-radius:5px;
-  box-shadow:0 10px 30px rgba(10,37,64,.35);opacity:0;transform:translateY(10px);
-  transition:opacity .2s ease,transform .2s ease;pointer-events:none;max-width:320px;
-}
+/* confirmation panel (replaces redirect) */
+.confirm-banner{background:linear-gradient(135deg,#0f3a24 0%,#14532d 100%);color:#fff;border-radius:8px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px;}
+.confirm-banner__icon{font-size:22px;line-height:1;margin-top:2px;color:#7cf0a5;}
+.confirm-banner h4{margin:0 0 4px;font-size:16px;font-weight:700;color:#fff;}
+.confirm-banner p{margin:0;font-size:13px;color:#c8e6d0;line-height:1.55;}
+
+.toast{position:fixed;right:24px;bottom:24px;z-index:1150;background:var(--navy-dark);color:#fff;font-size:13.5px;font-weight:500;padding:13px 20px;border-radius:5px;box-shadow:0 10px 30px rgba(10,37,64,.35);opacity:0;transform:translateY(10px);transition:opacity .2s,transform .2s;pointer-events:none;max-width:320px;}
 .toast.is-visible{opacity:1;transform:translateY(0);}
 
-/* ---------- Responsive ---------- */
+/* ---------- responsive ---------- */
 @media (max-width:1000px){
   .impact__grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .impact__card:nth-child(2){border-right:0;}
-  .impact__card:nth-child(1),
-  .impact__card:nth-child(2){border-bottom:1px solid var(--border);}
+  .impact__card:nth-child(1),.impact__card:nth-child(2){border-bottom:1px solid var(--border);}
   .featured__grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .pub-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .site-footer__top{grid-template-columns:1fr;gap:26px;}
@@ -572,7 +304,6 @@ img{max-width:100%;height:auto;display:block;}
 
 <body>
 
-<!-- ============================ NAVBAR ============================ -->
 <nav class="navbar-pahf">
   <div class="navbar-pahf__brand">
     <a class="pahf-logo-text" href="index.html">PHFA</a>
@@ -595,7 +326,6 @@ img{max-width:100%;height:auto;display:block;}
   </div>
 </nav>
 
-<!-- ============================ SECURITY STRIP ============================ -->
 <div class="security-strip">
   <span><span class="lock">🔒</span> Secured with 256-bit SSL encryption</span>
   <span>🛡️ Official government grant portal</span>
@@ -603,42 +333,29 @@ img{max-width:100%;height:auto;display:block;}
   <span>🏛️ Registered &amp; audited programme</span>
 </div>
 
-<!-- ============================ PAGE ============================ -->
 <div class="page-wrap">
 
-  <!-- ---------------- REGION PICKER ---------------- -->
+  <!-- REGION PICKER -->
   <section class="region-picker" id="regionPicker">
     <p class="section-eyebrow">Choose your region to begin</p>
     <h1 class="section-title">Select the grant programme for your country</h1>
-    <p class="section-sub">
-      Your location is detected automatically, but you can switch at any time.
-      Each region operates its own funding programme, currency and eligibility criteria.
-    </p>
+    <p class="section-sub">Your location is detected automatically, but you can switch at any time. Each region operates its own funding programme, currency and eligibility criteria.</p>
 
     <div class="region-grid">
-      <!-- USA -->
       <article class="region-card" data-region="US" tabindex="0" role="button" aria-label="Select United States">
         <span class="region-card__flag">United States of America</span>
         <svg class="region-card__map" viewBox="0 0 400 240" aria-hidden="true">
           <rect class="map-sea" x="0" y="0" width="400" height="240" rx="6"/>
           <path class="map-land" d="M 24,72 L 72,60 L 120,64 L 170,54 L 226,56 L 280,48 L 332,54 L 370,66 L 382,90 L 374,116 L 356,130 L 348,156 L 336,166 L 328,180 L 320,196 L 310,208 L 298,196 L 292,178 L 280,170 L 268,186 L 252,196 L 238,186 L 226,202 L 204,208 L 186,196 L 168,204 L 148,192 L 128,180 L 106,170 L 84,156 L 66,136 L 48,110 L 32,88 Z"/>
-          <path class="map-line" d="M 70,100 L 360,100"/>
-          <path class="map-line" d="M 120,64 L 120,180"/>
-          <path class="map-line" d="M 210,58 L 210,196"/>
-          <path class="map-line" d="M 290,52 L 290,192"/>
-          <circle class="map-dot" cx="320" cy="80" r="3.5"/>
-          <circle class="map-dot" cx="300" cy="120" r="3"/>
-          <circle class="map-dot" cx="90" cy="140" r="3"/>
+          <path class="map-line" d="M 70,100 L 360,100"/><path class="map-line" d="M 120,64 L 120,180"/>
+          <path class="map-line" d="M 210,58 L 210,196"/><path class="map-line" d="M 290,52 L 290,192"/>
+          <circle class="map-dot" cx="320" cy="80" r="3.5"/><circle class="map-dot" cx="300" cy="120" r="3"/><circle class="map-dot" cx="90" cy="140" r="3"/>
         </svg>
         <h2 class="region-card__title">United States of America</h2>
-        <p class="region-card__desc">
-          PHFA grant programme for recently purchased homes.
-          <strong>$100,000 – $2,000,000</strong> in funding.
-        </p>
+        <p class="region-card__desc">PHFA grant programme for recently purchased homes. <strong>$100,000 – $2,000,000</strong> in funding.</p>
         <span class="region-card__cta">Continue with United States</span>
       </article>
 
-      <!-- EUROPE -->
       <article class="region-card is-eu" data-region="EU" tabindex="0" role="button" aria-label="Select European Country">
         <span class="region-card__flag">European Country</span>
         <svg class="region-card__map" viewBox="0 0 400 240" aria-hidden="true">
@@ -649,46 +366,27 @@ img{max-width:100%;height:auto;display:block;}
           <path class="map-land-2" d="M 210,20 L 240,14 L 260,30 L 254,54 L 236,62 L 216,50 Z"/>
           <path class="map-land-2" d="M 122,84 L 138,78 L 146,96 L 138,118 L 124,112 Z"/>
           <path class="map-land-2" d="M 104,104 L 114,100 L 116,114 L 106,118 Z"/>
-          <path class="map-line" d="M 146,96 L 200,120"/>
-          <path class="map-line" d="M 232,178 L 256,190"/>
-          <path class="map-line" d="M 240,14 L 260,40"/>
-          <circle class="map-dot" cx="210" cy="120" r="3.5"/>
-          <circle class="map-dot" cx="160" cy="150" r="3"/>
-          <circle class="map-dot" cx="130" cy="95" r="2.8"/>
+          <path class="map-line" d="M 146,96 L 200,120"/><path class="map-line" d="M 232,178 L 256,190"/><path class="map-line" d="M 240,14 L 260,40"/>
+          <circle class="map-dot" cx="210" cy="120" r="3.5"/><circle class="map-dot" cx="160" cy="150" r="3"/><circle class="map-dot" cx="130" cy="95" r="2.8"/>
         </svg>
         <h2 class="region-card__title">European Country</h2>
-        <p class="region-card__desc">
-          GEF Small Grants Programme (SGP) for recently purchased homes.
-          <strong>€100,000 – €2,000,000</strong>
-          <em>(£100,000 – £2,000,000 in the United Kingdom)</em>.
-        </p>
+        <p class="region-card__desc">GEF Small Grants Programme (SGP) for recently purchased homes. <strong>€100,000 – €2,000,000</strong> <em>(£100,000 – £2,000,000 in the United Kingdom)</em>.</p>
         <span class="region-card__cta">Continue with European Country</span>
       </article>
     </div>
   </section>
 
-  <!-- ---------------- PROGRAM HERO ---------------- -->
+  <!-- HERO -->
   <section class="program-hero hidden" id="programHero">
     <p class="program-hero__region" id="heroRegion">United States of America</p>
     <h1 class="program-hero__title" id="heroTitle">PHFA Grant Programme</h1>
-    <p class="program-hero__desc" id="heroDesc">
-      Funding for recently purchased homes and recently closed homeowners across the United States.
-    </p>
-
-    <div class="amount-chip">
-      <span class="amount-chip__label">Funding Range</span>
-      <span class="amount-chip__value" id="heroRange">$100,000 – $2,000,000</span>
-    </div>
-    <div class="amount-chip">
-      <span class="amount-chip__label">Grant Year</span>
-      <span class="amount-chip__value" id="heroYear">2026</span>
-    </div>
-    <div>
-      <button type="button" class="program-hero__switch" id="switchRegionBtn">⇄ Switch region</button>
-    </div>
+    <p class="program-hero__desc" id="heroDesc">Funding for recently purchased homes and recently closed homeowners across the United States.</p>
+    <div class="amount-chip"><span class="amount-chip__label">Funding Range</span><span class="amount-chip__value" id="heroRange">$100,000 – $2,000,000</span></div>
+    <div class="amount-chip"><span class="amount-chip__label">Grant Year</span><span class="amount-chip__value" id="heroYear">2026</span></div>
+    <div><button type="button" class="program-hero__switch" id="switchRegionBtn">⇄ Switch region</button></div>
   </section>
 
-  <!-- ---------------- MISSION ---------------- -->
+  <!-- MISSION -->
   <section class="mission hidden" id="missionSection">
     <div class="mission__label">
       <small>Our Mission</small>
@@ -703,7 +401,7 @@ img{max-width:100%;height:auto;display:block;}
     </p>
   </section>
 
-  <!-- ---------------- ELIGIBILITY + AIMS ---------------- -->
+  <!-- INFO -->
   <section class="hidden" id="infoSection">
     <div class="info-grid">
       <div class="info-card">
@@ -732,30 +430,20 @@ img{max-width:100%;height:auto;display:block;}
       </div>
     </div>
 
-    <!-- CTA -->
     <div class="cta-box" id="eligibility">
       <div class="cta-box__copy">
         <h3>Check if I qualify</h3>
-        <p>
-          Answer a few short questions and we'll calculate an indicative funding amount
-          based on your region. Takes less than a minute.
-        </p>
+        <p>Answer a few short questions and we'll calculate an indicative funding amount based on your region. Takes less than a minute.</p>
       </div>
-      <button type="button" class="btn btn-primary btn-arrow" id="openEligibilityBtn">
-        Check If I Qualify
-      </button>
+      <button type="button" class="btn btn-primary btn-arrow" id="openEligibilityBtn">Check If I Qualify</button>
     </div>
   </section>
 
-  <!-- ---------------- IMPACT STATS ---------------- -->
+  <!-- IMPACT -->
   <section class="impact hidden" id="impactSection">
     <div class="impact__head">
       <h2>Global<br>impact</h2>
-      <p>
-        Since 2021, the PHFA / GEF Small Grants Programmes have processed tens of thousands
-        of applications from recently closed homeowners and aligned over a billion dollars
-        in committed funding across the United States and Europe.
-      </p>
+      <p>Since 2021, the PHFA / GEF Small Grants Programmes have processed tens of thousands of applications from recently closed homeowners and aligned over a billion dollars in committed funding across the United States and Europe.</p>
     </div>
     <div class="impact__grid">
       <div class="impact__card">
@@ -781,7 +469,7 @@ img{max-width:100%;height:auto;display:block;}
     </div>
   </section>
 
-  <!-- ---------------- FEATURED STORIES ---------------- -->
+  <!-- FEATURED STORIES — real topic-matched images -->
   <section class="featured hidden" id="featuredSection">
     <div class="featured__head">
       <h2>Featured stories &amp; updates</h2>
@@ -790,73 +478,73 @@ img{max-width:100%;height:auto;display:block;}
     <div class="featured__grid">
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80" alt="House keys on a wooden table" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Program update</p>
           <h3 class="story__title">2026 funding cycle opens with expanded eligibility</h3>
-          <p class="story__desc">
-            New thresholds for recent homebuyers and an expanded list of qualifying loan types.
-          </p>
+          <p class="story__desc">New thresholds for recent homebuyers and an expanded list of qualifying loan types.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80" alt="Suburban house exterior at dusk" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Success story</p>
           <h3 class="story__title">From foreclosure risk to a stable mortgage</h3>
-          <p class="story__desc">
-            How a Philadelphia family used consolidated debt relief to stay in their first home.
-          </p>
+          <p class="story__desc">How a Philadelphia family used consolidated debt relief to stay in their first home.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80" alt="European street with classic architecture" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Announcement</p>
           <h3 class="story__title">GEF SGP extends into four new EU member states</h3>
-          <p class="story__desc">
-            Croatia, Bulgaria, Romania, and Greece join the 2026 allocation round.
-          </p>
+          <p class="story__desc">Croatia, Bulgaria, Romania, and Greece join the 2026 allocation round.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80" alt="Financial charts and reports on a desk" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Report</p>
           <h3 class="story__title">Annual outcomes report 2025</h3>
-          <p class="story__desc">
-            Every disbursement, county by county, with measured household impact.
-          </p>
+          <p class="story__desc">Every disbursement, county by county, with measured household impact.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80" alt="Tower Bridge, London at dusk" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">News</p>
           <h3 class="story__title">UK expansion: £2m ceiling now available</h3>
-          <p class="story__desc">
-            High-value grants for qualifying UK homeowners purchasing within the last 24 months.
-          </p>
+          <p class="story__desc">High-value grants for qualifying UK homeowners purchasing within the last 24 months.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80" alt="Notebook, pen and documents on a desk" loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Guidance</p>
           <h3 class="story__title">What documentation do I need to apply?</h3>
-          <p class="story__desc">
-            A short checklist for recent homebuyers preparing a PHFA or GEF application.
-          </p>
+          <p class="story__desc">A short checklist for recent homebuyers preparing a PHFA or GEF application.</p>
           <span class="story__cta">Read more</span>
         </div>
       </a>
@@ -864,16 +552,11 @@ img{max-width:100%;height:auto;display:block;}
     </div>
   </section>
 
-  <!-- ---------------- TRUSTED PARTNERSHIPS ---------------- -->
+  <!-- PARTNERS -->
   <section class="partners hidden" id="partnersSection">
     <div>
       <h2>Trusted partnerships</h2>
-      <p>
-        Partnership is at the heart of the programme. We work with mortgage servicers,
-        community development financial institutions, veterans' organisations, and
-        housing counsellors across the United States and Europe to identify qualified
-        homeowners and deliver funds responsibly.
-      </p>
+      <p>Partnership is at the heart of the programme. We work with mortgage servicers, community development financial institutions, veterans' organisations, and housing counsellors across the United States and Europe to identify qualified homeowners and deliver funds responsibly.</p>
     </div>
     <div class="partners__cta">
       <a class="btn btn-primary btn-arrow" href="contact.html">Partner with us</a>
@@ -881,34 +564,42 @@ img{max-width:100%;height:auto;display:block;}
     </div>
   </section>
 
-  <!-- ---------------- PUBLICATIONS ---------------- -->
+  <!-- PUBLICATIONS — real cover imagery -->
   <section class="publications hidden" id="publicationsSection">
     <h2>Publications</h2>
     <div class="pub-grid">
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover"><span>PHFA</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1554224312-3d2e1c2ba7e8?auto=format&fit=crop&w=600&q=80" alt="Stacked annual reports" loading="lazy">
+        </div>
         <p class="pub__cat">Report</p>
         <h3 class="pub__title">Annual Report 2025</h3>
         <p class="pub__desc">Every disbursement, every household, measured.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--alt"><span>SGP</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" alt="Strategy meeting with charts" loading="lazy">
+        </div>
         <p class="pub__cat">Report</p>
         <h3 class="pub__title">GEF Small Grants — Strategy 2026–2029</h3>
         <p class="pub__desc">Supporting homeowners across the European Union.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--gold"><span>£€$</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Open notebook and pen" loading="lazy">
+        </div>
         <p class="pub__cat">Guide</p>
         <h3 class="pub__title">Applicant Handbook</h3>
         <p class="pub__desc">Everything a recent homebuyer needs to apply.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--orange"><span>2026</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80" alt="Register and documents" loading="lazy">
+        </div>
         <p class="pub__cat">Register</p>
         <h3 class="pub__title">2026 Funding Register</h3>
         <p class="pub__desc">Public list of awarded applications, redacted for privacy.</p>
@@ -919,18 +610,15 @@ img{max-width:100%;height:auto;display:block;}
 
 </div>
 
-<!-- ============================ FOOTER ============================ -->
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="site-footer__inner">
-
     <div class="site-footer__top">
       <div class="site-footer__brand">
         <a class="site-footer__logo" href="index.html">PHFA</a>
         <p>Pennsylvania Housing Finance Agency · Housing Affordability and Rehabilitation Enhancement Fund</p>
       </div>
-
       <div class="site-footer__cols">
-
         <div class="site-footer__col">
           <h6>About</h6>
           <a href="about.html">About us</a>
@@ -939,7 +627,6 @@ img{max-width:100%;height:auto;display:block;}
           <a href="legislation.html">Legislation</a>
           <a href="about.html#funding">Funding sources</a>
         </div>
-
         <div class="site-footer__col">
           <h6>Programs</h6>
           <a href="funding.html">PHARE register</a>
@@ -948,7 +635,6 @@ img{max-width:100%;height:auto;display:block;}
           <a href="funding.html#uk">United Kingdom</a>
           <a href="apply.html">Apply now</a>
         </div>
-
         <div class="site-footer__col">
           <h6>Impact</h6>
           <a href="funding.html#stats">Outcomes</a>
@@ -957,7 +643,6 @@ img{max-width:100%;height:auto;display:block;}
           <a href="funding.html#news">News</a>
           <a href="funding.html#blog">Blog</a>
         </div>
-
         <div class="site-footer__col">
           <h6>Get involved</h6>
           <a href="contact.html">Contact us</a>
@@ -966,10 +651,8 @@ img{max-width:100%;height:auto;display:block;}
           <a href="contact.html#support">Chat support</a>
           <a href="legislation.html#privacy">Privacy notice</a>
         </div>
-
       </div>
     </div>
-
     <div class="site-footer__bottom">
       <div class="site-footer__legal">
         <a href="legislation.html#terms">Terms of use</a>
@@ -985,17 +668,14 @@ img{max-width:100%;height:auto;display:block;}
         <a href="#" aria-label="YouTube">▶</a>
       </div>
     </div>
-
   </div>
 </footer>
 
-<!-- ============================ COOKIE BANNER ============================ -->
+<!-- COOKIE BANNER -->
 <div class="cookie-banner hidden" id="cookieBanner" role="region" aria-label="Cookie consent">
   <div class="cookie-banner__copy">
     <strong>We use cookies.</strong>
-    This site uses essential cookies to remember your region and eligibility progress,
-    and analytics cookies to improve the service. Read our
-    <a href="legislation.html#privacy">Privacy Notice</a>.
+    This site uses essential cookies to remember your region and eligibility progress, and analytics cookies to improve the service. Read our <a href="legislation.html#privacy">Privacy Notice</a>.
   </div>
   <div class="cookie-banner__actions">
     <button type="button" class="btn cookie-btn-reject" id="cookieReject">Reject non-essential</button>
@@ -1003,14 +683,13 @@ img{max-width:100%;height:auto;display:block;}
   </div>
 </div>
 
-<!-- ============================ ELIGIBILITY MODAL ============================ -->
+<!-- ELIGIBILITY MODAL -->
 <div class="modal-backdrop hidden" id="eligModal" role="dialog" aria-modal="true" aria-labelledby="eligTitle">
   <div class="modal">
     <div class="modal__head">
       <h3 id="eligTitle">Check If I Qualify</h3>
       <button type="button" class="modal__close" id="eligClose" aria-label="Close">×</button>
     </div>
-
     <div class="modal__body">
 
       <div class="steps" id="stepsBar">
@@ -1020,6 +699,7 @@ img{max-width:100%;height:auto;display:block;}
         <div class="step-dot" data-step="4"><div class="step-dot__circle">4</div><div class="step-dot__label">Create password</div></div>
       </div>
 
+      <!-- STEP 1 — now includes Email and Phone -->
       <div class="step" id="step1">
         <div class="form-row">
           <label for="fName">Full name</label>
@@ -1033,12 +713,23 @@ img{max-width:100%;height:auto;display:block;}
           <div class="hint">Applicants must be above 30 years of age.</div>
         </div>
         <div class="form-row">
+          <label for="fEmail">Email address <span style="color:var(--muted);font-weight:400;font-size:11.5px;">— where we can reach you</span></label>
+          <input type="text" id="fEmail" placeholder="you@example.com" autocomplete="email">
+          <div class="field-error">Please enter your email address.</div>
+        </div>
+        <div class="form-row">
+          <label for="fPhone">Phone number <span style="color:var(--muted);font-weight:400;font-size:11.5px;">— where we can reach you</span></label>
+          <input type="text" id="fPhone" placeholder="(555) 000-0000" autocomplete="tel">
+          <div class="field-error">Please enter your phone number.</div>
+        </div>
+        <div class="form-row">
           <label for="fAddress">Street address</label>
           <input type="text" id="fAddress" placeholder="House number and street" autocomplete="street-address">
           <div class="field-error">Please enter your street address.</div>
         </div>
       </div>
 
+      <!-- STEP 2 -->
       <div class="step hidden" id="step2">
         <div class="form-row">
           <label>Do you own a home?</label>
@@ -1048,13 +739,11 @@ img{max-width:100%;height:auto;display:block;}
           </div>
           <div class="field-error">Please select an option.</div>
         </div>
-
         <div class="form-row hidden" id="yearRow">
           <label for="fYear">If yes, what year did you purchase?</label>
           <input type="number" id="fYear" min="1900" max="2026" placeholder="e.g. 2023">
           <div class="field-error">Please enter the purchase year.</div>
         </div>
-
         <div class="form-row">
           <label>Do you own a job / are you employed?</label>
           <div class="radio-row">
@@ -1063,13 +752,11 @@ img{max-width:100%;height:auto;display:block;}
           </div>
           <div class="field-error">Please select an option.</div>
         </div>
-
         <div class="form-row hidden" id="employerRow">
           <label for="fEmployer">Employer name</label>
           <input type="text" id="fEmployer" placeholder="Name of your employer">
           <div class="field-error">Please enter your employer name.</div>
         </div>
-
         <div class="form-row">
           <label for="fLoans">How many loans do you currently have unpaid?</label>
           <input type="number" id="fLoans" min="0" max="40" placeholder="e.g. 2">
@@ -1100,11 +787,12 @@ img{max-width:100%;height:auto;display:block;}
         </div>
       </div>
 
+      <!-- STEP 4 — password then INLINE CONFIRMATION (no redirect) -->
       <div class="step hidden" id="step4">
         <p class="result-panel__eyebrow" style="text-align:left;margin-bottom:6px;">Create your account password</p>
         <p style="font-size:13.5px;color:var(--muted);margin:0 0 18px;max-width:52ch;">
           Your eligibility summary has been forwarded to our grant support team — a specialist
-          will greet you in chat. In the meantime, secure your account.
+          will greet you in chat. Create a password to secure your account.
         </p>
         <div class="form-row">
           <label for="fPassword">Password</label>
@@ -1117,12 +805,36 @@ img{max-width:100%;height:auto;display:block;}
           <div class="field-error">Passwords do not match.</div>
         </div>
         <div class="form-row" style="margin-top:22px;">
-          <button type="button" class="btn btn-primary btn-block" id="createAccountBtn">Create my account →</button>
+          <button type="button" class="btn btn-primary btn-block" id="createAccountBtn">Confirm &amp; view my summary →</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 — FINAL CONFIRMATION (replaces redirect) -->
+      <div class="step hidden" id="step5">
+        <div class="confirm-banner">
+          <span class="confirm-banner__icon">✓</span>
+          <div>
+            <h4>Your account has been created</h4>
+            <p>Your application has been submitted to our grant administrators for review. You will be contacted at the email and phone number you provided.</p>
+          </div>
+        </div>
+
+        <p class="result-panel__eyebrow" style="text-align:left;margin-top:4px;">Your pre-approved amount</p>
+        <p class="result-amount" id="finalAmount" style="text-align:left;margin:0 0 4px;">$0</p>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 18px;">
+          This indicative amount is held for your application and confirmed on final verification.
+        </p>
+
+        <p class="result-panel__eyebrow" style="text-align:left;">Sign-up information on file</p>
+        <dl class="result-breakdown" id="finalBreakdown"></dl>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <a class="btn btn-navy" href="funding.html">View the funding register</a>
+          <button type="button" class="btn btn-outline" id="closeConfirmBtn">Close</button>
         </div>
       </div>
 
     </div>
-
     <div class="modal__foot">
       <button type="button" class="btn btn-outline hidden" id="backBtn">← Back</button>
       <span id="footSpacer" style="flex:1"></span>
@@ -1133,7 +845,7 @@ img{max-width:100%;height:auto;display:block;}
 
 <div class="toast" id="toast"></div>
 
-<!-- ============================ TAWK.TO WIDGET ============================ -->
+<!-- TAWK.TO -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -1149,9 +861,6 @@ s0.parentNode.insertBefore(s1,s0);
 <script src="js/shared.js"></script>
 
 <script>
-/* ================================================================
-   index.html — Region Router · Eligibility · Extended content
-   ================================================================ */
 (function () {
   'use strict';
 
@@ -1174,72 +883,49 @@ s0.parentNode.insertBefore(s1,s0);
     toastTimer = setTimeout(() => el.classList.remove('is-visible'), 2600);
   }
 
-  /* ---------- REGION CONFIG ---------- */
-  const EU_COUNTRIES = [
-    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE',
-    'IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE',
-    'IS','LI','NO','CH','AL','MK','ME','RS','TR','BA','XK','MD','UA','GE','AM','AZ'
-  ];
+  const EU_COUNTRIES = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','CH','AL','MK','ME','RS','TR','BA','XK','MD','UA','GE','AM','AZ'];
 
   const REGIONS = {
-    US: {
-      key:'US', label:'United States of America', short:'United States', flag:'🇺🇸',
-      eyebrow:'United States of America', title:'PHFA Grant Programme',
+    US:{ key:'US', label:'United States of America', short:'United States', flag:'🇺🇸', eyebrow:'United States of America', title:'PHFA Grant Programme',
       desc:'Funding for recently purchased homes and recently closed homeowners across the United States.',
-      range:'$100,000 – $2,000,000',
-      currency:{ locale:'en-US', code:'USD', symbol:'$' },
+      range:'$100,000 – $2,000,000', currency:{ locale:'en-US', code:'USD', symbol:'$' },
       eligibility:['Age above 30 years','Recently closed homeowners — recently purchased a home','Permanent / currently living in the United States','Good employment status','Retirement or veteran'],
-      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment']
-    },
-    EU: {
-      key:'EU', label:'European Country', short:'Europe', flag:'🇪🇺',
-      eyebrow:'European Country', title:'GEF Small Grants Programme (SGP)',
+      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment'] },
+    EU:{ key:'EU', label:'European Country', short:'Europe', flag:'🇪🇺', eyebrow:'European Country', title:'GEF Small Grants Programme (SGP)',
       desc:'Funding for recently purchased homes and recently closed homeowners across any European country.',
-      range:'€100,000 – €2,000,000',
-      currency:{ locale:'de-DE', code:'EUR', symbol:'€' },
+      range:'€100,000 – €2,000,000', currency:{ locale:'de-DE', code:'EUR', symbol:'€' },
       eligibility:['Age above 30 years','Recently closed homeowners — recently purchased a home','Permanent / currently living in the European country','Good employment status','Retirement or veteran'],
-      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment']
-    },
-    UK: {
-      key:'UK', label:'United Kingdom', short:'United Kingdom', flag:'🇬🇧',
-      eyebrow:'United Kingdom', title:'GEF Small Grants Programme (SGP)',
+      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment'] },
+    UK:{ key:'UK', label:'United Kingdom', short:'United Kingdom', flag:'🇬🇧', eyebrow:'United Kingdom', title:'GEF Small Grants Programme (SGP)',
       desc:'Funding for recently purchased homes and recently closed homeowners across the United Kingdom.',
-      range:'£100,000 – £2,000,000',
-      currency:{ locale:'en-GB', code:'GBP', symbol:'£' },
+      range:'£100,000 – £2,000,000', currency:{ locale:'en-GB', code:'GBP', symbol:'£' },
       eligibility:['Age above 30 years','Recently closed homeowners — recently purchased a home','Permanent / currently living in the United Kingdom','Good employment status','Retirement or veteran'],
-      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment']
-    }
+      aims:['Economical stimulus','Debt consolidation','Home repairs and development','Home purchase','Home downpayment'] }
   };
 
   const state = {
     region:null, step:1,
     form:{
-      name:'', dob:'', address:'',
+      name:'', dob:'', email:'', phone:'', address:'',
       ownsHome:null, yearPurchased:'',
       employed:null, employer:'',
       loans:'', amount:0, password:''
     }
   };
 
-  const STORAGE = { region:'phfa.region', cookies:'phfa.cookies' };
+  const STORAGE = { region:'phfa.region', cookies:'phfa.cookies', intake:'phfa.intake' };
 
-  /* ---------- CURRENCY ---------- */
   function formatMoney(amount, regionKey) {
     const cfg = (REGIONS[regionKey] || REGIONS.US).currency;
     try {
-      return new Intl.NumberFormat(cfg.locale, {
-        style:'currency', currency:cfg.code, maximumFractionDigits:0
-      }).format(amount);
-    } catch (_) {
-      return cfg.symbol + Number(amount).toLocaleString('en-US');
-    }
+      return new Intl.NumberFormat(cfg.locale, { style:'currency', currency:cfg.code, maximumFractionDigits:0 }).format(amount);
+    } catch (_) { return cfg.symbol + Number(amount).toLocaleString('en-US'); }
   }
   function generateAmount() {
     const min = 950000, max = 1600000;
     return Math.round((Math.floor(Math.random() * (max - min + 1)) + min) / 1000) * 1000;
   }
 
-  /* ---------- IP DETECTION ---------- */
   async function detectRegionFromIP() {
     try {
       const ctrl = new AbortController();
@@ -1256,7 +942,6 @@ s0.parentNode.insertBefore(s1,s0);
     return null;
   }
 
-  /* ---------- SHOW EXTENDED SECTIONS ---------- */
   function showExtendedSections() {
     ['missionSection','infoSection','impactSection','featuredSection','partnersSection','publicationsSection']
       .forEach((id) => { const el = $(id); if (el) el.classList.remove('hidden'); });
@@ -1266,398 +951,11 @@ s0.parentNode.insertBefore(s1,s0);
       .forEach((id) => { const el = $(id); if (el) el.classList.add('hidden'); });
   }
 
-  /* ---------- SET REGION ---------- */
   function setRegion(key, opts) {
     opts = opts || {};
-    const cfg = REGIONS[key];
-    if (!cfg) return;
-
+    const cfg = REGIONS[key]; if (!cfg) return;
     state.region = key;
     try { localStorage.setItem(STORAGE.region, key); } catch (_) {}
 
     $('navFlag').classList.remove('hidden');
-    $('navFlagIcon').textContent  = cfg.flag;
-    $('navFlagLabel').textContent = cfg.short;
-    $('navTitle').textContent = cfg.title + ' — ' + cfg.label;
-
-    $('heroRegion').textContent = cfg.eyebrow;
-    $('heroTitle').textContent  = cfg.title;
-    $('heroDesc').textContent   = cfg.desc;
-    $('heroRange').textContent  = cfg.range;
-
-    $('eligibilityList').innerHTML = cfg.eligibility.map((t) => `<li>${esc(t)}</li>`).join('');
-    $('aimsList').innerHTML        = cfg.aims.map((t) => `<li>${esc(t)}</li>`).join('');
-
-    qsa('.region-card').forEach((c) => {
-      c.classList.toggle('is-selected',
-        c.dataset.region === key || (key === 'UK' && c.dataset.region === 'EU'));
-    });
-
-    if (!opts.silent) {
-      $('regionPicker').classList.add('hidden');
-      $('programHero').classList.remove('hidden');
-      showExtendedSections();
-      window.scrollTo({ top:0, behavior:'smooth' });
-    }
-  }
-
-  function showRegionPicker() {
-    $('regionPicker').classList.remove('hidden');
-    $('programHero').classList.add('hidden');
-    hideExtendedSections();
-    window.scrollTo({ top:0, behavior:'smooth' });
-  }
-
-  qsa('.region-card').forEach((card) => {
-    const activate = () => setRegion(card.dataset.region);
-    card.addEventListener('click', activate);
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
-    });
-  });
-  $('switchRegionBtn').addEventListener('click', showRegionPicker);
-  $('navFlag').addEventListener('click', showRegionPicker);
-
-  /* ---------- BOOT ---------- */
-  (async function boot() {
-    let stored = null;
-    try { stored = localStorage.getItem(STORAGE.region); } catch (_) {}
-
-    if (stored && REGIONS[stored]) {
-      setRegion(stored, { silent:true });
-      $('programHero').classList.remove('hidden');
-      showExtendedSections();
-      $('regionPicker').classList.add('hidden');
-      return;
-    }
-
-    const detected = await detectRegionFromIP();
-    if (detected) {
-      setRegion(detected, { silent:true });
-      $('programHero').classList.remove('hidden');
-      showExtendedSections();
-      $('regionPicker').classList.add('hidden');
-      toast('Region set automatically to ' + REGIONS[detected].label);
-    }
-  })();
-
-  /* ---------- COOKIES ---------- */
-  (function cookies() {
-    let existing = null;
-    try { existing = localStorage.getItem(STORAGE.cookies); } catch (_) {}
-    if (!existing) $('cookieBanner').classList.remove('hidden');
-
-    $('cookieAccept').addEventListener('click', () => {
-      try { localStorage.setItem(STORAGE.cookies, 'all'); } catch (_) {}
-      $('cookieBanner').classList.add('hidden');
-      toast('Cookie preferences saved');
-    });
-    $('cookieReject').addEventListener('click', () => {
-      try { localStorage.setItem(STORAGE.cookies, 'essential'); } catch (_) {}
-      $('cookieBanner').classList.add('hidden');
-      toast('Only essential cookies will be used');
-    });
-  })();
-
-  /* ---------- ELIGIBILITY ---------- */
-  const modal   = $('eligModal');
-  const stepsBar = $('stepsBar');
-  const nextBtn = $('nextBtn');
-  const backBtn = $('backBtn');
-  const footSpacer = $('footSpacer');
-
-  function openModal() {
-    if (!state.region) { showRegionPicker(); toast('Please choose a region first'); return; }
-    resetForm();
-    state.step = 1;
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    renderStep();
-  }
-  function closeModal() {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  $('openEligibilityBtn').addEventListener('click', openModal);
-  $('eligClose').addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
-  });
-
-  function renderStep() {
-    qsa('.step', modal).forEach((el) => el.classList.add('hidden'));
-    qsa('.step-dot', stepsBar).forEach((dot) => {
-      const n = Number(dot.dataset.step);
-      dot.classList.toggle('is-active', n === state.step);
-      dot.classList.toggle('is-done', n < state.step);
-    });
-
-    if (state.step === 1) {
-      $('step1').classList.remove('hidden');
-      backBtn.classList.add('hidden');
-      footSpacer.style.flex = '1';
-      nextBtn.classList.remove('hidden');
-      nextBtn.textContent = 'Continue →';
-    }
-    if (state.step === 2) {
-      $('step2').classList.remove('hidden');
-      backBtn.classList.remove('hidden');
-      footSpacer.style.flex = '0';
-      nextBtn.classList.remove('hidden');
-      nextBtn.textContent = 'Submit & check eligibility →';
-    }
-    if (state.step === 3) {
-      $('step3-processing').classList.remove('hidden');
-      nextBtn.classList.add('hidden');
-      backBtn.classList.add('hidden');
-      footSpacer.style.flex = '1';
-      runEligibilityCheck();
-    }
-    if (state.step === 4) {
-      $('step4').classList.remove('hidden');
-      nextBtn.classList.add('hidden');
-      backBtn.classList.add('hidden');
-      footSpacer.style.flex = '1';
-    }
-  }
-
-  function markError(input, on) {
-    const row = input.closest('.form-row');
-    if (row) row.classList.toggle('is-error', !!on);
-  }
-
-  function validateStep1() {
-    let ok = true;
-    const name = $('fName'), dob = $('fDob'), addr = $('fAddress');
-    if (!name.value.trim()) { markError(name, true); ok = false; } else markError(name, false);
-    if (!dob.value)         { markError(dob, true);  ok = false; } else markError(dob, false);
-    if (!addr.value.trim()) { markError(addr, true); ok = false; } else markError(addr, false);
-    if (ok) {
-      const d = new Date(dob.value), today = new Date();
-      let age = today.getFullYear() - d.getFullYear();
-      const m = today.getMonth() - d.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age--;
-      if (age < 30) {
-        markError(dob, true);
-        qs('.field-error', dob.closest('.form-row')).textContent =
-          'Applicants must be above 30 years of age.';
-        ok = false;
-      }
-    }
-    if (ok) {
-      state.form.name = name.value.trim();
-      state.form.dob = dob.value;
-      state.form.address = addr.value.trim();
-    }
-    return ok;
-  }
-
-  function validateStep2() {
-    let ok = true;
-    const homeRadios = qsa('input[name="ownsHome"]');
-    const empRadios  = qsa('input[name="employed"]');
-    const yearInput  = $('fYear');
-    const empInput   = $('fEmployer');
-    const loansInput = $('fLoans');
-
-    const homePicked = homeRadios.find((r) => r.checked);
-    const empPicked  = empRadios.find((r) => r.checked);
-
-    const homeRow = homeRadios[0].closest('.form-row');
-    const empRow  = empRadios[0].closest('.form-row');
-    homeRow.classList.toggle('is-error', !homePicked);
-    empRow.classList.toggle('is-error', !empPicked);
-    if (!homePicked || !empPicked) ok = false;
-
-    if (homePicked && homePicked.value === 'yes') {
-      if (!yearInput.value || Number(yearInput.value) < 1900 || Number(yearInput.value) > 2026) {
-        markError(yearInput, true); ok = false;
-      } else markError(yearInput, false);
-    }
-    if (empPicked && empPicked.value === 'yes') {
-      if (!empInput.value.trim()) { markError(empInput, true); ok = false; }
-      else markError(empInput, false);
-    }
-    if (loansInput.value === '' || Number(loansInput.value) < 0) {
-      markError(loansInput, true); ok = false;
-    } else markError(loansInput, false);
-
-    if (ok) {
-      state.form.ownsHome = homePicked.value === 'yes';
-      state.form.yearPurchased = state.form.ownsHome ? yearInput.value : '';
-      state.form.employed = empPicked.value === 'yes';
-      state.form.employer = state.form.employed ? empInput.value.trim() : '';
-      state.form.loans = Number(loansInput.value);
-    }
-    return ok;
-  }
-
-  qsa('input[name="ownsHome"]').forEach((r) => {
-    r.addEventListener('change', () => {
-      $('yearRow').classList.toggle('hidden', r.value !== 'yes' || !r.checked);
-    });
-  });
-  qsa('input[name="employed"]').forEach((r) => {
-    r.addEventListener('change', () => {
-      $('employerRow').classList.toggle('hidden', r.value !== 'yes' || !r.checked);
-    });
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (state.step === 1) {
-      if (!validateStep1()) return;
-      state.step = 2; renderStep(); return;
-    }
-    if (state.step === 2) {
-      if (!validateStep2()) return;
-      state.step = 3; renderStep(); return;
-    }
-  });
-  backBtn.addEventListener('click', () => {
-    if (state.step > 1) { state.step -= 1; renderStep(); }
-  });
-
-  let eligibilityRan = false;
-  async function runEligibilityCheck() {
-    if (eligibilityRan) return;
-    eligibilityRan = true;
-
-    const messages = [
-      'Assessing your eligibility against the programme criteria…',
-      'Verifying region and currency…',
-      'Calculating your indicative funding amount…'
-    ];
-    let i = 0;
-    const copy = $('processingCopy');
-    const interval = setInterval(() => {
-      i = (i + 1) % messages.length;
-      copy.textContent = messages[i];
-    }, 900);
-
-    await new Promise((r) => setTimeout(r, 2400));
-    clearInterval(interval);
-
-    state.form.amount = generateAmount();
-
-    $('step3-processing').classList.add('hidden');
-    $('step3-result').classList.remove('hidden');
-    $('resultAmount').textContent = formatMoney(state.form.amount, state.region);
-    $('resultNote').textContent =
-      'Based on the information you provided, you are pre-qualified for the amount shown above. ' +
-      'Final approval is subject to verification by the ' + REGIONS[state.region].label + ' programme office.';
-    $('rbName').textContent     = state.form.name || '—';
-    $('rbRegion').textContent   = REGIONS[state.region].label;
-    $('rbHome').textContent     = state.form.ownsHome
-      ? ('Yes' + (state.form.yearPurchased ? ' · ' + state.form.yearPurchased : '')) : 'No';
-    $('rbEmployed').textContent = state.form.employed
-      ? ('Yes' + (state.form.employer ? ' · ' + state.form.employer : '')) : 'No';
-    $('rbLoans').textContent    = String(state.form.loans);
-
-    pushToTawk();
-
-    setTimeout(() => { state.step = 4; renderStep(); }, 1800);
-  }
-
-  function pushToTawk() {
-    const summary = {
-      name: state.form.name,
-      dob: state.form.dob,
-      address: state.form.address,
-      region: REGIONS[state.region].label,
-      ownsHome: state.form.ownsHome ? 'Yes' : 'No',
-      yearPurchased: state.form.yearPurchased || '—',
-      employed: state.form.employed ? 'Yes' : 'No',
-      employer: state.form.employer || '—',
-      unpaidLoans: state.form.loans,
-      qualifiedAmt: formatMoney(state.form.amount, state.region)
-    };
-
-    function attempt(retries) {
-      if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
-        try {
-          Tawk_API.setAttributes({
-            'Name': summary.name,
-            'Date of Birth': summary.dob,
-            'Address': summary.address,
-            'Region': summary.region,
-            'Homeowner': summary.ownsHome,
-            'Year Purchased': summary.yearPurchased,
-            'Employed': summary.employed,
-            'Employer': summary.employer,
-            'Unpaid Loans': String(summary.unpaidLoans),
-            'Indicative Amount': summary.qualifiedAmt
-          }, function () {});
-          Tawk_API.addEvent('eligibility_check', summary, function () {});
-          if (typeof Tawk_API.maximize === 'function') Tawk_API.maximize();
-          return true;
-        } catch (_) {}
-      }
-      if (retries > 0) setTimeout(() => attempt(retries - 1), 700);
-      return false;
-    }
-    attempt(8);
-    toast('Eligibility summary sent to grant support');
-  }
-
-  $('createAccountBtn').addEventListener('click', () => {
-    const p1 = $('fPassword'), p2 = $('fPassword2');
-    let ok = true;
-    if (p1.value.length < 8) { markError(p1, true); ok = false; } else markError(p1, false);
-    if (p2.value !== p1.value || !p2.value) { markError(p2, true); ok = false; } else markError(p2, false);
-    if (!ok) return;
-
-    state.form.password = p1.value;
-    try {
-      const record = {
-        ts: Date.now(), region: state.region,
-        name: state.form.name, dob: state.form.dob, address: state.form.address,
-        ownsHome: state.form.ownsHome, year: state.form.yearPurchased,
-        employed: state.form.employed, employer: state.form.employer,
-        loans: state.form.loans, amount: state.form.amount,
-        currency: REGIONS[state.region].currency.code
-      };
-      const prev = JSON.parse(localStorage.getItem('phfa.intake') || '[]');
-      prev.push(record);
-      localStorage.setItem('phfa.intake', JSON.stringify(prev));
-    } catch (_) {}
-
-    if (window.Tawk_API && typeof Tawk_API.addEvent === 'function') {
-      try {
-        Tawk_API.addEvent('account_created', {
-          region: REGIONS[state.region].label,
-          amount: formatMoney(state.form.amount, state.region)
-        }, function () {});
-      } catch (_) {}
-    }
-    toast('Account created — our team will be in touch');
-    setTimeout(() => { closeModal(); window.location.href = 'apply.html'; }, 900);
-  });
-
-  function resetForm() {
-    eligibilityRan = false;
-    state.form = {
-      name:'', dob:'', address:'',
-      ownsHome:null, yearPurchased:'',
-      employed:null, employer:'',
-      loans:'', amount:0, password:''
-    };
-    ['fName','fDob','fAddress','fYear','fEmployer','fLoans','fPassword','fPassword2']
-      .forEach((id) => { const el = $(id); if (el) el.value = ''; });
-    qsa('input[type="radio"]', modal).forEach((r) => { r.checked = false; });
-    qsa('.form-row', modal).forEach((row) => row.classList.remove('is-error'));
-    $('yearRow').classList.add('hidden');
-    $('employerRow').classList.add('hidden');
-    $('step3-result').classList.add('hidden');
-    $('step3-processing').classList.add('hidden');
-    $('step4').classList.add('hidden');
-    $('step1').classList.add('hidden');
-    $('step2').classList.add('hidden');
-  }
-
-})();
-</script>
-
-</body>
-</html>
+    $('navFlag
