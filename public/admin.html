@@ -45,7 +45,6 @@
 
   <div class="tab-content" style="padding-top:20px;">
 
-    <!-- ==================== CLIENTS TAB ==================== -->
     <div role="tabpanel" class="tab-pane active" id="clients">
       <div class="row">
         <div class="col-md-12">
@@ -71,7 +70,6 @@
       </div>
     </div>
 
-    <!-- ==================== WITHDRAWALS TAB ==================== -->
     <div role="tabpanel" class="tab-pane" id="withdrawals">
       <table class="table table-bordered data-table">
         <thead>
@@ -84,7 +82,6 @@
       </table>
     </div>
 
-    <!-- ==================== SITE NOTE TAB ==================== -->
     <div role="tabpanel" class="tab-pane" id="sitenote">
       <div class="pahf-card">
         <div class="pahf-card__header">Red Site Note (visible to all clients)</div>
@@ -103,7 +100,6 @@
   </div>
 </div>
 
-<!-- ==================== NEW CLIENT MODAL ==================== -->
 <div class="modal fade" id="newClientModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -133,15 +129,14 @@
           <div class="form-group"><label>Awarded Amount (USD)</label>
             <input name="awardedAmount" type="number" step="0.01" class="form-control" value="0"/></div>
 
-          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
+          <div class="form-group"><label>Allocated Winnings</label>
             <input name="allocatedWinnings" type="number" step="0.01" class="form-control" value="0"/></div>
 
-          <div class="form-group"><label>Report Details (free text shown inside report)</label>
+          <div class="form-group"><label>Report Details</label>
             <textarea name="reportDetails" class="form-control" rows="3"></textarea></div>
 
           <div class="form-group"><label>Security Question</label>
-            <input name="securityQuestion" class="form-control"
-                   placeholder="e.g. What city were you born in?"/></div>
+            <input name="securityQuestion" class="form-control"/></div>
 
           <div class="form-group"><label>Security Answer</label>
             <input name="securityAnswer" class="form-control"/></div>
@@ -150,7 +145,7 @@
             <label><input name="fundsLocked" type="checkbox" checked/> Lock funds initially</label>
           </div>
           <div class="form-group" style="margin-top:6px;">
-            <label>Lock Reason (shown to client when locked)</label>
+            <label>Lock Reason</label>
             <input name="lockReason" class="form-control"/>
           </div>
         </div>
@@ -163,7 +158,6 @@
   </div>
 </div>
 
-<!-- ==================== EDIT CLIENT MODAL ==================== -->
 <div class="modal fade" id="editClientModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -176,7 +170,6 @@
           <div id="editClientErr" class="alert alert-danger hidden"></div>
           <input type="hidden" name="id"/>
 
-          <!-- RESTORED: Missing fields -->
           <div class="form-group"><label>Full Name</label>
             <input name="full_name" class="form-control"/></div>
 
@@ -192,23 +185,22 @@
           <div class="form-group"><label>Awarded Amount (USD)</label>
             <input name="awarded_amount" type="number" step="0.01" class="form-control"/></div>
 
-          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
+          <div class="form-group"><label>Allocated Winnings</label>
             <input name="allocated_winnings" type="number" step="0.01" class="form-control"/></div>
 
-          <div class="form-group"><label>Report Details (free text shown inside report)</label>
+          <div class="form-group"><label>Report Details</label>
             <textarea name="report_details" class="form-control" rows="4"></textarea></div>
 
-          <div class="form-group"><label>Client Site Note (visible to this client only)</label>
+          <div class="form-group"><label>Client Site Note</label>
             <textarea name="site_notes" class="form-control" rows="3"></textarea></div>
 
           <div class="checkbox">
             <label><input name="funds_locked" type="checkbox"/> Lock funds (block withdrawals)</label>
           </div>
 
-          <div class="form-group"><label>Lock Reason (shown to client)</label>
+          <div class="form-group"><label>Lock Reason</label>
             <input name="lock_reason" class="form-control"/></div>
 
-          <!-- NEW PASSWORD MANAGEMENT SECTION -->
           <hr>
           <h4 style="margin-bottom: 15px; color: #0a2540; font-weight: bold;">Password Management</h4>
           
@@ -238,7 +230,6 @@
   </div>
 </div>
   
-<!-- ==================== EDIT WITHDRAWAL MODAL ==================== -->
 <div class="modal fade" id="editWithdrawModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -281,18 +272,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script>
-/* ============================================================
-   PA Housing Fund — Admin
-   ============================================================ */
-
 function adminFatal(msg) {
   let el = document.getElementById('adminFatalBanner');
   if (!el) {
     el = document.createElement('div');
     el.id = 'adminFatalBanner';
-    el.style.cssText =
-      'background:#b60606;color:#fff;padding:12px 18px;font-family:monospace;' +
-      'font-size:13px;white-space:pre-wrap;position:relative;z-index:9999;';
+    el.style.cssText = 'background:#b60606;color:#fff;padding:12px 18px;font-family:monospace;font-size:13px;white-space:pre-wrap;position:relative;z-index:9999;';
     document.body.insertBefore(el, document.body.firstChild);
   }
   el.textContent = msg;
@@ -324,8 +309,7 @@ function money(n) {
 async function loadClients() {
   const r = await api('/api/admin/clients');
   if (!r.ok || !r.data || !r.data.clients) {
-    $('#clientsErr').text('Failed to load clients — status ' + r.status +
-      (r.data && r.data.error ? ' — ' + r.data.error : '')).removeClass('hidden');
+    $('#clientsErr').text('Failed to load clients — status ' + r.status + (r.data && r.data.error ? ' — ' + r.data.error : '')).removeClass('hidden');
     $('#clientsTbody').html('');
     return;
   }
@@ -333,11 +317,7 @@ async function loadClients() {
 
   const rows = r.data.clients;
   if (!rows.length) {
-    $('#clientsTbody').html(
-      '<tr><td colspan="9" class="text-center text-muted" style="padding:24px;">' +
-      'No client accounts yet. Click <b>+ New Client Account</b> to add one.' +
-      '</td></tr>'
-    );
+    $('#clientsTbody').html('<tr><td colspan="9" class="text-center text-muted" style="padding:24px;">No client accounts yet. Click <b>+ New Client Account</b> to add one.</td></tr>');
     return;
   }
 
@@ -349,9 +329,7 @@ async function loadClients() {
       <td>${escapeHtml(c.phone || '')}</td>
       <td>${money(c.awarded_amount)}</td>
       <td>${money(c.allocated_winnings)}</td>
-      <td>${c.funds_locked
-            ? '<span class="label label-danger">Locked</span>'
-            : '<span class="label label-success">Unlocked</span>'}</td>
+      <td>${c.funds_locked ? '<span class="label label-danger">Locked</span>' : '<span class="label label-success">Unlocked</span>'}</td>
       <td>${escapeHtml((c.site_notes || '').slice(0, 40))}${(c.site_notes || '').length > 40 ? '…' : ''}</td>
       <td>
         <button class="btn btn-xs btn-pahf-navy edit-client" data-id="${c.id}">Edit</button>
@@ -374,9 +352,7 @@ async function loadWithdrawals() {
       <td><span class="label label-info">${escapeHtml(w.status)}</span></td>
       <td>${w.progress}%</td>
       <td>${escapeHtml(w.note || '')}</td>
-      <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}"
-            data-status="${escapeHtml(w.status)}" data-progress="${w.progress}"
-            data-note="${escapeHtml(w.note || '')}">Edit</button></td>
+      <td><button class="btn btn-xs btn-pahf-navy edit-wd" data-id="${w.id}" data-status="${escapeHtml(w.status)}" data-progress="${w.progress}" data-note="${escapeHtml(w.note || '')}">Edit</button></td>
     </tr>
   `).join(''));
 }
@@ -414,7 +390,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function attachHandlers() {
-  // ---- Create client ----
   $('#newClientForm').on('submit', async function (e) {
     e.preventDefault();
     const err = $('#newClientErr'); err.addClass('hidden');
@@ -434,7 +409,6 @@ function attachHandlers() {
     loadClients();
   });
 
-  // ---- Populate edit client ----
   $(document).on('click', '.edit-client', async function () {
     const id = $(this).data('id');
     const r = await api('/api/admin/clients/' + id);
@@ -442,7 +416,6 @@ function attachHandlers() {
     const c = r.data.client;
     const f = $('#editClientForm')[0];
     
-    // Fill existing data
     f.id.value                = c.id;
     f.full_name.value         = c.full_name || '';
     f.email.value             = c.email || '';
@@ -456,14 +429,12 @@ function attachHandlers() {
     f.lock_reason.value       = c.lock_reason || '';
     f.verified.checked        = !!c.verified;
     
-    // CLEAR password fields when opening the modal
     f.new_password.value = '';
     f.force_password_change.checked = false; 
 
     $('#editClientModal').modal('show');
   });
 
-  // ---- Save edit ----
   $('#editClientForm').on('submit', async function (e) {
     e.preventDefault();
     const err = $('#editClientErr'); err.addClass('hidden');
@@ -501,7 +472,6 @@ function attachHandlers() {
     loadClients();
   });
 
-  // ---- Delete ----
   $(document).on('click', '.del-client', async function () {
     if (!confirm('Delete this client and all their withdrawal records?')) return;
     const id = $(this).data('id');
@@ -509,7 +479,6 @@ function attachHandlers() {
     loadClients();
   });
 
-  // ---- Edit withdrawal ----
   $(document).on('click', '.edit-wd', function () {
     const f = $('#editWithdrawForm')[0];
     f.id.value       = this.dataset.id;
@@ -527,14 +496,11 @@ function attachHandlers() {
       progress: parseInt(f.progress.value, 10) || 0,
       note:     f.note.value
     };
-    await api('/api/admin/withdrawals/' + f.id.value, {
-      method: 'PATCH', body: JSON.stringify(body)
-    });
+    await api('/api/admin/withdrawals/' + f.id.value, { method: 'PATCH', body: JSON.stringify(body) });
     $('#editWithdrawModal').modal('hide');
     loadWithdrawals();
   });
 
-  // ---- Save site note ----
   $('#saveNoteBtn').on('click', async function () {
     const body = {
       body: $('#noteBody').val(),
@@ -546,7 +512,6 @@ function attachHandlers() {
     setTimeout(() => m.addClass('hidden'), 1800);
   });
 
-  // ---- Logout ----
   $('#logoutLink').on('click', async function (e) {
     e.preventDefault();
     await api('/api/auth/logout', { method: 'POST' });
