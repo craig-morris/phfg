@@ -101,14 +101,31 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     okEl.textContent = 'Login successful! Redirecting...';
     okEl.classList.remove('hidden');
 
-    // --- ROLE BASED REDIRECTION ---
-    // Assuming your backend returns the user's role in the response (e.g., r.data.role)
-    // or sets a token/cookie.
-    
+    // ==========================================
+    // PATCHED: FORCE PASSWORD CHANGE CHECK
+    // ==========================================
+    // If the backend flags a forced reset, redirect to the change password page
+    if (r.data && r.data.force_password_change === true) {
+        okEl.textContent = 'Password reset required. Redirecting...';
+        
+        // Store necessary data for the password change page
+        if (r.data.token) {
+            sessionStorage.setItem('tempAuthToken', r.data.token);
+        }
+        sessionStorage.setItem('userEmail', email); // Needed for the printout screen
+        
+        setTimeout(() => {
+            location.href = '/force-password-change.html';
+        }, 1200);
+        return; // Stop further execution
+    }
+    // ==========================================
+
+    // --- ROLE BASED REDIRECTION (Normal Login) ---
     setTimeout(() => {
         if (r.data && r.data.role === 'admin') {
-            // Redirect to the Admin Dashboard
-            location.href = '/admin-dashboard.html'; 
+            // Redirect to the Admin Dashboard (Updated to match your file name)
+            location.href = '/admin.html'; 
         } else {
             // Redirect to the Client Dashboard
             location.href = '/dashboard.html'; 
