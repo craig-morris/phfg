@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PA Housing Fund — Sign In</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/apple-touch-icon.png" />
+<link rel="icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a2540" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/assets/app.css" rel="stylesheet" />
+<style>
+    /* Adding a fallback for the card style if not in app.css */
+    .card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+</style>
+</head>
+<body>
+<nav class="navbar navbar-pahf navbar-fixed-top">
+  <div class="container-fluid" style="padding-left:20px;padding-right:20px;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img src="/assets/apple-touch-icon.png" alt="PHFA" class="pahf-logo" />
+        <span class="pahf-title">PA Housing Fund</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="margin-top: 90px;">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="card">
+        <h2>Sign In</h2>
+        <p>Access your account to check your grant status.</p>
+        
+        <div id="errMsg" class="alert alert-danger hidden"></div>
+        <div id="okMsg" class="alert alert-success hidden"></div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input id="email" type="email" class="form-control" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input id="password" type="password" class="form-control" required autocomplete="current-password" />
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block btn-lg">SIGN IN</button>
+        </form>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <p>Don't have an account? <a href="/register.html">Register here</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const errEl = document.getElementById('errMsg');
+  const okEl = document.getElementById('okMsg');
+  errEl.classList.add('hidden'); 
+  okEl.classList.add('hidden');
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  // Disable button to prevent double submission
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+
+  try {
+    // Send request to backend
+    const r = await api('/api/auth/login', { 
+        method: 'POST', 
+        body: JSON.stringify({ email, password }) 
+    });
+
+    if (!r.ok) {
+      errEl.textContent = (r.data && r.data.error) || 'Invalid email or password.';
+      errEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'SIGN IN';
+      return;
+    }
+
+    okEl.textContent = 'Login successful! Redirecting...';
+    okEl.classList.remove('hidden');
+
+    // --- ROLE BASED REDIRECTION ---
+    // Assuming your backend returns the user's role in the response (e.g., r.data.role)
+    // or sets a token/cookie.
+    
+    setTimeout(() => {
+        if (r.data && r.data.role === 'admin') {
+            // Redirect to the Admin Dashboard
+            location.href = '/admin-dashboard.html'; 
+        } else {
+            // Redirect to the Client Dashboard
+            location.href = '/dashboard.html'; 
+        }
+    }, 1000);
+
+  } catch (error) {
+    errEl.textContent = 'A network error occurred. Please try again.';
+    errEl.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = 'SIGN IN';
+  }
+});
+</script>
+</body>
+</html>
