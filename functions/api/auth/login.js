@@ -20,18 +20,17 @@ export async function onRequestPost(context) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // Use the exact hash function from _utils.js
+    // Use your utils hash function
     const typedHash = await hashPassword(password, user.password_salt);
 
     if (typedHash !== user.password_hash) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // Generate hex token (matches your regex /session=([a-f0-9]+)/)
+    // randomHex ensures the cookie passes your /session=([a-f0-9]+)/ regex
     const token = randomHex(32); 
     
-    // Calculate Expiration (Date.now() + 7 days in milliseconds)
-    // Your getSession checks against Date.now(), so it MUST be a number.
+    // Expiration must be a timestamp in milliseconds
     const expiresAtMs = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
     // Store session in DB
@@ -39,7 +38,7 @@ export async function onRequestPost(context) {
       'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)'
     ).bind(user.id, token, expiresAtMs).run();
 
-    // Use the exact cookie setter from _utils.js
+    // Use your utils cookie setter
     return json({
       ok: true,
       token: token,
