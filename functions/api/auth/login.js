@@ -1,4 +1,4 @@
-import { json } from '../_utils.js'; // CHANGED PATH HERE
+import { json } from '../_utils.js';
 
 async function hashPassword(password, salt) {
   const enc = new TextEncoder();
@@ -39,26 +39,33 @@ export async function onRequestPost(context) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // Generate session token
     const token = crypto.randomUUID(); 
     
-    // --- NEW: Calculate Expiration Date for SQLite ---
+    // Calculate Expiration Date
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // Expires in 7 days
-    // Format as "YYYY-MM-DD HH:MM:SS" for SQLite
+    expiresAt.setDate(expiresAt.getDate() + 7); 
     const expiresAtStr = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
 
-    // Store session in DB with the expires_at value
+    // Store session in DB
     await env.DB.prepare(
       'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)'
     ).bind(user.id, token, expiresAtStr).run();
 
-    return json({
+    // ==========================================
+    // NEW: Set the Cookie Header
+    // ==========================================
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    // We set an HttpOnly cookie named 'session'. 
+    // Adjust the name 'session' if your _utils.js expects a different cookie name (e.g., 'token', 'auth')
+    headers.append('Set-Cookie', `session=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`);
+
+    return new Response(JSON.stringify({
       ok: true,
       token: token,
       role: user.role,
       force_password_change: user.force_password_change === 1 
-    });
+    }), { status: 200, headers });
 
   } catch (err) {
     return json({ error: 'Login error: ' + err.message }, 500);
