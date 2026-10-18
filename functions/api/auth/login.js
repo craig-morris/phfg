@@ -1,6 +1,5 @@
-import { json } from '../../_utils.js'; // Adjust path if needed
+import { json } from '../_utils.js'; // CHANGED PATH HERE
 
-// MUST MATCH THE EXACT FUNCTION IN YOUR ADMIN PATCH
 async function hashPassword(password, salt) {
   const enc = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
@@ -28,35 +27,28 @@ export async function onRequestPost(context) {
       return json({ error: 'Email and password are required' }, 400);
     }
 
-    // 1. Get the user from D1
     const user = await env.DB.prepare('SELECT * FROM users WHERE email = ?').bind(email).first();
 
     if (!user) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // 2. Hash the typed password using the user's stored salt
     const typedHash = await hashPassword(password, user.password_salt);
 
-    // 3. Compare the hashes
     if (typedHash !== user.password_hash) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // 4. Generate a session token (You likely have a utility for this)
-    // For this example, we'll generate a random string. 
-    // You should replace this with your actual JWT or D1 session insert logic.
+    // Generate session token (using crypto.randomUUID for simplicity here)
     const token = crypto.randomUUID(); 
     
-    // If you store sessions in D1:
-    // await env.DB.prepare('INSERT INTO sessions (user_id, token) VALUES (?, ?)').bind(user.id, token).run();
+    // Store session in DB
+    await env.DB.prepare('INSERT INTO sessions (user_id, token) VALUES (?, ?)').bind(user.id, token).run();
 
-    // 5. Return success and the force_password_change flag
     return json({
       ok: true,
       token: token,
       role: user.role,
-      // SQLite stores booleans as 1 or 0. We convert it to a real boolean for the frontend.
       force_password_change: user.force_password_change === 1 
     });
 
