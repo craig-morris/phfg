@@ -39,11 +39,19 @@ export async function onRequestPost(context) {
       return json({ error: 'Invalid credentials' }, 401);
     }
 
-    // Generate session token (using crypto.randomUUID for simplicity here)
+    // Generate session token
     const token = crypto.randomUUID(); 
     
-    // Store session in DB
-    await env.DB.prepare('INSERT INTO sessions (user_id, token) VALUES (?, ?)').bind(user.id, token).run();
+    // --- NEW: Calculate Expiration Date for SQLite ---
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // Expires in 7 days
+    // Format as "YYYY-MM-DD HH:MM:SS" for SQLite
+    const expiresAtStr = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+    // Store session in DB with the expires_at value
+    await env.DB.prepare(
+      'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)'
+    ).bind(user.id, token, expiresAtStr).run();
 
     return json({
       ok: true,
