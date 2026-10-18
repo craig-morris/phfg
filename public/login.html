@@ -13,7 +13,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
 <link href="/assets/app.css" rel="stylesheet" />
 <style>
-    /* Adding a fallback for the card style if not in app.css */
     .card {
         background: #fff;
         padding: 30px;
@@ -78,13 +77,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
-  // Disable button to prevent double submission
   const btn = e.target.querySelector('button');
   btn.disabled = true;
   btn.textContent = 'Signing in...';
 
   try {
-    // Send request to backend
     const r = await api('/api/auth/login', { 
         method: 'POST', 
         body: JSON.stringify({ email, password }) 
@@ -102,32 +99,28 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     okEl.classList.remove('hidden');
 
     // ==========================================
-    // PATCHED: FORCE PASSWORD CHANGE CHECK
+    // PATCHED: Handles both boolean true and integer 1
     // ==========================================
-    // If the backend flags a forced reset, redirect to the change password page
-    if (r.data && r.data.force_password_change === true) {
+    if (r.data && (r.data.force_password_change === true || r.data.force_password_change === 1)) {
         okEl.textContent = 'Password reset required. Redirecting...';
         
-        // Store necessary data for the password change page
         if (r.data.token) {
             sessionStorage.setItem('tempAuthToken', r.data.token);
         }
-        sessionStorage.setItem('userEmail', email); // Needed for the printout screen
+        sessionStorage.setItem('userEmail', email); 
         
         setTimeout(() => {
             location.href = '/force-password-change.html';
         }, 1200);
-        return; // Stop further execution
+        return; 
     }
     // ==========================================
 
-    // --- ROLE BASED REDIRECTION (Normal Login) ---
+    // --- ROLE BASED REDIRECTION ---
     setTimeout(() => {
         if (r.data && r.data.role === 'admin') {
-            // Redirect to the Admin Dashboard (Updated to match your file name)
             location.href = '/admin.html'; 
         } else {
-            // Redirect to the Client Dashboard
             location.href = '/dashboard.html'; 
         }
     }, 1000);
