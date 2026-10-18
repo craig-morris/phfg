@@ -176,7 +176,27 @@
           <div id="editClientErr" class="alert alert-danger hidden"></div>
           <input type="hidden" name="id"/>
 
-          <!-- ... (existing fields: full_name, email, phone, address, amounts, etc.) ... -->
+          <!-- RESTORED: Missing fields -->
+          <div class="form-group"><label>Full Name</label>
+            <input name="full_name" class="form-control"/></div>
+
+          <div class="form-group"><label>Email</label>
+            <input name="email" type="email" class="form-control"/></div>
+
+          <div class="form-group"><label>Phone</label>
+            <input name="phone" class="form-control"/></div>
+
+          <div class="form-group"><label>Address</label>
+            <input name="address" class="form-control"/></div>
+
+          <div class="form-group"><label>Awarded Amount (USD)</label>
+            <input name="awarded_amount" type="number" step="0.01" class="form-control"/></div>
+
+          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
+            <input name="allocated_winnings" type="number" step="0.01" class="form-control"/></div>
+
+          <div class="form-group"><label>Report Details (free text shown inside report)</label>
+            <textarea name="report_details" class="form-control" rows="4"></textarea></div>
 
           <div class="form-group"><label>Client Site Note (visible to this client only)</label>
             <textarea name="site_notes" class="form-control" rows="3"></textarea></div>
@@ -188,9 +208,7 @@
           <div class="form-group"><label>Lock Reason (shown to client)</label>
             <input name="lock_reason" class="form-control"/></div>
 
-          <!-- ========================================== -->
-          <!-- NEW PASSWORD MANAGEMENT SECTION            -->
-          <!-- ========================================== -->
+          <!-- NEW PASSWORD MANAGEMENT SECTION -->
           <hr>
           <h4 style="margin-bottom: 15px; color: #0a2540; font-weight: bold;">Password Management</h4>
           
@@ -206,7 +224,6 @@
               <b>Force client to change password on next login</b>
             </label>
           </div>
-          <!-- ========================================== -->
 
           <div class="checkbox" style="margin-top: 15px;">
             <label><input name="verified" type="checkbox"/> Verified</label>
@@ -266,11 +283,8 @@
 <script>
 /* ============================================================
    PA Housing Fund — Admin
-   Single, self-contained script. No dependency on app.js.
-   Every failure is printed to a visible banner at the top.
    ============================================================ */
 
-/* ---------------- visible error banner ---------------- */
 function adminFatal(msg) {
   let el = document.getElementById('adminFatalBanner');
   if (!el) {
@@ -284,7 +298,6 @@ function adminFatal(msg) {
   el.textContent = msg;
 }
 
-/* ---------------- helpers (inlined) ---------------- */
 async function api(path, opts = {}) {
   const res = await fetch(path, {
     credentials: 'same-origin',
@@ -308,11 +321,8 @@ function money(n) {
   });
 }
 
-/* ---------------- data loaders ---------------- */
 async function loadClients() {
   const r = await api('/api/admin/clients');
-  console.log('[loadClients]', r.status, r.data);
-
   if (!r.ok || !r.data || !r.data.clients) {
     $('#clientsErr').text('Failed to load clients — status ' + r.status +
       (r.data && r.data.error ? ' — ' + r.data.error : '')).removeClass('hidden');
@@ -353,7 +363,6 @@ async function loadClients() {
 
 async function loadWithdrawals() {
   const r = await api('/api/admin/withdrawals');
-  console.log('[loadWithdrawals]', r.status, r.data);
   if (!r.ok || !r.data) return;
   const rows = r.data.withdrawals || [];
   $('#withdrawalsTbody').html(rows.map(w => `
@@ -380,49 +389,31 @@ async function loadNote() {
   }
 }
 
-/* ---------------- init ---------------- */
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    console.log('=== admin init ===');
-
-    // 1. Auth gate
     const me = await api('/api/auth/me');
-    console.log('[gate]', me.status, me.data);
-
     if (!me.ok || !me.data || !me.data.user) {
       adminFatal('Not signed in. Redirecting…');
       setTimeout(() => location.href = '/', 800);
       return;
     }
     if (me.data.user.role !== 'admin') {
-      adminFatal(
-        'Access denied. You are signed in as ' + me.data.user.email +
-        ' (role=' + me.data.user.role + '). ' +
-        'Clear cookies and log in as the admin account.'
-      );
+      adminFatal('Access denied. You are signed in as ' + me.data.user.email);
       return;
     }
 
-    console.log('[gate] admin confirmed:', me.data.user.email);
-
-    // 2. Attach handlers (only after admin confirmed)
     attachHandlers();
-
-    // 3. Load initial data
     await loadClients();
     await loadWithdrawals();
     await loadNote();
 
-    console.log('=== admin init complete ===');
   } catch (err) {
     console.error('INIT ERROR:', err);
     adminFatal('Init error: ' + ((err && err.message) || err));
   }
 });
 
-/* ---------------- event handlers ---------------- */
 function attachHandlers() {
-
   // ---- Create client ----
   $('#newClientForm').on('submit', async function (e) {
     e.preventDefault();
@@ -434,7 +425,6 @@ function attachHandlers() {
     body.allocatedWinnings = parseFloat(body.allocatedWinnings) || 0;
 
     const r = await api('/api/admin/clients', { method: 'POST', body: JSON.stringify(body) });
-    console.log('[create client]', r.status, r.data);
     if (!r.ok) {
       err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
       return;
@@ -451,6 +441,8 @@ function attachHandlers() {
     if (!r.ok || !r.data || !r.data.client) return;
     const c = r.data.client;
     const f = $('#editClientForm')[0];
+    
+    // Fill existing data
     f.id.value                = c.id;
     f.full_name.value         = c.full_name || '';
     f.email.value             = c.email || '';
@@ -463,6 +455,11 @@ function attachHandlers() {
     f.funds_locked.checked    = !!c.funds_locked;
     f.lock_reason.value       = c.lock_reason || '';
     f.verified.checked        = !!c.verified;
+    
+    // CLEAR password fields when opening the modal
+    f.new_password.value = '';
+    f.force_password_change.checked = false; 
+
     $('#editClientModal').modal('show');
   });
 
@@ -473,7 +470,6 @@ function attachHandlers() {
     const f = this;
     const id = f.id.value;
     
-    // Build the standard payload
     const body = {
       full_name:          f.full_name.value,
       email:              f.email.value,
@@ -486,27 +482,22 @@ function attachHandlers() {
       funds_locked:       f.funds_locked.checked,
       lock_reason:        f.lock_reason.value,
       verified:           f.verified.checked,
-      
-      // NEW: Add password reset logic
       force_password_change: f.force_password_change.checked
     };
 
-    // Only send the password if the admin typed one in
     const newPassword = f.new_password.value.trim();
     if (newPassword !== '') {
       body.password = newPassword;
     }
 
     const r = await api('/api/admin/clients/' + id, { method: 'PATCH', body: JSON.stringify(body) });
-    console.log('[save client]', r.status, r.data);
-    
     if (!r.ok) {
       err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
       return;
     }
     
     $('#editClientModal').modal('hide');
-    this.reset(); // Clear the form
+    this.reset(); 
     loadClients();
   });
 
