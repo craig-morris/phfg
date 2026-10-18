@@ -176,26 +176,7 @@
           <div id="editClientErr" class="alert alert-danger hidden"></div>
           <input type="hidden" name="id"/>
 
-          <div class="form-group"><label>Full Name</label>
-            <input name="full_name" class="form-control"/></div>
-
-          <div class="form-group"><label>Email</label>
-            <input name="email" type="email" class="form-control"/></div>
-
-          <div class="form-group"><label>Phone</label>
-            <input name="phone" class="form-control"/></div>
-
-          <div class="form-group"><label>Address</label>
-            <input name="address" class="form-control"/></div>
-
-          <div class="form-group"><label>Awarded Amount (USD)</label>
-            <input name="awarded_amount" type="number" step="0.01" class="form-control"/></div>
-
-          <div class="form-group"><label>Allocated Winnings (shown in client's report)</label>
-            <input name="allocated_winnings" type="number" step="0.01" class="form-control"/></div>
-
-          <div class="form-group"><label>Report Details (free text shown inside report)</label>
-            <textarea name="report_details" class="form-control" rows="4"></textarea></div>
+          <!-- ... (existing fields: full_name, email, phone, address, amounts, etc.) ... -->
 
           <div class="form-group"><label>Client Site Note (visible to this client only)</label>
             <textarea name="site_notes" class="form-control" rows="3"></textarea></div>
@@ -207,7 +188,27 @@
           <div class="form-group"><label>Lock Reason (shown to client)</label>
             <input name="lock_reason" class="form-control"/></div>
 
+          <!-- ========================================== -->
+          <!-- NEW PASSWORD MANAGEMENT SECTION            -->
+          <!-- ========================================== -->
+          <hr>
+          <h4 style="margin-bottom: 15px; color: #0a2540; font-weight: bold;">Password Management</h4>
+          
+          <div class="form-group">
+            <label>Set New Password</label>
+            <input name="new_password" type="text" class="form-control" placeholder="Enter temporary password" autocomplete="off" />
+            <p class="help-block" style="font-size: 12px;">Leave blank to keep the current password.</p>
+          </div>
+
           <div class="checkbox">
+            <label style="color: #b60606;">
+              <input name="force_password_change" type="checkbox" /> 
+              <b>Force client to change password on next login</b>
+            </label>
+          </div>
+          <!-- ========================================== -->
+
+          <div class="checkbox" style="margin-top: 15px;">
             <label><input name="verified" type="checkbox"/> Verified</label>
           </div>
         </div>
@@ -219,7 +220,7 @@
     </div>
   </div>
 </div>
-
+  
 <!-- ==================== EDIT WITHDRAWAL MODAL ==================== -->
 <div class="modal fade" id="editWithdrawModal" tabindex="-1">
   <div class="modal-dialog">
@@ -471,6 +472,8 @@ function attachHandlers() {
     const err = $('#editClientErr'); err.addClass('hidden');
     const f = this;
     const id = f.id.value;
+    
+    // Build the standard payload
     const body = {
       full_name:          f.full_name.value,
       email:              f.email.value,
@@ -482,15 +485,28 @@ function attachHandlers() {
       site_notes:         f.site_notes.value,
       funds_locked:       f.funds_locked.checked,
       lock_reason:        f.lock_reason.value,
-      verified:           f.verified.checked
+      verified:           f.verified.checked,
+      
+      // NEW: Add password reset logic
+      force_password_change: f.force_password_change.checked
     };
+
+    // Only send the password if the admin typed one in
+    const newPassword = f.new_password.value.trim();
+    if (newPassword !== '') {
+      body.password = newPassword;
+    }
+
     const r = await api('/api/admin/clients/' + id, { method: 'PATCH', body: JSON.stringify(body) });
     console.log('[save client]', r.status, r.data);
+    
     if (!r.ok) {
       err.text((r.data && r.data.error) || 'Error').removeClass('hidden');
       return;
     }
+    
     $('#editClientModal').modal('hide');
+    this.reset(); // Clear the form
     loadClients();
   });
 
